@@ -1,0 +1,19 @@
+
+<tr data-description="<?=$this->item['description'];?>" data-row-id="<?= $this->item['id']; ?>" id="tblTree-<?= (($this->item['parentId'] != '') ? $this->item['hierarchy'] . '-' : '') . $this->item['id']; ?>" <?= (($this->item['parentId'] != '') ? 'class="child-of-tblTree-' . $this->item['hierarchy'] . '"' : ''); ?>>
+    <td nowrap="nowrap"><input type="checkbox" class="to-delete"/></td>
+    <td width="100%"><span class="lbl"><?= $this->item['description']; ?></span></td>
+    <td nowrap="nowrap">
+        <a class="btn btn-mini" href="javascript:void(0);" onclick="alert('Trocar categoria pai')" data-toggle="tooltip" title="Trocar Categoria Pai">
+            <i class="icon-retweet"></i>
+        </a>
+        <a class="btn btn-mini" href="javascript:void(0);" onclick="adicionarCategoria('<?= $this->item['id']; ?>')" data-toggle="tooltip" title="Adicionar Categoria Subordinada">
+            <i class="icon-plus"></i>
+        </a>
+        <a class="btn btn-mini" href="javascript:void(0);" onclick="editarCategoria('<?= $this->item['id']; ?>')" data-toggle="tooltip" title="Editar">
+            <i class="icon-pencil"></i>
+        </a>
+        <a class="btn btn-mini" href="javascript:void(0);" onclick="confirmaDelecaoCategoria(this)" data-toggle="tooltip" title="Exluir">
+            <i class="icon-trash"></i>
+        </a>
+    </td>
+</tr>

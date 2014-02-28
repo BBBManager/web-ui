@@ -1,0 +1,48 @@
+<h4><?= $this->translate('Maintenance Mode'); ?></h4>
+
+<p align="left">
+    <?= $this->translate('The maintenance mode is'); ?>
+    <span class="label label-inverse"><?= $this->translate('Disabled'); ?></span>
+</p>
+
+<?
+if (IMDT_Util_Acl::getInstance()->isAllowed('maintenance', 'edit')):
+?>
+<form method="post">
+    <div class="form-actions">
+        <a href="#" role="button" class="btn btn-primary" open-modal-form="#modalMaintenance"><?= $this->translate('Enable now'); ?></a>
+    </div>
+</form>
+<?
+endif;
+?>
+
+<div id="modalMaintenance" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 80%; margin-left:-40%;">
+    <form method="post" action="<?= $this->url(array('action' => 'form-post')); ?>" class="">
+        <input type="hidden" name="id" value="new" />
+        <input type="hidden" name="active" value="1" />
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><h3 id="myModalLabel"><?= $this->translate('Enable maintenance mode'); ?></h3></h3>
+        </div>
+        <div class="modal-body">
+            <label class="control-label" for="description"><?= $this->translate('column-maintenance-description'); ?></label>
+            <textarea class="input-block-level" name="description" id="description" rows="8"><?= (isset($this->maintenance['description']) ? $this->maintenance['description'] : ''); ?></textarea>
+        </div>
+        <div class="modal-footer">
+            <div class="hide alert alert-error" style="text-align:center;"><?= $this->translate('Alert'); ?></div>
+            <span class="save-buttons">
+                <button type="submit" class="btn btn-primary"><?= $this->translate('Save'); ?></button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            </span>
+            <span class="success-buttons hide">
+                <div class="alert alert-success" style="text-align:center;"></div>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            </span>
+            <span class="loading hide">
+                <div style="text-align:center;"><?= $this->translate('Saving'); ?></div>
+                <div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
+            </span>
+        </div>
+    </form>
+</div>

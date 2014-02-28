@@ -1,0 +1,106 @@
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->controllerTitle; ?></a> / <h4><?= $this->title; ?></h4>
+<form readonly="readonly" id="formEdit" class="form-horizontal ajaxsubmit" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
+    <div class="control-group">
+        <label class="control-label" for="access_profile_id"><?= $this->translate('column-user-auth_mode_id'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="auth_mode_id" name="auth_mode_id" class="span6 select2" source="auth_mode" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="name"><?= $this->translate('column-user-name'); ?></label>
+        <div class="controls">
+            <input type="text" id="name" name="name" value="">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="login"><?= $this->translate('column-user-login'); ?></label>
+        <div class="controls">
+            <input type="text" id="login" name="login" value="">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="email"><?= $this->translate('column-user-email'); ?></label>
+        <div class="controls">
+            <input type="text" id="email" name="email" value="">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="access_profile_id"><?= $this->translate('column-user-access_profile_id'); ?></label>
+        <div class="controls">
+            <input type="text" id="access_profile_name" name="access_profile_name" class="span6" disabled="disabled"/>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="groups"><?= $this->translate('column-user-groups'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="groups" name="groups" class="span6 select2 multiple" source="group">
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="valid_from"><?=$this->translate('column-user-valid_from'); ?></label>
+        <div class="controls">
+            <div class="input-append datepick">
+                <input type="text" id="valid_from" name="valid_from" class="input-block-level" />
+            </div>
+            <br />
+            <span class="input-observation"><?=$this->translate('Date from which will be able to login with this user, if not filled start date will not be restricted'); ?></span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="valid_to"><?=$this->translate('column-user-valid_to'); ?></label>
+        <div class="controls">
+            <div class="input-append datepick">
+                <input type="text" id="valid_to" name="valid_to" class="input-block-level" />
+            </div>
+            <br />
+            <span class="input-observation"><?=$this->translate('Date from which will not be able to login with this user, if not filled start end will not be restricted'); ?></span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="observations"><?=$this->translate('column-user-observations'); ?>: </label>
+        <div class="controls">
+            <textarea class="span6 autosize" id="observations" name="observations"></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+	<a class="btn" href="#" open-modal-form="#resetPassword" form-data=''><?= $this->translate('Reset password'); ?></a>
+	<a class="btn" href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Back'); ?></a>
+    </div>
+</form>
+
+<div id="resetPassword" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="form-invite" class="form-horizontal no-loading no-reset" action="<?= $this->url(array('action' => 'post-reset-password')); ?>">
+        <input type="hidden" name="user_id" id="user_id" value="<?= $this->id; ?>" />
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><?= $this->translate('Reset password'); ?></h3>
+        </div>
+        <div class="modal-body">
+            <span><?= $this->translate('A new password will be sent by e-mail.'); ?></span>
+        </div>
+
+        <div class="modal-footer">
+            <div class="hide alert alert-error" style="text-align:center;"><?= $this->translate('Alert'); ?></div>
+            <span class="save-buttons">
+                <button type="submit" class="btn btn-primary"><?= $this->translate('Confirm'); ?></button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            </span>
+            <span class="success-buttons hide">
+                <div class="alert alert-success" style="text-align:center;"></div>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            </span>
+            <span class="loading hide">
+                <div style="text-align:center;"><?= $this->translate('Saving'); ?></div>
+                <div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
+            </span>
+        </div>
+    </form>
+</div>

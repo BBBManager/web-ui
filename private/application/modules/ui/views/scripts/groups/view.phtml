@@ -1,0 +1,49 @@
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->controllerTitle; ?></a> / <h4><?= $this->title; ?></h4>
+
+<form id="formEdit" class="form-horizontal ajaxsubmit" source="<?= $this->url(array('action' => 'form-content', 'id' => $this->id)); ?>">
+    <div class="control-group">
+        <label class="control-label" for="name"><?= $this->translate('column-group-name'); ?></label>
+        <div class="controls">
+            <input type="text" id="name" name="name" value="" readonly="readonly" disabled="disabled">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="access_profile_id"><?= $this->translate('column-group-access_profile_id'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="access_profile_id" name="access_profile_id" class="span6 select2" source="access_profile" readonly="readonly" disabled="disabled"/>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="user_attendee"><?= $this->translate('column-group-user_attendee'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="user_attendee" name="user_attendee" class="span6 select2 multiple" remote="<?=$this->url(array('controller'=>'users','action'=>'remote-search')); ?>" readonly="readonly" disabled="disabled" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="group_attendee_ldap"><?= $this->translate('column-group-group_attendee_ldap'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="group_attendee_ldap" name="group_attendee_ldap" class="span6 select2 multiple" source="group_ldap" readonly="readonly" disabled="disabled" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="group_attendee_local"><?= $this->translate('column-group-group_attendee_local'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="group_attendee_local" name="group_attendee_local" class="span6 select2 multiple" source="group_local" readonly="readonly" disabled="disabled" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="observations"><?=$this->translate('column-group-observations'); ?>: </label>
+        <div class="controls">
+            <textarea class="span6 autosize" id="observations" name="observations" readonly="readonly" disabled="disabled"></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+	<a class="btn" href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Back'); ?></a>
+    </div>
+</form>

@@ -1,0 +1,29 @@
+<?
+    if($this->mustUpdateUsersAccessProfile == '1'):
+?>
+<div class="alert alert-warning">
+    <div class="alert-message">
+        <p><?=IMDT_Util_Translate::_('Attention! There are pending changes in users access profiles.');?></p>
+        <p><?=IMDT_Util_Translate::_('Click the button below to perform the upgrade.');?></p>
+    </div>
+    <div class="row text-center">
+        <div class="span12">
+            <button class="btn" id="btnRefreshUsersAccessProfiles"><i class="icon-random"></i> <?=IMDT_Util_Translate::_('Upgrade!');?></button>
+        </div>
+    </div>
+    
+    <div style="margin-top:12px;">
+        <div id="log">
+            <p><strong><?=IMDT_Util_Translate::_('Total');?>:</strong> <span id="total"></span></p>
+            <p><strong><?=IMDT_Util_Translate::_('Processed');?>:</strong> <span id="done"></span></p>
+            <p><strong><?=IMDT_Util_Translate::_('Status');?>:</strong> <span id="status"></span></p>
+        </div>
+    </div>
+    
+    <div class="progress hidden">
+      <div class="bar"></div>
+    </div>
+</div>
+<?
+    endif;
+?>

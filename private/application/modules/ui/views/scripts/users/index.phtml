@@ -1,0 +1,141 @@
+<h4><?=$this->controllerTitle; ?></h4>
+
+<div  class="pull-left">
+    <?
+        if(IMDT_Util_Acl::getInstance()->isAllowed('users', 'insert')):
+    ?>
+        <a class="btn" href="<?= $this->url(array('action'=>'new')); ?>"><i class="icon-plus-sign"></i> <?=$this->newBtn; ?></a>
+    <?
+        endif;
+    ?>
+    <?
+	if(IMDT_Util_Acl::getInstance()->isAllowed('users', 'delete')):
+    ?>
+    <a class="btn" onclick="deleteAllSelected('#records','<?=$this->deleteUrl;?>'); return false;"><i class="icon-trash"></i> <?=$this->translate('Delete selected'); ?></a>
+    <div class="btn-group">
+        <a class="btn" onclick="selectAll('#records'); return false;"><i class="icon-ok"></i> <?=$this->translate('Select all'); ?></a>
+        <button class="btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" onclick="unselectAll('#records'); return false;"><i class="icon-remove"></i> <?=$this->translate('Unselect all'); ?></a></li>
+        </ul>
+    </div>
+    <?
+        endif;
+    ?>
+</div>
+
+<div class="pull-right">
+     <form id="frmMainFilter" class="form-inline" method="GET" filter="#records" context="">
+     	<div class="row-filter" style="float:left; margin-left:10px;">
+			<input type="hidden" class="column" value="name" column-type="text" />
+			
+			<div class="filter-values name">
+    			<input type="hidden" class="condition" value="i" />
+                
+    	        <label class="text" for="search1">
+    	            <?=$this->translate('column-user-name'); ?>
+    	            <div class="input-append">
+    	                <input id="search1" type="text" class="input-small value" value="<?=isset($this->parameters['name']) ? $this->parameters['name'] : ''; ?>">
+    	            </div>
+    	        </label>
+            </div>
+		</div>
+		
+		<div class="" style="float:left; margin-left:4px;">
+			<button class="btn" type="submit"><i class="icon-search"></i> <?=$this->translate('Search'); ?>!</button>
+			<button class="btn" type="button" id="advSearch" modal-open="#modalAdvSearch" style=""><?=$this->translate('Advanced search'); ?></button>
+			<?
+			    if($this->hasFilters):
+			?>
+			<button class="btn" type="button" id="clearFilters"><i class="icon-trash"></i> <?=$this->translate('Clear Filters'); ?>!</button>
+			<?
+			    endif;
+			?>
+
+		</div>
+    </form>
+</div>
+
+<table class="table table-striped dtables rows-selectable" id="records" ajaxsource="<?=$this->url($this->tableSource,null,true);?>?<?=$this->parametersString;?>" ajaxsource-nofilters="<?=$this->url($this->tableSource,null,true);?>" uri-nofilters="<?=$this->url($this->uriPage,null,true);?>">
+    <thead>
+        <tr>
+            <th style="width:5px; text-align:center;" class="no-sort no-search"></th>
+            <th><?=$this->translate('column-user-name'); ?></th>
+            <th><?=$this->translate('column-user-login'); ?></th>
+            <th><?=$this->translate('column-access_profile-name'); ?></th>
+            <th><?=$this->translate('column-user-actived'); ?></th>
+            <th style="width:120px; text-align:center;" class="no-sort no-search"><?=$this->translate('Actions'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    <div class="span7">
+        <form class="form-inline">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
+                	<?=$this->translate('Export'); ?>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url($this->uriExport,null,true);?>?<?=$this->parametersString;?>">CSV</a></li>
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExportPdf),null,true);?>" href="<?=$this->url($this->uriExportPdf,null,true);?>?<?=$this->parametersString;?>">PDF</a></li>
+                </ul>
+            </div>
+	    <?
+		if(IMDT_Util_Acl::getInstance()->isAllowed('users', 'insert')):
+	    ?>
+            <button class="btn" id="csvImport"><?= $this->translate('Import CSV'); ?></button>
+	    <?
+		endif;
+	    ?>
+        </form>
+    </div>
+</div>
+
+<div id="modalAdvSearch" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><?=$this->translate('Advanced search'); ?></h3>
+    </div>
+    <div class="modal-body">
+        <form id="frmAdvFilter" class="form-vertical" onsubmit="applyFilter('#records'); $('#modalAdvSearch').modal('hide'); return false;" source="<?=$this->url(array('action'=>'adv-search-filter','id'=>$this->id));?>">
+            <?=$this->formFilters($this->filters,$this->parameters); ?>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+        <button class="btn btn-primary" onclick="applyFilter('#records'); $('#modalAdvSearch').modal('hide');"><?=$this->translate('Search now'); ?></button>
+    </div>
+</div>
+
+<div id="modalCsvImport" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><?= $this->translate('Import CSV'); ?></h3>
+    </div>
+    <div class="modal-body">
+        <form id="frmCsvImport" class="form-vertical" method="post" enctype="multipart/form-data" data-import-url="<?=$this->url(array('action'=>'import'));?>">
+            <span class="btn btn-inverse fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span><?=$this->translate('Selec file');?></span>
+                <input id="fileupload" type="file" name="files[]" data-url="/ui/upload/post"/>
+            </span>
+        </form>
+	<div id="fileContainer"></div>
+	<div class="alert alert-info hidden">
+	    <div class="alert-message processing">
+		<img src="/resources/img/ajax-loader.gif" />  <?=$this->translate('Processing...'); ?>
+	    </div>
+	    <div class="alert-message import-result"></div>
+	</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+        <button class="btn btn-primary" onclick="csvUpload(this);" disabled="disabled" data-widget="import"><?= $this->translate('Import'); ?></button>
+    </div>
+</div>

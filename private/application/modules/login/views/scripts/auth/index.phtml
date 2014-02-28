@@ -1,0 +1,46 @@
+<div class="container">
+    <h2 class="form-signin-heading"><?=$this->translate('Welcome');?>!</h2>
+    <?=$this->renderMessages();?>
+    <div class="row-fluid">
+        <div class="span6 pull-left">
+            <h4>Web Conference</h4>
+            <img src="/resources/img/logo.png" />
+            <div style="margin-top:20px;">
+                <a href="#" id="forget-my-pass"><?= $this->translate('Forgot password.'); ?></a>
+            </div>
+        </div>
+        
+        <div class="span6 pull-right">
+            <h4><?= $this->translate('Login'); ?></h4>
+            <form class="form-signin" method="post" action="/login/auth/auth">
+                <input type="text" class="input-block-level" placeholder="<?= $this->translate('User'); ?>" name="user">
+                <input type="password" class="input-block-level" placeholder="<?= $this->translate('Password'); ?>" name="password">
+                <button class="btn btn-primary" type="submit"><?= $this->translate('Join'); ?></button>
+                <button class="btn" id="public-rooms"><?= $this->translate('Access public meeting rooms'); ?></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalPublicRooms" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-remote="/ui/public-rooms">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><?= $this->translate('Public meeting rooms'); ?></h3>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+    </div>
+</div>
+
+<div id="modalForgetPass" class="modal fade hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-remote="/login/auth/forget-pass">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><?= $this->translate('Forgot password.'); ?></h3>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" aria-hidden="true" id="forgetPassButton"><?= $this->translate('Continue'); ?></button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+    </div>
+</div>

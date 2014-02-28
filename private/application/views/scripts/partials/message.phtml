@@ -1,0 +1,31 @@
+<? if(!empty($this->messages)): ?>
+    <?
+        $byTypeMessages = array();
+        foreach($this->messages as $message) {
+            if(is_array($message)) {
+                reset($message);
+                $byTypeMessages[key($message)][] = current($message);
+            } else {
+                $byTypeMessages['warning'][] = $message;
+            }
+        }
+    ?>
+    <? foreach ($byTypeMessages as $type => $messages): ?>
+        <? if(!empty($messages)): ?>
+            <div class="alert alert-<?=$type?>">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <div class="alert-message">
+                    <? if(count($messages) > 1): ?>
+                        <ul style="margin-bottom: 0;">
+                            <? foreach($messages as $message): ?>
+                                <li><?=$message?></li>
+                            <? endforeach; ?>
+                        </ul>
+                    <? else: ?>
+                        <?=$messages[0]?>
+                    <? endif; ?>
+                </div>
+            </div>
+        <? endif; ?>
+    <? endforeach; ?>
+<? endif; ?>

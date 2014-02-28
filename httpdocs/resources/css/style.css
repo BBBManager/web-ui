@@ -1,0 +1,61 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.input-small.sdatetime{width:130px !important;}
+
+#modalAdvSearch select, #modalLogsAdvSearch select, #modalAdvSearch input[type="text"],  #modalLogsAdvSearch input[type="text"] {
+	width:80%;
+}
+
+#modalAdvSearch .row-fluid .span2, #modalLogsAdvSearch .row-fluid .span2 {
+	width:20%;
+}
+
+#modalAdvSearch .row-fluid .input-append, #modalLogsAdvSearch .row-fluid .input-append {
+	width:100%;
+}
+
+span.input-observation {
+	color: #808080;
+	font-size: 12px;
+	font-style: italic;
+}
+
+h6.subgroup{
+    background-color: #eaeaea;
+    height:44px;
+    line-height:44px;
+    vertical-align: middle;
+    padding:0px 12px;
+}
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+  .fileinput-button input {
+    filter: alpha(opacity=0);
+    font-size: 100%;
+    height: 100%;
+  }
+}

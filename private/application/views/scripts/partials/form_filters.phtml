@@ -1,0 +1,74 @@
+<div class="row-fluid">
+    <label style="display:inline; margin-right:10px;">
+        <input type="radio" name="musthave" value="all" style="margin-top: 0px;" <?= ($this->parameters['musthave'] != 'one') ? 'checked="checked"' : ''; ?> /> <?=$this->translate('All the following rules'); ?>
+     </label>
+    <label style="display:inline;">
+        <input type="radio" name="musthave" value="one" style="margin-top: 0px;" <?= ($this->parameters['musthave'] == 'one') ? 'checked="checked"' : ''; ?> /> <?=$this->translate('At least one of the following rules'); ?>
+    </label>    
+</div>
+
+<br /><br />
+<div class="row-fluid">
+    <div class="span2" style="margin-left:0px">
+        <label class="control-label" for=""><?=$this->translate('Field'); ?></label>
+    </div>
+    <div class="span2" style="margin-left:0px">
+        <label class="control-label" for=""><?=$this->translate('Condition'); ?></label>
+    </div>
+    <div class="span2" style="margin-left:0px">
+        <label class="control-label" for=""><?=$this->translate('Value'); ?></label>
+    </div>
+</div>
+
+<? foreach($this->parameters['q'] as $curr): ?>
+    <?
+    $name = $curr['n'];
+    ?>
+    
+    <div class="row-fluid row-filter" style="border-bottom: 1px solid #CCCCCC; margin-bottom: 10px;">
+        <div class="span2" style="margin-left:0px">
+            <select class="column">
+                <? $subSelects = array(); ?>
+                <? foreach($this->filters as $paramName=>$paramOptions): ?>
+                    <? if(isset($paramOptions['hidden'])) continue; ?>
+                    <? if($paramOptions['type'] == 'optgroup'): ?>
+                        <? 
+                        $subSelectName = 'subselect_'.$paramName;
+                        $subSelects[$subSelectName] = $paramOptions['options'];
+                        ?>
+                        <option value="<?=$paramName; ?>" show-subselect="<?=$subSelectName;?>" column-type="<?=$paramOptions['type'];?>" <?= (in_array($name,array_keys($paramOptions['options']))) ? 'selected="selected"' : ''; ?>><?=$paramOptions['label']; ?></option>
+                    <? else: ?>
+                        <option value="<?=$paramName; ?>" column-type="<?=$paramOptions['type'];?>" <?= ($paramName == $name) ? 'selected="selected"' : ''; ?>><?=$paramOptions['label']; ?></option>
+                    <? endif; ?>
+                <? endforeach; ?>
+            </select>
+            
+            <? if(count($subSelects) > 0): ?>
+                <br />
+                <? foreach($subSelects as $subSelectName=>$options): ?>
+                    <select name="<?=$subSelectName;?>" class="subselect_column <?= (in_array($name,array_keys($options))) ? '' : 'hide'; ?>">
+                        <? foreach($options as $paramName=>$paramOptions): ?>
+                            <option value="<?=$paramName; ?>" column-type="<?=$paramOptions['type'];?>" source="<?=isset($paramOptions['source']) ? $paramOptions['source'] : '';?>" <?= ($paramName == $name) ? 'selected="selected"' : ''; ?>><?=$paramOptions['label']; ?></option>
+                        <? endforeach; ?>
+                    </select>
+                <? endforeach; ?>
+            <? endif; ?>
+        </div>
+        
+        
+        <? foreach($this->filters as $paramName=>$paramOptions): ?>
+            <? if($paramOptions['type'] == 'optgroup'): ?>
+                <? foreach($paramOptions['options'] as $chieldParamName=>$chieldParamOptions): ?>
+                    <?=$this->partial('/partials/form_filters_div.phtml',array('paramName'=>$chieldParamName,'paramOptions'=>$chieldParamOptions,'currParam'=>$curr)); ?>
+                <? endforeach; ?>
+            <? else: ?>
+                <?=$this->partial('/partials/form_filters_div.phtml',array('paramName'=>$paramName,'paramOptions'=>$paramOptions,'currParam'=>$curr)); ?>
+            <? endif; ?>
+        <? endforeach; ?>
+        
+        <div class="span2">
+            <a href="javascript:void(0);" class="btn add"><i class="icon-plus"></i></a>
+            <a href="javascript:void(0);" class="btn delete"><i class="icon-minus"></i></a>
+        </div>
+    </div>
+<? endforeach; ?>

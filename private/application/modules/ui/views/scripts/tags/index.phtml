@@ -1,0 +1,100 @@
+<h4><?=$this->translate('Tags Management'); ?></h4>
+
+<div  class="pull-left">
+	<a class="btn" href="#" open-modal-form="#modalNewRecord" form-data='{"name": "", "id" : "new"}'><i class="icon-plus-sign"></i> <?=$this->translate('New tag'); ?></a>
+    <a class="btn" onclick="deleteAllSelected('#records','/ui/tags/delete/id/'); return false;"><i class="icon-trash"></i> <?=$this->translate('Delete selected'); ?></a>
+    <div class="btn-group">
+        <a class="btn" onclick="selectAll('#records'); return false;"><i class="icon-ok"></i> <?=$this->translate('Select all'); ?></a>
+        <button class="btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" onclick="unselectAll('#records'); return false;"><i class="icon-remove"></i> <?=$this->translate('Unselect all'); ?></a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="pull-right">
+     <form id="frmMainFilter" class="form-inline" method="GET" filter="#records" context="">
+     	<div class="row-filter" style="float:left;">
+			<input type="hidden" class="column" value="name" column-type="text" />
+			
+			<div class="filter-values name">
+    			<input type="hidden" class="condition" value="i" />
+         		
+    	        <label class="text" for="search1">
+    	            <?=$this->translate('column-record_tag-name'); ?>
+    	            <div class="input-append">
+    	                <input id="search1" type="text" class="input-small value" value="<?=isset($this->parameters['name']) ? $this->parameters['name'] : ''; ?>">
+    	            </div>
+    	        </label>
+    	    </div>
+		</div>
+		
+		<div class="" style="float:left; margin-left:4px;">
+			<button class="btn" type="submit"><i class="icon-search"></i> <?=$this->translate('Search'); ?>!</button>
+		</div>
+    </form>
+</div>
+
+<table class="table table-striped dtables rows-selectable" id="records" ajaxsource="<?=$this->url(array_merge($this->tableSource,$this->parameters),null,true);?>" ajaxsource-nofilters="<?=$this->url($this->tableSource,null,true);?>" uri-nofilters="<?=$this->url($this->uriPage,null,true);?>">
+    <thead>
+        <tr>
+            <th style="width:5px; text-align:center;" class="no-sort no-search"></th>
+            <th><?=$this->translate('column-record_tag-name'); ?></th>
+            <th style="width:120px; text-align:center;" class="no-sort no-search"><?=$this->translate('Actions'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    <div class="span7">
+        <form class="form-inline">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
+                	<?=$this->translate('Export'); ?>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExport,$this->parameters),null,true);?>">CSV</a></li>
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
+                </ul>
+            </div>
+            <button class="btn"><?=$this->translate('Import CSV'); ?></button>
+        </form>
+    </div>
+</div>
+
+
+<div id="modalNewRecord" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<form method="post" action="/tags/form-post">
+		<input type="hidden" name="id" id="id"/>
+	    <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h3 id="myModalLabel" data-label-insert="<?=$this->translate('New tag'); ?>" data-label-update="<?=$this->translate('Edit tag'); ?>"><?=$this->translate('New tag'); ?></h3>
+	    </div>
+	    <div class="modal-body">
+	        <div class="control-group">
+	            <label class="control-label" for="tagname"><?=$this->translate('column-record_tag-name'); ?></label>
+	            <input type="text" class="input-block-level" id="tagname" name="name" />
+	        </div>
+	    </div>
+	    <div class="modal-footer">
+	    	<div class="hide alert alert-error" style="text-align:center;"><?=$this->translate('Alert'); ?></div>
+	    	<span class="save-buttons">
+	    		<button type="submit" class="btn btn-primary"><?=$this->translate('Save'); ?></button>
+	        	<button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+	    	</span>
+	    	<span class="success-buttons hide">
+	    		<div class="alert alert-success" style="text-align:center;"></div>
+	        	<button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+	    	</span>
+	    	<span class="loading hide">
+	    		<div style="text-align:center;"><?=$this->translate('Saving'); ?></div>
+	    		<div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
+	    	</span>
+	    </div>
+    </form>
+</div>

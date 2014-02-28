@@ -1,0 +1,53 @@
+<a href="<?=$this->url(array('action'=>'index','id'=>null)); ?>"><?=$this->controllerTitle; ?></a> / <h4><?=$this->title; ?></h4>
+
+<form id="formEdit" class="form-horizontal ajaxsubmit" method="POST" action="<?=$this->url(array('action'=>'form-post','id'=>$this->id));?>" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
+    
+    <? if($this->id != 'new'): ?>    
+    <div class="control-group">
+        <label class="control-label" for="access_profile_id"><?=$this->translate('column-user-auth_mode_id'); ?></label>
+        <div class="controls">
+            <input type="hidden" id="auth_mode_id" name="auth_mode_id" class="span6 select2" source="auth_mode" disabled="disabled" readonly="readonly" />
+	    <input type="hidden" id="auth_mode_id_hidden" name="auth_mode_id" source="auth_mode"  />
+        </div>
+    </div>
+    <?
+	else:
+    ?>
+	<input type="hidden" id="auth_mode_id" name="auth_mode_id" value="<?=  BBBManager_Config_Defines::$LOCAL_AUTH_MODE;?>" />
+    <? endif; ?>
+    
+    <div class="control-group">
+        <label class="control-label" for="name"><?=$this->translate('column-user-name'); ?></label>
+        <div class="controls">
+            <input type="text" id="name" name="name" value="" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="login"><?=$this->translate('column-user-login'); ?></label>
+        <div class="controls">
+            <input type="text" id="login" name="login" value="" disabled="disabled" readonly="readonly" />
+            <input type="hidden" id="login" name="login" value=""  />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="email"><?=$this->translate('column-user-email'); ?></label>
+        <div class="controls">
+            <input type="text" id="email" name="email" value="" disabled="disabled" readonly="readonly" />
+            <input type="hidden" id="email" name="email" value="" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="access_profile_id"><?=$this->translate('column-user-access_profile_id'); ?></label>
+        <div class="controls">
+            <input type="text" id="access_profile_name" name="access_profile_name" class="span6" disabled="disabled"/>
+        </div>
+    </div>
+    
+    <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><?=$this->translate('Save'); ?></button>
+            <a class="btn" href="<?=$this->url(array('action'=>'index','id'=>null)); ?>"><?=$this->translate('Cancel'); ?></a>
+        </div>
+</form>

@@ -1,0 +1,77 @@
+<h4><?=$this->translate('My profile'); ?></h4>
+<?
+if($this->isLdapUser == false):
+?>
+<form class="form-horizontal ajaxsubmit" method="post" action="<?=$this->url(array('action'=>'editme-form-post'));?>" source="<?=$this->url(array('action'=>'editme-form-content'));?>">
+    <div class="control-group">
+        <label class="control-label" for="name"><?=$this->translate('column-user-name'); ?></label>
+        <div class="controls">
+            <input type="text" id="name" name="name" placeholder="<?=$this->translate('column-user-name'); ?>" value="">
+        </div>
+    </div>
+    
+    <?
+	if(IMDT_Util_Config::getInstance()->get('users_management_allow_login_change') == '1'):
+    ?>
+    <div class="control-group">
+        <label class="control-label" for="login"><?=$this->translate('column-user-login'); ?></label>
+        <div class="controls">
+            <input type="text" name="login" id="login" placeholder="<?=$this->translate('column-user-login'); ?>" value="">
+        </div>
+    </div>
+    <?
+	else:
+    ?>
+    <div class="control-group">
+        <label class="control-label" for="login"><?=$this->translate('column-user-login'); ?></label>
+        <div class="controls">
+            <input type="text" name="login" id="login" placeholder="<?=$this->translate('column-user-login'); ?>" value="" readonly="readonly" disabled="disabled">
+	    <input type="hidden" name="login" id="login_hidden">
+        </div>
+    </div>
+    <?
+	endif;
+    ?>
+    
+    <div class="control-group">
+        <label class="control-label" for="email"><?=$this->translate('column-user-email'); ?></label>
+        <div class="controls">
+            <input type="text" name="myemail" id="email" placeholder="<?=$this->translate('column-user-email'); ?>" value="">
+        </div>
+    </div>
+    
+    <h4><?=$this->translate('Change password');?></h4>
+    
+    <div class="control-group">
+        <label class="control-label" for="password"><?=$this->translate('column-user-password'); ?></label>
+        <div class="controls">
+            <input type="password" name="mypassword" id="password" placeholder="<?=$this->translate('column-user-password'); ?>" autocomplete="off">
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="password_confirmation"><?=$this->translate('column-user-password_confirmation'); ?></label>
+        <div class="controls">
+            <input type="password" name="mypassword_confirmation" id="password_confirmation" placeholder="<?=$this->translate('column-user-password_confirmation'); ?>">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><?=$this->translate('Save'); ?></button>
+        <a class="btn" href="/ui/index/index"><?=$this->translate('Cancel'); ?></a>
+    </div>
+</form>
+<?
+else:
+?>
+<div class="alert alert-info">
+    <div class="alert-message"><?=$this->translate('Warning!'); ?></div>
+</div>
+<div class="well">
+    <p>
+        <?=$this->translate('Your username is tied to LDAP please ask your network administrator to make the changes necessary data and perform the login again.'); ?>
+    </p>
+</div>
+<?
+endif;
+?>

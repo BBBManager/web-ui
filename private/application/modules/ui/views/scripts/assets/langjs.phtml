@@ -1,0 +1,48 @@
+dtables_default_oLanguage =    {
+								    "sEmptyTable":     "<?=$this->translate('No data available in table'); ?>",
+								    "sInfo":           "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ entries'); ?>",
+								    "sInfoEmpty":      "<?=$this->translate('Showing 0 to 0 of 0 entries'); ?>",
+								    "sInfoFiltered":   "(<?=$this->translate('filtered from _MAX_ total entries'); ?>)",
+								    "sInfoPostFix":    "",
+								    "sInfoThousands":  ",",
+								    "sLengthMenu":     "<?=$this->translate('_MENU_ records per page'); ?>",
+								    "sLoadingRecords": "<?=$this->translate('Loading...'); ?>",
+								    "sProcessing":     "<?=$this->translate('Processing...'); ?>",
+								    "sSearch":         "<?=$this->translate('Search:'); ?>",
+								    "sZeroRecords":    "<?=$this->translate('No matching records found'); ?>",
+								    "oPaginate": {
+								        "sFirst":    "<?=$this->translate('First'); ?>",
+								        "sLast":     "<?=$this->translate('Last'); ?>",
+								        "sNext":     "<?=$this->translate('Next'); ?>",
+								        "sPrevious": "<?=$this->translate('Previous'); ?>"
+								    },
+								    "oAria": {
+								        "sSortAscending":  ": <?=$this->translate('activate to sort column ascending'); ?>",
+								        "sSortDescending": ": <?=$this->translate('activate to sort column descending'); ?>"
+								    }
+								};
+
+$.datepicker.setDefaults({
+   language: '<?=$this->translate('datepicker-lang'); ?>',
+   dateFormat: '<?=$this->translate('dateFormat'); ?>'
+});
+
+
+app_messages = [];
+app_messages['confirm_delete'] = '<?=$this->translate('record will be completelly removed! Is it ok?'); ?>';
+app_messages['confirm_deletes'] = '<?=$this->translate('records will be completelly removed! Is it ok?'); ?>';
+app_messages['alert'] = '<?=$this->translate('Alert'); ?>';
+app_messages['ok'] = '<?=$this->translate('Ok'); ?>';
+app_messages['remove'] = '<?=$this->translate('Remove'); ?>';
+app_messages['cancel'] = '<?=$this->translate('Cancel'); ?>';
+app_messages['wait'] = '<?=$this->translate('Wait'); ?>';
+app_messages['saving_data'] = '<?=$this->translate('Saving data'); ?>';
+app_messages['confirm_single_delete_title'] = '<?=$this->translate('Please, confirm deleting!'); ?>';
+app_messages['confirm_single_delete_text'] = '<?=$this->translate('The record will be completelly removed! Is it ok?'); ?>';
+app_messages['error_loading_content'] = '<?=$this->translate('An Error occurred loading this content.'); ?>';
+app_messages['loading_content'] = '<?=$this->translate('The content is being loaded.'); ?>';
+app_messages['refresh_page_message'] = '<?=$this->translate('Please refresh the page and try again.'); ?>';
+app_messages['error_saving_title'] = '<?=$this->translate('Error while saving'); ?>';
+app_messages['success_title'] = '<?=$this->translate('Success'); ?>';
+app_messages['processing'] = '<?=$this->translate('Processing...'); ?>';
+app_messages['completed'] = '<?=$this->translate('Completed'); ?>';

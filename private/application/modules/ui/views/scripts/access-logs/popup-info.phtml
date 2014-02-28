@@ -1,0 +1,23 @@
+<table style="width:100%;">
+    <tr>
+        <th style="text-align: left;">Coluna</th>
+        <th style="text-align: left;">Valor Anterior</th>
+        <th style="text-align: left;">Valor Novo</th>
+    </tr>
+    
+    <? foreach($this->old as $column=>$value): ?>
+        <? if(in_array($column,array('create_date','last_update','_editable','_removable'))) continue; ?>
+        <? 
+            $oldValue = $value;
+            $newValue = (isset($this->new[$column])) ? $this->new[$column] : '';
+            
+            if($oldValue == $newValue) continue;
+        ?>
+        <tr>
+            <td style="text-align: left;"><?=$column;?></td>
+            <td style="text-align: left;"><?=$oldValue;?></td>
+            <td style="text-align: left;"><?=$newValue;?></td>
+        </tr>
+    <? endforeach; ?>
+    
+</table>

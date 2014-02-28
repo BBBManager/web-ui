@@ -1,0 +1,58 @@
+<div class="container">
+    <form class="form-signin" method="post" action="/login/auth/auth">
+        <?
+            if(isset($this->mensagem) && is_array($this->mensagem)):
+        ?>
+            <div class="alert fade in">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <?=current($this->mensagem);?>
+            </div>
+        <?
+            endif;
+        ?>
+
+        <h2 class="form-signin-heading">Seja bem-vindo!</h2>
+        <input type="text" class="input-block-level" placeholder="Usuario" name="usuario">
+        <input type="password" class="input-block-level" placeholder="Senha" name="senha">
+        <button class="btn btn-large btn-primary" type="submit">Entrar</button>
+        <button class="btn btn-large" id="public-rooms">Acesso às Salas Públicas</button>
+    </form>
+</div>
+
+
+<div id="modalPublicRooms" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Salas Públicas</h3>
+    </div>
+    <div class="modal-body">
+        
+        <div class="control-group">
+            <label class="control-label" for="public-room-user-name">Informe seu nome</label>
+            <div class="controls">
+                <input type="text" id="public-room-user-name" name="public-room-user-name" placeholder="Nome Completo"/>
+            </div>
+        </div>
+        
+        <table class="table table-striped">
+            <tr>
+                <th>Sala</th>
+                <th>Data Abertura</th>
+                <th>Acessar</th>
+            </tr>
+            <tr>
+                <td>Treinamento BBB</td>
+                <td>12/06/2013 09:00</td>
+                <td><a class="btn"><i class="icon-eye-open"></i></a></td>
+            </tr>
+            <tr>
+                <td>Treinamento CEAF</td>
+                <td>12/06/2013 15:00</td>
+                <td><a class="btn"><i class="icon-eye-open"></i></a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+    </div>
+</div>

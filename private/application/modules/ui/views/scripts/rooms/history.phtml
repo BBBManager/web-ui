@@ -1,0 +1,91 @@
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Meeting Rooms Management'); ?></a> / <h4><?= $this->translate('History'); ?></h4>
+<h5><?= $this->translate('Filters'); ?></h5>
+<form id="frmMainFilter" class="form-horizontal no-loading ajaxsubmit" action="<?= $this->url(array('action' => 'table-logs', 'meeting_room_id' => $this->id)); ?>" source="<?= $this->url(array('action' => 'logs-report-filter', 'id' => $this->id)); ?>">
+    <div class="control-group row-filter">
+        <input type="hidden" class="column" value="user" column-type="combo" />
+
+        <div class="filter-values user">
+            <input type="hidden" class="condition" value="i" />
+
+            <label class="control-label" for="log_filter_user"><?= $this->translate('column-meeting_room_log-user'); ?></label>    
+            <div class="controls">
+                <select id="log_filter_user" data-value="" style="width:220px;" multiple="multiple" source="user" class="select2 value span6"></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" type="button" onclick="applyFilter('#logs-report');"><i class="icon-search"></i> <?= $this->translate('Search now'); ?></button>
+        <button class="btn" type="button" modal-open="#modalLogsAdvSearch"><?= $this->translate('Advanced search'); ?></button>
+
+        <div class="btn-group">
+            <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
+                <?= $this->translate('Audience report'); ?>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="exportToCsv" href="<?= $this->url(array('action' => 'audience-report')); ?>">CSV</a></li>
+                <li><a class="exportToCsv" href="<?= $this->url(array('action' => 'audience-report-pdf')); ?>">PDF</a></li>
+            </ul>
+        </div>
+    </div>
+</form>
+
+<div id="modalLogsAdvSearch" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="frmAdvFilter" class="form-vertical" onsubmit="applyFilter('#logs-report');
+            $('#modalLogsAdvSearch').modal('hide');
+            return false;" source="<?= $this->url(array('action' => 'logs-report-filter', 'id' => $this->id)); ?>">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><?= $this->translate('Advanced search'); ?></h3>
+        </div>
+        <div class="modal-body"> 
+
+<?= $this->formFilters($this->logsFilters, array()); ?>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            <input type="submit" class="btn btn-primary" value="<?= $this->translate('Search now'); ?>">
+        </div>
+    </form>
+</div>
+
+<h5><?= $this->translate('Results'); ?></h5>
+<table id="logs-report" class="table table-striped dtables" ajaxsource="<?= $this->url(array('action' => 'table-logs', 'meeting_room_id' => $this->id, 'id' => null)); ?>" ajaxsource-nofilters="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'table-logs', 'meeting_room_id' => $this->id), null, true); ?>" uri-export="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'logs-export', 'meeting_room_id' => $this->id), null, true); ?>">
+    <thead>
+        <tr>
+            <th><?= $this->translate('column-user-name'); ?></th>
+            <th><?= $this->translate('column-meeting_room_action-name'); ?></th>
+            <th class="no-search"><?= $this->translate('column-meeting_room_log-create_date'); ?></th>
+            <th><?= $this->translate('column-meeting_room_log-ip_address'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    <div class="span7">
+        <form class="form-inline">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
+<?= $this->translate('Export'); ?>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <?
+                    if(false):
+                    ?>
+                    <li><a class="exportToCsv" href="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'logs-export', 'meeting_room_id' => $this->id), null, true); ?>?<?= $this->parametersString; ?>">CSV</a></li>
+                    <li><a class="exportToPdf" href="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'logs-export-pdf', 'meeting_room_id' => $this->id), null, true); ?>?<?= $this->parametersString; ?>">PDF</a></li>
+                    <?
+                    endif;
+                    ?>
+                    <li><a export="logs-report" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url($this->uriExport,null,true);?>?<?=$this->parametersString;?>">CSV</a></li>
+                    <li><a export="logs-report" href-origin="<?=$this->url(array_merge($this->uriExportPdf),null,true);?>" href="<?=$this->url($this->uriExportPdf,null,true);?>?<?=$this->parametersString;?>">PDF</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>

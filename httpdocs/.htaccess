@@ -1,0 +1,10 @@
+SetEnvIfNoCase Host "\.localhost$"  APPLICATION_ENV=development
+SetEnvIfNoCase Host "\.local$"      APPLICATION_ENV=development
+SetEnvIf APPLICATION_ENV ^$         APPLICATION_ENV=production
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]

@@ -1,0 +1,253 @@
+<a href="<?=$this->url(array('action'=>'index','id'=>null)); ?>"><?=$this->translate('Meeting Rooms Management'); ?></a> / <h4><?=$this->title; ?></h4>
+
+<div id="dados">
+    <form id="formEdit" class="form-horizontal ajaxsubmit" method="POST" action="<?=$this->url(array('action'=>'form-manage-attendees-post','id'=>$this->id));?>" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
+        <div readonly="readonly">
+            <div class="control-group">
+                <label class="control-label" for="name"><?=$this->translate('column-meeting_room-name'); ?></label>
+                <div class="controls">
+                    <input type="text" name="name" id="name"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="nome"><?=$this->translate('column-meeting_room-category'); ?></label>
+                <div class="controls" style="color:#FFBF00">
+                    FASE 02
+                </div>
+            </div>
+            <h5><?=$this->translate('Schedule'); ?></h5>
+            <div class="control-group">
+                <label class="control-label" for="date_start"><?=$this->translate('column-meeting_room-date_start'); ?></label>
+                <div class="controls">
+                    <div class="input-append datetime">
+                        <input type="text" id="date_start" name="date_start" class="input-block-level" data-format="<?=$this->translate('dateFormat-datepicker'); ?> hh:mm"/>
+                        <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date_end"><?=$this->translate('column-meeting_room-date_end'); ?></label>
+                <div class="controls">
+                    <div class="input-append datetime">
+                        <input type="text" name="date_end" class="input-block-level" data-format="<?=$this->translate('dateFormat-datepicker'); ?> hh:mm"/>
+                        <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="timezone"><?=$this->translate('column-meeting_room-timezone'); ?></label>
+                <div class="controls">
+                    <select name="timezone" id="timezone">
+                        <option value="-3">GMT-3 (Padrão Brasília)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="privacy_policy"><?=$this->translate('column-meeting_room-privacy_policy'); ?></label>
+                <div class="controls">
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="privacy_policy" value="<?= BBBManager_Config_Defines::$ONLY_INVITED_USERS_MEETING_ROOM; ?>" />
+                        <?=BBBManager_Config_Defines::getMeetingRoomPrivacyPolicy(BBBManager_Config_Defines::$ONLY_INVITED_USERS_MEETING_ROOM); ?>
+                    </label> <br />
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="privacy_policy" value="<?= BBBManager_Config_Defines::$ANY_LOGGED_USER_MEETING_ROOM; ?>" />
+                        <?=BBBManager_Config_Defines::getMeetingRoomPrivacyPolicy(BBBManager_Config_Defines::$ANY_LOGGED_USER_MEETING_ROOM); ?>
+                    </label> <br />
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="privacy_policy" value="<?= BBBManager_Config_Defines::$PUBLIC_MEETING_ROOM; ?>" checked="checked" />
+                        <?=BBBManager_Config_Defines::getMeetingRoomPrivacyPolicy(BBBManager_Config_Defines::$PUBLIC_MEETING_ROOM); ?>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label" for="url"><?=$this->translate('column-meeting_room-url'); ?></label>
+                <div class="controls">
+            <strong><?=  IMDT_Util_Config::getInstance()->get('web_base_url');?></strong>
+                    <input type="text" name="url" id="url"/>
+                </div>
+            </div>
+            
+            <h5><?=$this->translate('Advanced'); ?></h5>
+            <div class="control-group">
+                <label class="control-label"><?=$this->translate('column-meeting_room-encrypted'); ?></label>
+                <div class="controls">
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="encrypted" value="1" disabled="disabled"/>
+                        <?=$this->translate('Yes'); ?>
+                    </label> <br />
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="encrypted" checked="checked" value="0">
+                        <?=$this->translate('No'); ?>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><?=$this->translate('column-meeting_room-record'); ?></label>
+                <div class="controls">
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="record" value="1" disabled="disabled"/>
+                        <?=$this->translate('Yes'); ?>
+                    </label> <br />
+                    <label class="radio" style="display:inline-block;">
+                        <input type="radio" name="record" value="0" checked="checked">
+                        <?=$this->translate('No'); ?>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><?=$this->translate('column-meeting_room-participants_limit'); ?></label>
+                <div class="controls">
+                    <input type="text" name="participants_limit" />
+                </div>
+            </div>
+        </div>
+        <h5><?=$this->translate('Permissions'); ?></h5>
+        
+        
+        <? if($this->profile != BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE): ?>
+            <div readonly="readonly">
+        <? endif; ?>
+        
+                <h6><?=$this->translate('Administrators'); ?></h6>
+                <div class="row-fluid">
+                    <div class="span2">&nbsp;</div>
+                    <div class="span5"><?=$this->translate('Local'); ?></div>
+                    <div class="span5"><?=$this->translate('LDAP'); ?></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2 text-right"><?=$this->translate('Groups'); ?></div>
+                    <div class="span5">
+                        <input type="hidden" id="group_admin_local" name="group_admin_local" class="input-block-level select2 multiple" source="group_local" />
+                    </div>
+                    
+                    <div class="span5">
+                        <input type="hidden" id="group_admin_ldap" name="group_admin_ldap" class="input-block-level select2 multiple" source="group_ldap" />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="input-block-level">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2 text-right"><?=$this->translate('Users'); ?></div>
+                    <div class="span5">
+                        <input type="hidden" id="user_admin_local" name="user_admin_local" class="input-block-level select2 multiple" source="user_local" />
+                    </div>
+                    <div class="span5">
+                        <input type="hidden" id="user_admin_ldap" name="user_admin_ldap" class="input-block-level select2 multiple" remote="<?=$this->url(array('controller'=>'users','action'=>'remote-search','auth_mode_id'=>BBBManager_Config_Defines::$LDAP_AUTH_MODE,'auth_mode_id_c'=>'e')); ?>" />
+                    </div>
+                </div>
+                <h6><?=$this->translate('Moderators'); ?></h6>
+                <div class="row-fluid">
+                    <div class="span2">&nbsp;</div>
+                    <div class="span5"><?=$this->translate('Local'); ?></div>
+                    <div class="span5"><?=$this->translate('LDAP'); ?></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2 text-right"><?=$this->translate('Groups'); ?></div>
+                    <div class="span5">
+                        <input type="hidden" id="group_moderator_local" name="group_moderator_local" class="input-block-level select2 multiple" source="group_local" />
+                    </div>
+                    <div class="span5">
+                        <input type="hidden" id="group_moderator_ldap" name="group_moderator_ldap" class="input-block-level select2 multiple" source="group_ldap" />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="input-block-level">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span2 text-right"><?=$this->translate('Users'); ?></div>
+                    <div class="span5">
+                        <input type="hidden" id="user_moderator_local" name="user_moderator_local" class="input-block-level select2 multiple" source="user_local" />
+                    </div>
+                    <div class="span5">
+                        <input type="hidden" id="user_moderator_ldap" name="user_moderator_ldap" class="input-block-level select2 multiple" remote="<?=$this->url(array('controller'=>'users','action'=>'remote-search','auth_mode_id'=>BBBManager_Config_Defines::$LDAP_AUTH_MODE,'auth_mode_id_c'=>'e')); ?>" />
+                    </div>
+                </div>
+        
+        <? if($this->profile != BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE): ?>
+            </div>
+        <? endif; ?>
+        
+        
+        <? if(!in_array($this->profile,array(BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE,BBBManager_Config_Defines::$ROOM_MODERATOR_PROFILE))): ?>
+            <div readonly="readonly">
+        <? endif; ?>
+        
+        <h6><?=$this->translate('Presenters'); ?></h6>
+        <div class="row-fluid">
+            <div class="span2">&nbsp;</div>
+            <div class="span5"><?=$this->translate('Local'); ?></div>
+            <div class="span5"><?=$this->translate('LDAP'); ?></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right"><?=$this->translate('Groups'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="group_presenter_local" name="group_presenter_local" class="input-block-level select2 multiple" source="group_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="group_presenter_ldap" name="group_presenter_ldap" class="input-block-level select2 multiple" source="group_ldap" />
+            </div>
+                  
+        </div>
+        <div class="row-fluid">
+            <div class="input-block-level">
+                &nbsp;
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right"><?=$this->translate('Users'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="user_presenter_local" name="user_presenter_local" class="input-block-level select2 multiple" source="user_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="user_presenter_ldap" name="user_presenter_ldap" class="input-block-level select2 multiple" remote="<?=$this->url(array('controller'=>'users','action'=>'remote-search','auth_mode_id'=>BBBManager_Config_Defines::$LDAP_AUTH_MODE,'auth_mode_id_c'=>'e')); ?>" />
+            </div>
+        </div>
+        <h6><?=$this->translate('Attendees'); ?></h6>
+        
+        <div class="row-fluid">
+            <div class="span2">&nbsp;</div>
+            <div class="span5"><?=$this->translate('Local'); ?></div>
+            <div class="span5"><?=$this->translate('LDAP'); ?></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right"><?=$this->translate('Groups'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="group_attendee_local" name="group_attendee_local" class="input-block-level select2 multiple" source="group_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="group_attendee_ldap" name="group_attendee_ldap" class="input-block-level select2 multiple" source="group_ldap" />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="input-block-level">
+                &nbsp;
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right"><?=$this->translate('Users'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="user_attendee_local" name="user_attendee_local" class="input-block-level select2 multiple" source="user_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="user_attendee_ldap" name="user_attendee_ldap" class="input-block-level select2 multiple" remote="<?=$this->url(array('controller'=>'users','action'=>'remote-search','auth_mode_id'=>BBBManager_Config_Defines::$LDAP_AUTH_MODE,'auth_mode_id_c'=>'e')); ?>" />
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><?=$this->translate('Save'); ?></button>
+            <a class="btn" href="/ui/my-rooms/index"><?=$this->translate('Cancel'); ?></a>
+        </div>
+        
+        <? if(!in_array($this->profile,array(BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE,BBBManager_Config_Defines::$ROOM_MODERATOR_PROFILE))): ?>
+            </div>
+        <? endif; ?>
+        
+    </form>
+</div>

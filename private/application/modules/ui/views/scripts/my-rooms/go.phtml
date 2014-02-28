@@ -1,0 +1,50 @@
+<?
+    if($this->errorMessage != null):
+?>
+<div class="row text-center">
+    <div class="span12">
+        <button class="btn" type="button" onclick="window.location.reload();"><i class="icon-refresh"></i> Tentar Novamente!</button>
+    </div>
+</div>
+<?
+    endif;
+?>
+<div class="row text-center">
+    <div class="span12">
+	<img src="/resources/img/logo.png" />
+	<h4>Web Conference</h4>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+	<div class="span12 text-center">
+	    <h2 class="form-signin-heading">Acesso à sala "<?=$this->roomName;?>"</h2>
+	</div>
+    </div>
+    <?
+	if($this->timeToWait):
+    ?>
+    <div class="row">
+	<div class="span12">
+	    <p class="text-center">
+		Essa sala ainda não está aberta.
+	    </p>
+	    <p class="text-center">
+		Tempo restante para o início da sala:
+	    </p>
+	    <div class="offset3 span6">
+		<div id="counter" data-countdown="<?=$this->timeToWait;?>"></div>	
+		<div class="desc">
+		    <div>Días</div>
+		    <div>Horas</div>
+		    <div>Minutos</div>
+		    <div>Segundos</div>
+		</div>
+	    </div>
+	</div>
+    </div>
+    <?
+	endif;
+    ?>
+</div>

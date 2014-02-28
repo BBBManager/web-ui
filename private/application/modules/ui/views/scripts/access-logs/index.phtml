@@ -1,0 +1,89 @@
+<h4><?=$this->translate('Access Logs'); ?></h4>
+
+<div class="pull-right">
+     <form id="frmMainFilter" class="form-inline" method="GET">
+        <div class="row-filter" style="float:left;">
+            <div class="filter-values create_date">
+                <input type="hidden" class="column" value="create_date" column-type="datetime" />
+                <input type="hidden" class="condition" value="b" />
+            
+                <label class="text" for="minDate">
+                    <?=$this->translate('column-access_log-create_date'); ?> <?=$this->translate('between'); ?> 
+                    <div class="input-append datetime">
+                        <input id="minDate" type="text" class="input-small value sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=isset($this->parameters['create_date']) ? Imdt_Util_Date::filterDatetimeToCurrentLang($this->parameters['create_date'], false) : ''; ?>">
+                         <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </label>
+                <label class="text" for="maxDate">
+                     <?=$this->translate('and'); ?>
+                     <div class="input-append datetime">
+                        <input id="maxDate" type="text" class="input-small value_2 sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=isset($this->parameters['create_date_2']) ? Imdt_Util_Date::filterDatetimeToCurrentLang($this->parameters['create_date_2'], false) : ''; ?>">
+                        <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </label>
+            </div>
+        </div>
+        
+        <div class="" style="float:left; margin-left:4px;">
+            <button class="btn" type="button" onclick="applyFilter('#records');"><i class="icon-search"></i> <?=$this->translate('Search'); ?>!</button>
+            <button class="btn" type="button" id="advSearch" modal-open="#modalAdvSearch" style=""><?=$this->translate('Advanced search'); ?></button>
+        </div>
+    </form>
+</div>
+
+<table class="table table-striped dtables rows-selectable" id="records" ajaxsource="<?=$this->url($this->tableSource,null,true);?>?<?=http_build_query($this->parameters); ?>" ajaxsource-nofilters="<?=$this->url($this->tableSource,null,true);?>" uri-nofilters="<?=$this->url($this->uriPage,null,true);?>">
+    <thead>
+        <tr>
+            <th><?=$this->translate('column-user-name'); ?></th>
+            <th><?=$this->translate('column-access_log_description-description'); ?></th>
+            <th><?=$this->translate('column-access_log-detail'); ?></th>
+            <th><?=$this->translate('column-access_log-ip_address'); ?></th>
+            <th class="order-desc"><?=$this->translate('column-access_log-create_date'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    <div class="span7">
+        <form class="form-inline">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
+                    <?=$this->translate('Export'); ?>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a export="records" href-origin="<?=$this->url($this->uriExport,null,true);?>" href="<?=$this->url($this->uriExport,null,true);?>?<?=http_build_query($this->parameters); ?>">CSV</a></li>
+                    <li><a export="records" href-origin="<?=$this->url($this->uriExportPdf,null,true);?>" href="<?=$this->url($this->uriExportPdf,null,true);?>?<?=http_build_query($this->parameters); ?>">PDF</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="hide fade modal" id="detailsModal">
+    <div class="modal-body">
+    </div>
+    
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></a>
+    </div>
+</div>
+
+<div id="modalAdvSearch" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><?=$this->translate('Advanced search'); ?></h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-vertical no-loading" id="frmAdvFilter" onsubmit="applyFilter('#records'); $('#modalAdvSearch').modal('hide'); return false;" source="<?=$this->url(array('action'=>'adv-search-filter'));?>">
+            <?=$this->formFilters($this->filters,$this->parameters); ?>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+        <button class="btn btn-primary" onclick="applyFilter('#records'); $('#modalAdvSearch').modal('hide');"><?=$this->translate('Search now'); ?></button>
+    </div>
+</div>

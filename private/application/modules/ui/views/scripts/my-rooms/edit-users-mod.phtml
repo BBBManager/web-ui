@@ -1,0 +1,90 @@
+<div id="modalManageAttendeesMod" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="form-invite" class="form-horizontal no-loading no-reset" action="<?=$this->url(array('controller' => 'my-rooms', 'action'=>'form-manage-attendess-post'));?>" source="<?=$this->url(array('controller' => 'my-rooms', 'action'=>'form-manage-attendess-content'));?>">
+        <input type="hidden" name="meeting_room_id" id="meeting_room_id" value="" />
+        <input type="hidden" name="meeting_room_profile_id" id="meeting_room_profile_id" value="" />
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><?=$this->translate('Manage attendees'); ?></h3>
+        </div>
+        <div class="modal-body">
+        <h6><?=$this->translate('Presenters'); ?></h6>
+        <div class="row-fluid">
+            <div class="span2" style="width:100px;">&nbsp;</div>
+            <div class="span5"><?=$this->translate('Local'); ?></div>
+            <div class="span5"><?=$this->translate('LDAP'); ?></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right" style="width:100px;"><?=$this->translate('Groups'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="group_presenter_local" name="group_presenter_local" class="input-block-level select2 multiple" source="group_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="group_presenter_ldap" name="group_presenter_ldap" class="input-block-level select2 multiple" source="group_ldap" />
+            </div>
+                  
+        </div>
+        <div class="row-fluid">
+            <div class="input-block-level">
+                &nbsp;
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right" style="width:100px;"><?=$this->translate('Users'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="user_presenter_local" name="user_presenter_local" class="input-block-level select2 multiple" source="user_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="user_presenter_ldap" name="user_presenter_ldap" class="input-block-level select2 multiple" source="user_ldap" />
+            </div>
+        </div>
+        <h6><?=$this->translate('Attendees'); ?></h6>
+        
+        <div class="row-fluid">
+            <div class="span2" style="width:100px;">&nbsp;</div>
+            <div class="span5"><?=$this->translate('Local'); ?></div>
+            <div class="span5"><?=$this->translate('LDAP'); ?></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right" style="width:100px;"><?=$this->translate('Groups'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="group_attendee_local" name="group_attendee_local" class="input-block-level select2 multiple" source="group_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="group_attendee_ldap" name="group_attendee_ldap" class="input-block-level select2 multiple" source="group_ldap" />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="input-block-level">
+                &nbsp;
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2 text-right" style="width:100px;"><?=$this->translate('Users'); ?></div>
+            <div class="span5">
+                <input type="hidden" id="user_attendee_local" name="user_attendee_local" class="input-block-level select2 multiple" source="user_local" />
+            </div>
+            <div class="span5">
+                <input type="hidden" id="user_attendee_ldap" name="user_attendee_ldap" class="input-block-level select2 multiple" source="user_ldap" />
+            </div>
+        </div>
+        
+            
+        </div>
+        
+        <div class="modal-footer">
+            <div class="hide alert alert-error" style="text-align:center;"><?=$this->translate('Alert'); ?></div>
+            <span class="save-buttons">
+                <button type="submit" class="btn btn-primary"><?=$this->translate('Save'); ?></button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+            </span>
+            <span class="success-buttons hide">
+                <div class="alert alert-success" style="text-align:center;"></div>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+            </span>
+            <span class="loading hide">
+                <div style="text-align:center;"><?=$this->translate('Saving data'); ?></div>
+                <div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
+            </span>
+        </div>
+    </form>
+</div>

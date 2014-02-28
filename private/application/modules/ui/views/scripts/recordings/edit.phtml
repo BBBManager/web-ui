@@ -1,0 +1,123 @@
+<h4>Gravações</h4>
+
+<form class="form-horizontal" method="POST">
+    <div class="control-group">
+        <label class="control-label" for="nome">Nome</label>
+        <div class="controls">
+            <input type="text" id="nome" name="nome" value="<?=(!is_null($this->eventInfo['0']['name']) ? $this->eventInfo['0']['name'] : '')?>" placeholder="Nome" class="input-large">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="nome">Categoria</label>
+        <div class="controls" style="color:#FFBF00">
+            Pendente
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="tags">Tags</label>
+        <div class="controls">
+            <select name="tags" id="tags" multiple="multiple" class="input-block-level">
+                <?
+                    foreach($this->tags as $tag):
+                ?>
+                <option><?=$tag['name'];?></option>
+                <?
+                    endforeach;
+                ?>
+            </select>
+        </div>
+    </div>
+    <h5>Horário</h5>
+    <div class="control-group">
+        <label class="control-label" for="data-inicio">Início</label>
+        <div class="controls">
+            <div class="input-append "> <!-- classe datetime para aparecer o datepicker-->
+                <input type="text" name="data-inicio" class="input-block-level" data-format="dd/MM/yyyy hh:mm" value="<?=(isset($this->eventInfo[0]['date_start']) ? date('d/m/Y H:i',strtotime($this->eventInfo['0']['date_start'])) : '')?>"readonly/>
+                
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="data-fim">Fim</label>
+        <div class="controls">
+           <div class="input-append "> <!-- classe datetime para aparecer o datepicker-->
+                <input type="text" name="data-fim" class="input-block-level" data-format="dd/MM/yyyy hh:mm" value="<?=(isset($this->eventInfo[0]['date_end']) ? date('d/m/Y H:i',strtotime($this->eventInfo[0]['date_end'])) :'')?>" readonly/>
+                
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="data-fim">Fuso Horário</label>
+        <div class="controls">
+            <div class="input-append">
+                <input type="text" class="input-large" value="GMT-3 (Padrão Brasília)" readonly/>
+            </div>
+        </div>
+    </div>
+    <h5>Acesso ao Evento</h5>
+    <label class="radio">
+        <input type="radio" name="tipo-sala" id="recording-access-guests" value="1" <?=($this->eventInfo['0']['public']== 1 ? "checked='checked'": '') ?>/>
+        Apenas Convidados
+    </label>
+    <label class="radio">
+        <input type="radio" name="tipo-sala" id="recording-access-auth" value="2"<?=($this->eventInfo['0']['public']== 2 ? "checked='checked'" : '')?> >
+        Qualquer Usuário Autenticado
+    </label>
+    <label class="radio">
+        <input type="radio" name="tipo-sala" id="recording-access-public" value="3"<?=($this->eventInfo['0']['public']== 3 ? "checked='checked'" : '')?> >
+        Público
+    </label>
+    <div id="access_container">
+        <div class="row-fluid">
+            <div class="span2">&nbsp;</div>
+            <div class="span3">Locais</div>
+            <div class="span3">LDAP</div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2">Grupos</div>
+            <div class="span3">
+                <select id="participantes-grupos-locais" name="participantes-grupos-locais[]" multiple="multiple" class="input-block-level">
+                    <?foreach($this->lGroup as $locais) :?>
+                    <option value="<?=$locais['group_id']?>"<?=($locais['recordGroup']==true ? "selected='selected'" : '')?>><?=$locais['name']?></option>
+                    <? endforeach ?>
+                </select>
+            </div>
+            <div class="span3">
+                <select id="participantes-grupos-ldap" name="participantes-grupos-ldap[]" multiple="multiple" class="input-block-level">
+                    <?foreach($this->ldapG as $ldap) :?>
+                    <option value="<?=$ldap['group_id']?>"<?=($ldap['recordGroup']==true ?"selected='selected'" : '')?>><?=$ldap['name']?></option>
+                    <?endforeach?>
+                </select>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                &nbsp;
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span2">Usuários</div>
+            <div class="span3">
+                <select id="participantes-usuarios-locais" name="participantes-usuarios-locais[]" multiple="multiple" class="input-block-level">
+                    <?foreach($this->lUser as $local) :?>
+                    <option value="<?=$local['user_id']?>"<?=($local['recordUser']==true ?"selected='selected'" :'')?>><?=$local['name']?></option>
+                    <?endforeach?>
+
+                </select>
+            </div>
+            <div class="span3">
+                <select id="participantes-usuarios-ldap" name="participantes-usuarios-ldap[]" multiple="multiple" class="input-block-level">
+                    <?foreach($this->ldapUser as $ldap) :?>
+                    <option value="<?=$ldap['user_id']?>"<?=($ldap['recordUser'] ==true ?"selected='selected'" :'')?>><?=$ldap['name']?></option>
+                    <?endforeach?>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn" href="javascript:void(0);" onclick="alert('Apresentar Sala Correspondente')"><i class="icon-eye-open"></i> Visualizar Sala</a>
+        <a class="btn" href="/ui/recordings">Cancelar</a>
+    </div>
+</form>

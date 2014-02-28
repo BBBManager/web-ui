@@ -1,0 +1,13 @@
+<form method="post" action="/login/auth/forget-pass">
+    <div class="control-group">
+        <label class="control-label" for="email"><?=$this->translate('Enter your e-mail'); ?></label>
+        <div class="controls">
+            <input type="text" name="email" id="email" class="input-block-level"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <?=$this->captcha;?>
+        </div>
+    </div>
+</form>

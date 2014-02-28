@@ -1,0 +1,52 @@
+<h4>Gravações</h4>
+
+<div class="pull-right">
+    <div class="input-append pull-right">
+        <input type="text" id="buscaCategorias">
+    </div>
+</div>
+
+<table class="table table-striped" id="tblTree">
+    <thead>
+        <tr>
+            <th>Categoria</th>
+            <th nowrap="nowrap">Visualizar Gravação</th>
+        </tr>
+    </thead>
+     <tbody>
+        <?
+        if (!empty($this->arrCategorias)):
+            foreach ($this->arrCategorias as $categoria):
+        ?>
+         <tr data-description="<?=$categoria['description'];?>" data-row-id="<?= $categoria['id']; ?>" id="tblTree-<?= (($categoria['parentId'] != '') ? $categoria['hierarchy'] . '-' : '') . $categoria['id']; ?>" <?= (($categoria['parentId'] != '') ? 'class="child-of-tblTree-' . $categoria['hierarchy'] . '"' : ''); ?>>
+            <td width="100%"><span class="lbl"><?= $categoria['description']; ?> (XX gravações)</span></td>
+            <td nowrap="nowrap"></td>
+         </tr>
+         <?
+            if($categoria['id'] == 11):
+                for($i=0;$i<=3;$i++):
+         ?>
+         <tr data-description="<?=$categoria['description'];?>" data-row-id="<?= $categoria['id']; ?>" id="tblTree-<?=$categoria['id'] . '-' . $i;?>" class="child-of-tblTree-<?=$categoria['hierarchy'] . '-' . $categoria['id'];?>">
+            <td width="100%"><span class="lbl"><?= $categoria['description'] . ' Gravação ' . $i; ?> </span></td>
+            <td nowrap="nowrap" align="center">
+                <a href="#" class="btn btn-mini" data-toggle="tooltip" title="Visualizar"><i class="icon-eye-open"></i></a>
+            </td>
+         </tr>
+         <?
+                endfor;
+            endif;
+         ?>
+         <?
+            endforeach;
+        else:
+        ?>
+            <tr>
+                <td colspan="3">Nenhum registro encontrado.</td>
+            </tr>
+        <? endif; ?>
+    </tbody>
+</table>
+
+<script>
+    nomesCategorias = <?=json_encode($this->nomeCategorias);?>;
+</script>

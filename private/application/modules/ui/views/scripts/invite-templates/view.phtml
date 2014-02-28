@@ -1,0 +1,46 @@
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Invite Templates Management'); ?></a> / <h4><?= $this->title; ?></h4>
+
+<div id="dados">
+    <form id="formEdit" class="form-horizontal ajaxsubmit" source="<?= $this->url(array('action' => 'form-content', 'id' => $this->id)); ?>">
+
+        <div class="control-group">
+            <label for="name" class="control-label"><?= $this->translate('column-invite_template-name'); ?></label>
+            <div class="controls">
+                <input type="text" id="name" name="name" disabled="disabled" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label for="subject" class="control-label"><?= $this->translate('column-invite_template-subject'); ?></label>
+            <div class="controls">
+                <input type="text" id="subject" name="subject" disabled="disabled" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label for="subject" class="control-label"><?= $this->translate('column-invite_template-body'); ?></label>
+            <div class="controls">
+                <textarea class="input-block-level" name="body" id="body" rows="8" class="ckeditor" disabled="disabled" readonly="readonly"></textarea>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label for="" class="control-label"><?= $this->translate('Available Placeholders'); ?></label>
+            <div class="controls well">
+                <table>
+                    <tr>
+                        <td style="padding:0 6px;"><?= $this->translate('__ROOM_START__'); ?></td>
+                        <td style="padding:0 6px;"><?= $this->translate('__ROOM_END__'); ?></td>
+                        <td style="padding:0 6px;"><?= $this->translate('__ROOM_NAME__'); ?></td>
+                        <td style="padding:0 6px;"><?= $this->translate('__ROOM_URL__'); ?></td>
+                        <td style="padding:0 6px;"><?= $this->translate('__ROOM_PRESENTER__'); ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a class="btn" href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Back'); ?></a>
+        </div>
+    </form>
+</div>

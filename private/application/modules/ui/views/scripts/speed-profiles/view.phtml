@@ -1,0 +1,85 @@
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->controllerTitle; ?></a> / <h4><?= $this->title; ?></h4>
+
+<div id="dados">
+    <form id="formEdit" class="form-horizontal ajaxsubmit" source="<?= $this->url(array('action' => 'form-content', 'id' => $this->id)); ?>">
+
+        <div class="control-group">
+            <label for="name" class="control-label"><?= $this->translate('column-ic_profile-name'); ?></label>
+            <div class="controls">
+                <input type="text" id="name" name="name" readonly="readonly" disabled="disabled">
+            </div>
+        </div>
+
+        <h5><?= $this->translate('Network'); ?> </h5>
+        <hr>
+
+        <div class="control-group">
+            <label class="control-label" for="ip"><?= $this->translate('column-ic_profile-network'); ?></label>
+            <div class="controls">
+                <input type="text" id="network" name="network" value="<?= (!empty($this->icInfo) ? $this->icInfo[0]['network'] : '') ?>" placeholder="xxx.xxx.xxx.xxx" class="span3 numeric"> / 
+                <select name="mask" id="mask" class="span1" readonly="readonly" disabled="disabled"> 
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24" selected="selected">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                    <option value="32">32</option>
+                </select>
+            </div>
+        </div>
+
+        <h5><?= $this->translate('Bandwidth'); ?></h5>
+        <hr>
+        <div class="control-group">
+            <label class="control-label" for="max_upload"><?= $this->translate('column-ic_profile-max_upload'); ?>: </label>
+            <div class="controls">
+
+                <input type="text" id="max_upload" name="max_upload" value="" placeholder="upload" class="span1 int" readonly="readonly" disabled="disabled"> kbps
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="max_download"><?= $this->translate('column-ic_profile-max_download'); ?>: </label>
+            <div class="controls">
+
+                <input type="text" id="max_download" name="max_download" placeholder="download" value="" class="span1 int" readonly="readonly" disabled="disabled"> kbps
+
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="observations"><?= $this->translate('column-ic_profile-observations'); ?>: </label>
+            <div class="controls">
+                <textarea rows="5" class="span6 autosize" id="observations" name="observations" readonly="readonly" disabled="disabled"></textarea>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a class="btn" href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Back'); ?></a>
+        </div>
+    </form>
+</div>

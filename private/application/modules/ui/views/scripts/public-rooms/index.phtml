@@ -1,0 +1,40 @@
+<?= $this->renderMessages(); ?>
+
+<?
+if (count($this->collection) > 0):
+    ?>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sala</th>
+                <th nowrap="nowrap">Data de Início</th>
+                <th nowrap="nowrap" class="no-sort">Acessar</th>
+            </tr>
+        </thead>
+        <tbody>
+	    <?
+	    foreach ($this->collection as $publicRoom):
+		?>
+	        <tr>
+	            <td width="100%"><?= $publicRoom['name']; ?></td>
+	            <td nowrap="nowrap"><?= date($this->translate('dateTimeFormat-php'), strtotime($publicRoom['date_start'])); ?></td>
+	            <td style="text-align:center;">
+			<a class="btn" href="<?= $this->url(array('action' => 'enter', 'id' => $publicRoom['meeting_room_id'])); ?>" title="Visualizar" data-toggle="tooltip" data-original-title="Visualizar"><i class="icon-eye-open"></i></a>
+		    </td>
+	        </tr>
+		<?
+	    endforeach;
+	    ?>
+        </tbody>
+    </table>
+    <?
+else:
+    ?>
+    <div class="alert alert-error">
+        <div class="alert-message">
+	    <?=$this->translate('There is no running or waiting public meeting rooms for the moment.');?>
+	</div>
+    </div>
+<?
+endif;
+?>

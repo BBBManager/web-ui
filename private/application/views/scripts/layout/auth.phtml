@@ -1,0 +1,20 @@
+<?=$this->doctype();?>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="pt-br" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="pt-br" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="pt-br" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="pt-br" prefix="og: http://ogp.me/ns#">
+<!--<![endif]-->
+    <head>		
+        <?= $this->headTitle();?>
+        <?= $this->headMeta();?>
+        <?= $this->Jquery()->setRenderMode(ZendX_JQuery::RENDER_STYLESHEETS);?>		
+        <?= $this->headLink();?>		
+        <script src="/resources/js/modernizr/modernizr-2.6.2.min.js" type="text/javascript"></script>
+    </head>
+    <body>	
+        <?=$this->layout()->content;?>
+        <?= $this->headScript();?>
+        <?= $this->Jquery()->setRenderMode(ZendX_JQuery::RENDER_LIBRARY|ZendX_JQuery::RENDER_SOURCES|ZendX_JQuery::RENDER_JQUERY_ON_LOAD|ZendX_JQuery::RENDER_JAVASCRIPT);?>
+    </body>
+</html>

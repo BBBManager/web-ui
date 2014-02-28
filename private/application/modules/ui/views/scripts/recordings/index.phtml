@@ -1,0 +1,82 @@
+<h4>Gravações</h4>
+<div  class="pull-left">
+    <button class="btn" id="excluirSelecionados"> <i class= " icon-trash "></i> Excluir Selecionadas </button>
+    <a class="btn" id="selecionarTodos"><i class="icon-ok"></i> Selecionar Todos</a>
+</div>
+
+<div class="pull-right">
+     <form class="form-inline" method="POST">
+        <label class="text" for="dataini">
+            Gravações entre 
+            <div class="input-append datepick">
+                <input type="text" class="input-small" data-format="dd/MM/yyyy">
+                 <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+            </div>
+        </label>
+        <label class="text" for="datafim">
+             e
+             <div class="input-append datepick">
+                <input type="text" class="input-small" data-format="dd/MM/yyyy">
+                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+            </div>
+        </label>
+         <button class="btn" type="button"><i class="icon-search"></i> Pesquisar!</button><br>
+         <button class="btn pull-right" type="button" style="margin-top:4px">Pesquisa Avançada</button>
+    </form>
+</div>
+<table class="table table-striped dtables">
+    <thead>
+        <tr>
+            <th class="no-sort">#</th>
+            <th>Gravação</th>
+            <th>Realizado em</th>
+            <th class="no-sort">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?foreach($this->recordings as $recording) :?>
+        <tr>
+            <td><input type="checkbox" class="to-delete"  value="<?=$recording['record_id']?>"/></td>
+            <td width="100%"><?=$recording['name']?></td>
+            <td nowrap="nowrap"><?=(isset($recording['date_start']) ? date('d/m/Y H:i',strtotime(str_replace('-','/',$recording['date_start']))) : '') ?></td>
+            <td nowrap="nowrap">
+                <a href="/ui/recordings/edit/recordId/<?=$recording['record_id']?>" class="btn btn-mini" data-toggle="tooltip" title="Editar"><i class="icon-pencil"></i></a>
+                <a href="/ui/recordings/delete/recordId/<?=$recording['record_id']?>" class="btn btn-mini btn-delete" data-toggle="tooltip" title="Excluir"><i class="icon-trash"></i></a>
+            </td>
+        </tr>
+        <?endforeach?>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    <div class="span7">
+        <form class="form-inline">
+            <select>
+                <option>Exibir 10 por página</option>
+            </select>
+<div class="btn-group">
+                <button class="btn">Exportar</button>
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">CSV</a></li>
+                    <li><a href="#">PDF</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    
+    <div class="span5">
+        <div class="pagination pull-right" style="margin:0px;">
+            <ul>
+                <li><a href="#">Ant.</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">Prox.</a></li>
+            </ul>
+        </div>    
+    </div>
+</div>
+
