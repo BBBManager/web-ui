@@ -25,7 +25,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="exportToCsv" href="<?= $this->url(array('action' => 'audience-report')); ?>">CSV</a></li>
-                <li><a class="exportToCsv" href="<?= $this->url(array('action' => 'audience-report-pdf')); ?>">PDF</a></li>
+                <li><a class="exportToCsv" href-origin="/rooms/logs-export-pdf" href="#" data-href="<?= $this->url(array('action' => 'audience-report-pdf')); ?>">PDF</a></li>
             </ul>
         </div>
     </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="modal-body"> 
 
-<?= $this->formFilters($this->logsFilters, array()); ?>
+            <?= $this->formFilters($this->logsFilters, array()); ?>
 
         </div>
         <div class="modal-footer">
@@ -70,7 +70,7 @@
         <form class="form-inline">
             <div class="btn-group">
                 <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
-<?= $this->translate('Export'); ?>
+                    <?= $this->translate('Export'); ?>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -82,8 +82,8 @@
                     <?
                     endif;
                     ?>
-                    <li><a export="logs-report" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url($this->uriExport,null,true);?>?<?=$this->parametersString;?>">CSV</a></li>
-                    <li><a export="logs-report" href-origin="<?=$this->url(array_merge($this->uriExportPdf),null,true);?>" href="<?=$this->url($this->uriExportPdf,null,true);?>?<?=$this->parametersString;?>">PDF</a></li>
+                    <li><a export="logs-report" href-origin="<?= $this->url(array_merge($this->uriExport), null, true); ?>" href="<?= $this->url($this->uriExport, null, true); ?>?<?= $this->parametersString; ?>">CSV</a></li>
+                    <li><a export="logs-report" href-origin="<?= $this->url(array_merge($this->uriExportPdf), null, true); ?>" href="#" data-href="<?= $this->url($this->uriExportPdf, null, true); ?>?<?= $this->parametersString; ?>">PDF</a></li>
                 </ul>
             </div>
         </form>

@@ -28,49 +28,45 @@
 
 <div class="pull-right">
     <form id="frmMainFilter" class="form-inline" method="GET" filter="#records" context="">
-	<div class="row-filter" style="float:left;">
-	    <input type="hidden" class="column" value="source_ip" column-type="text" />
-
-	    <div class="filter-values source_ip">
-		<input type="hidden" class="condition" value="i" />
-
-		<? if (false): ?>
-    		<label class="text" for="search1">
-			<?= $this->translate('Source Ip'); ?>
-                        <div class="input-append">
-                            <input id="search1" type="text"  class="input-normal value numeric" value="<?= isset($this->parameters['source_ip']) ? $this->parameters['source_ip'] : ''; ?>">
-                        </div>
-                    </label>
-		<? endif; ?>
-            </div>
-	</div>
-
-	<div class="row-filter" style="float:left; margin-left:10px;">
-	    <input type="hidden" class="column" value="name" column-type="text" />
-
-	    <div class="filter-values name">
-		<input type="hidden" class="condition" value="i" />
-
-		<label class="text" for="search2">
-		    <?= $this->translate('column-ic_profile-name'); ?>
-		    <div class="input-append">
-			<input id="search2" type="text" class="input-small value" value="<?= isset($this->parameters['name']) ? $this->parameters['name'] : ''; ?>">
-		    </div>
-		</label>
-            </div>
-	</div>
-
-	<div class="" style="float:left; margin-left:4px;">
-	    <button class="btn" type="submit"><i class="icon-search"></i> <?= $this->translate('Search'); ?>!</button>
-	    <button class="btn" type="button" id="advSearch" modal-open="#modalAdvSearch" style=""><?= $this->translate('Advanced search'); ?></button>
-	    <?
-	    if ($this->hasFilters):
-		?>
-    	    <button class="btn" type="button" id="clearFilters"><i class="icon-trash"></i> <?= $this->translate('Clear Filters'); ?>!</button>
-		<?
-	    endif;
-	    ?>
-	</div>
+        
+        <?
+        $paramName = 'main_name';
+        $conditionValue = 'in';
+        $mainValue = '';
+        
+        foreach($this->parameters['q'] as $currParam) {
+            if($currParam['n'] == $paramName) {
+                $mainValue = $currParam['v'];
+            }
+        }
+        ?>
+        
+    	<div class="row-filter" style="float:left; margin-left:10px;">
+    	    <!--<input type="hidden" class="column" value="name" column-type="text" />-->
+    
+    	    <div class="filter-values name">
+    		<!--<input type="hidden" class="condition" value="i" />-->
+    
+    		<label class="text" for="search2">
+    		    <?= $this->translate('column-ic_profile-name'); ?>
+    		    <div class="input-append">
+    			<input copy-to="#frmAdvFilter div.filter-values.main_name input.value" id="search2" type="text" class="input-small value" value="<?= $mainValue; ?>">
+    		    </div>
+    		</label>
+                </div>
+    	</div>
+    
+    	<div class="" style="float:left; margin-left:4px;">
+    	    <button class="btn" type="submit"><i class="icon-search"></i> <?= $this->translate('Search'); ?>!</button>
+    	    <button class="btn" type="button" id="advSearch" modal-open="#modalAdvSearch" style=""><?= $this->translate('Advanced search'); ?></button>
+    	    <?
+    	    if ($this->hasFilters):
+    		?>
+        	    <button class="btn" type="button" id="clearFilters"><i class="icon-trash"></i> <?= $this->translate('Clear Filters'); ?>!</button>
+    		<?
+    	    endif;
+    	    ?>
+    	</div>
     </form>
 </div>
 
@@ -99,7 +95,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a export="records" href-origin="<?= $this->url(array_merge($this->uriExport), null, true); ?>" href="<?= $this->url(array_merge($this->uriExport, $this->parameters), null, true); ?>">CSV</a></li>
-                    <li><a export="records" href-origin="<?= $this->url(array_merge($this->uriExport), null, true); ?>" href="<?= $this->url(array_merge($this->uriExportPdf, $this->parameters), null, true); ?>">PDF</a></li>
+                    <li><a export="records" href-origin="<?= $this->url(array_merge($this->uriExportPdf), null, true); ?>" href="#" data-href="<?= $this->url(array_merge($this->uriExportPdf, $this->parameters), null, true); ?>">PDF</a></li>
                 </ul>
             </div>
 	    <?

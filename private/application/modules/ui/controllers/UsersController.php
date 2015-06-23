@@ -19,6 +19,9 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
         $arrGroupOptions['group_auth_mode'] = array('name'=>'group_auth_mode','label'=> $this->_helper->translate('column-user-group_auth_mode'),'type'=>'combo','source'=>'auth_mode');
         $this->filters['group_options'] = array('name'=>'group_options','label'=> $this->_helper->translate('column-user-groups'),'type'=>'optgroup','options'=>$arrGroupOptions);
         
+        
+        $this->filters['main_name'] = array('main'=>true, 'name'=>'name', 'label'=>$this->_helper->translate('column-user-name'), 'type'=>'text', 'condition'=>'in');
+        
         $this->api = 'users';
         $this->pkey = 'user_id';
         
@@ -104,6 +107,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
         } else {
             header('Content-type: '.BBBManager_Config_Defines::$CONTENT_TYPE_PDF);
         }
+        header('Set-Cookie: fileDownload=true; path=/');
         header('Content-Disposition: attachment; filename="'.$this->_request->getControllerName().'.pdf"');
         echo file_get_contents($response['url']);
         exit;
@@ -268,6 +272,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
                 $arrForm['valid_from'] = IMDT_Util_Date::filterDateToCurrentLang($row['valid_from'], false);
                 $arrForm['valid_to'] = IMDT_Util_Date::filterDateToCurrentLang($row['valid_to'], false);
                 $arrForm['access_profile_name'] = BBBManager_Config_Defines::getAccessProfile($row['access_profile_id']);
+                $arrForm['actived'] = $row['actived'];
 		
 		if(isset($row['ldapGroups'])){
 		    $arrForm['ldapGroups'] = $row['ldapGroups'];

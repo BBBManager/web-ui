@@ -1,0 +1,271 @@
+<?
+    //$name = $this->currParam['n'];
+    
+    $conditionValue = $this->paramOptions['condition'];
+    
+    $value = '';
+    $until = '';
+    
+    foreach($this->parameters['q'] as $currParam) {
+        if($currParam['n'] == $this->paramName) {
+            $value = $currParam['v'];
+            
+            if($conditionValue == 'b' && isset($currParam['u'])) {
+                $until = $currParam['u'];
+            }
+        }
+    }
+?>
+            
+            <? if($this->paramOptions['type'] == 'datetime'): ?>
+                <? $value = (strlen($value) > 0) ? IMDT_Util_Date::filterDatetimeToCurrentLang($value, false) : ''; ?>
+                <div class="filter-values <?=$this->paramName;?>">
+                    <? //$value = (!empty($this->paramOptions['value'])) ? IMDT_Util_Date::filterDateToCurrentLang($this->paramOptions['value']) : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                            <? if($conditionValue == 'b'): ?>
+                                <?=$this->translate('advs-date-b'); ?> 
+                                <input type="hidden" class="condition" value="b" />
+                            <? elseif($conditionValue == 'is'): ?>
+                                <?=$this->translate('advs-date-is'); ?>
+                            <? elseif($conditionValue == 'isnt'): ?>
+                                <?=$this->translate('advs-date-isnt'); ?>
+                            <? elseif($conditionValue == 'bef'): ?>
+                                <?=$this->translate('advs-date-bef'); ?>
+                            <? elseif($conditionValue == 'aft'): ?>
+                                <?=$this->translate('advs-date-aft'); ?>
+                            <? elseif($conditionValue == 'empty'): ?>
+                                <?=$this->translate('advs-date-empty'); ?>
+                            <? elseif($conditionValue == 'nempty'): ?>
+                                <?=$this->translate('advs-date-nempty'); ?>
+                            <? endif; ?>
+                    </div>
+                    <div class="span2" style="margin-left:0px; margin-bottom:10px;">
+                        <div class="input-append datetime first" style="display: inline;">
+                            <input id="" type="text" class="input-small value sdatetime" style="width:116px !important;" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=$value;?>">
+                             <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <? if($conditionValue == 'b'): ?>
+                    <? $until = (strlen($until) > 0) ? IMDT_Util_Date::filterDatetimeToCurrentLang($until, false) : ''; ?>
+                    
+                    <br clear="all" />
+                    
+                    <div class="span2" style="margin-left:0px">&nbsp;</div>
+                    
+                    <div class="filter-values <?=$this->paramName;?>">
+                        <div class="span2" style="margin-left:0px">
+                            <?=$this->translate('and'); ?>
+                        </div>
+                        <div class="span2" style="margin-left:0px; margin-bottom:10px;">
+                             <div class="input-append datetime second" style="display: inline;">
+                                <input id="" type="text" class="input-small value_2 sdatetime" style="width:116px !important;" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=$until;?>">
+                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                <? endif; ?>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'text'): ?>
+                <div class="filter-values <?=$this->paramName;?>">
+                    <div class="span2" style="margin-left:0px">
+                        
+                        <? if($conditionValue == 'in'): ?>
+                            <?=$this->translate('advs-text-in'); ?> 
+                            <input type="hidden" class="condition" value="in" />
+                        <? elseif($conditionValue == 'nin'): ?>
+                            <?=$this->translate('advs-text-nin'); ?>
+                            <input type="hidden" class="condition" value="nin" />
+                        <? elseif($conditionValue == 'is'): ?>
+                            <?=$this->translate('advs-text-is'); ?>
+                            <input type="hidden" class="condition" value="is" />
+                        <? elseif($conditionValue == 'isnt'): ?>
+                            <?=$this->translate('advs-text-isnt'); ?>
+                            <input type="hidden" class="condition" value="isnt" />
+                        <? elseif($conditionValue == 'bw'): ?>
+                            <?=$this->translate('advs-text-bw'); ?>
+                            <input type="hidden" class="condition" value="bw" />
+                        <? elseif($conditionValue == 'ew'): ?>
+                            <?=$this->translate('advs-text-ew'); ?>
+                            <input type="hidden" class="condition" value="ew" />
+                        <? elseif($conditionValue == 'empty'): ?>
+                            <?=$this->translate('advs-text-empty'); ?>
+                            <input type="hidden" class="condition" value="empty" />
+                        <? elseif($conditionValue == 'nempty'): ?>
+                            <?=$this->translate('advs-text-nempty'); ?>
+                            <input type="hidden" class="condition" value="nempty" />
+                        <? endif; ?>
+                    </div>
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append">
+                            <input type="text" class="small-input value" value="<?= $value; ?>" />
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'date'): ?>
+                <div class="filter-values <?=$this->paramName;?>  <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name && !empty($this->currParam['v'])) ? IMDT_Util_Date::filterDateToCurrentLang($this->currParam['v']) : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name && !empty($this->currParam['c'])) ? $this->currParam['c'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="is" class="" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-date-is'); ?></option>
+                            <option value="isnt" class="" <?= ($conditionValue == 'isnt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-date-isnt'); ?></option>
+                            <option value="bef" class="" <?= ($conditionValue == 'bef') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-date-bef'); ?></option>
+                            <option value="aft" class="" <?= ($conditionValue == 'aft') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-date-aft'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-date-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-date-nempty'); ?></option>
+                        </select>
+                    </div>
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append datepick">
+                            <input type="text" class="input-block-level value" data-format="<?=$this->translate('dateFormat-datepicker'); ?>"  value="<?=$value; ?>">
+                            <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'datetime_antigo'): ?>
+                <div class="filter-values <?=$this->paramName;?>  <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name && !empty($this->currParam['v'])) ? IMDT_Util_Date::filterDatetimeToCurrentLang($this->currParam['v']) : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name && !empty($this->currParam['c'])) ? $this->currParam['c'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="is" class="" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-datetime-is'); ?></option>
+                            <option value="isnt" class="" <?= ($conditionValue == 'isnt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-datetime-isnt'); ?></option>
+                            <option value="bef" class="" <?= ($conditionValue == 'bef') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-datetime-bef'); ?></option>
+                            <option value="aft" class="" <?= ($conditionValue == 'aft') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-datetime-aft'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-datetime-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-datetime-nempty'); ?></option>
+                        </select>
+                    </div>
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append datetime">
+                            <input type="text" class="input-block-level value" data-format="<?=$this->translate('dateFormat-datepicker'); ?> hh:mm"  value="<?=$value; ?>">
+                            <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'ipaddress'): ?>
+                <div class="filter-values <?=$this->paramName;?> <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name) ? $this->currParam['v'] : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name) ? $this->currParam['c'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="in" class="" <?= ($conditionValue == 'in') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-in'); ?></option>
+                            <option value="nin" class="" <?= ($conditionValue == 'nin') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-nin'); ?></option>
+                            <option value="is" class="" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-is'); ?></option>
+                            <option value="isnt" class="" <?= ($conditionValue == 'isnt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-isnt'); ?></option>
+                            <option value="bw" class="" <?= ($conditionValue == 'bw') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-bw'); ?></option>
+                            <option value="ew" class="" <?= ($conditionValue == 'ew') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-ew'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-text-nempty'); ?></option>
+                        </select>
+                    </div>
+                    
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append">
+                            <input type="text" class="small-input value ipaddress" value="<?= $value; ?>" placeholder="xxx.xxx.xxx.xxx" />
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'combo'): ?>
+                <div class="filter-values <?=$this->paramName;?> <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name) ? $this->currParam['v'] : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name) ? $this->currParam['c'] : ''; ?>
+                    <? $source = (isset($this->paramOptions['source'])) ? $this->paramOptions['source'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="is" class="" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-is'); ?></option>
+                            <option value="isnt" class="" <?= ($conditionValue == 'isnt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-isnt'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-nempty'); ?></option>
+                        </select>
+                    </div>
+                    
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append">
+                            <select class="select2 value span6" source="<?=$source;?>" multiple="multiple" style="width:80%;" data-value="<?= $value; ?>">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'combo-remote'): ?>
+                <div class="filter-values <?=$this->paramName;?> <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name) ? $this->currParam['v'] : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name) ? $this->currParam['c'] : ''; ?>
+                    <? $source = (isset($this->paramOptions['source'])) ? $this->paramOptions['source'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="is" class="" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-is'); ?></option>
+                            <option value="isnt" class="" <?= ($conditionValue == 'isnt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-isnt'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-combo-nempty'); ?></option>
+                        </select>
+                    </div>
+                    
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append">
+                            <input type="hidden" style="width:80%;" value="<?= $value; ?>" id="user_attendee" name="user_attendee" class="span6 value select2 multiple" remote="<?=$this->url($this->paramOptions['url']);?>" />
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            
+            <? if($this->paramOptions['type'] == 'integer'): ?>
+                <div class="filter-values <?=$this->paramName;?> <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name) ? $this->currParam['v'] : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name) ? $this->currParam['c'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="is" class="equal" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-integer-is'); ?></option>
+                            <option value="isnt" class="equal" <?= ($conditionValue == 'isnt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-integer-isnt'); ?></option>
+                            <option value="gt" class="greater" <?= ($conditionValue == 'gt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-integer-gt'); ?></option>
+                            <option value="lt" class="less" <?= ($conditionValue == 'lt') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-integer-lt'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-integer-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-integer-nempty'); ?></option>
+                        </select>
+                    </div>
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append">
+                            <input type="text" class="small-input value integer" value="<?= $value; ?>" />
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            
+            <? if($this->paramOptions['type'] == 'boolean'): ?>
+                <div class="filter-values <?=$this->paramName;?> <?= ($this->paramName == $name) ? '' : 'hide'; ?>">
+                    <? $value = ($this->paramName == $name) ? $this->currParam['v'] : ''; ?>
+                    <? $conditionValue = ($this->paramName == $name) ? $this->currParam['c'] : ''; ?>
+                    <div class="span2" style="margin-left:0px">
+                        <select class="condition">
+                            <option value="is" class="equal" <?= ($conditionValue == 'is') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-bool-is'); ?></option>
+                            <option value="empty" class="" <?= ($conditionValue == 'empty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-bool-empty'); ?></option>
+                            <option value="nempty" class="" <?= ($conditionValue == 'nempty') ? 'selected="selected"' : ''; ?>><?=$this->translate('advs-bool-nempty'); ?></option>
+                        </select>
+                    </div>
+                    
+                    <div class="span2" style="margin-left:0px">
+                        <div class="input-append">
+                            <select class="value span6" style="width:80%;">
+                                <option value=""></option>
+                                <option value="1" <?= ($value == '1') ? 'selected="selected"' : ''; ?>><?=$this->translate('Yes'); ?></option>
+                                <option value="0" <?= ($value == '0') ? 'selected="selected"' : ''; ?>><?=$this->translate('No'); ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+            

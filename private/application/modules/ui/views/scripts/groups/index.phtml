@@ -28,16 +28,29 @@
 
 <div class="pull-right">
      <form id="frmMainFilter" class="form-inline" method="GET" filter="#records" context="">
+         
+         <?
+        $paramName = 'main_name';
+        $conditionValue = 'in';
+        $mainValue = '';
+        
+        foreach($this->parameters['q'] as $currParam) {
+            if($currParam['n'] == $paramName) {
+                $mainValue = $currParam['v'];
+            }
+        }
+        ?>
+         
      	<div class="row-filter" style="float:left; margin-left:10px;">
-			<input type="hidden" class="column" value="name" column-type="text" />
+			<!--<input type="hidden" class="column" value="name" column-type="text" />-->
 			
 			<div class="filter-values name">
-    			<input type="hidden" class="condition" value="i" />
+    			<!--<input type="hidden" class="condition" value="i" />-->
             
     	        <label class="text" for="search1">
     	            <?=$this->translate('column-group-name'); ?>
     	            <div class="input-append">
-    	                <input id="search1" type="text" class="input-small value" value="<?=isset($this->parameters['name']) ? $this->parameters['name'] : ''; ?>">
+    	                <input copy-to="#frmAdvFilter div.filter-values.main_name input.value" id="search1" type="text" class="input-small value" value="<?=$mainValue; ?>">
     	            </div>
     	        </label>
             </div>
@@ -81,13 +94,13 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExport,$this->parameters),null,true);?>">CSV</a></li>
-                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExportPdf),null,true);?>" href="#" data-href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
                 </ul>
             </div>
 	    <?
 		if(IMDT_Util_Acl::getInstance()->isAllowed('groups', 'insert')):
 	    ?>
-            <button class="btn"><?=$this->translate('Import CSV'); ?></button>
+            <button class="btn" id="csvImport"><?=$this->translate('Import CSV'); ?></button>
 	    <?
 		endif;
 	    ?>
@@ -108,5 +121,32 @@
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
         <button class="btn btn-primary" onclick="applyFilter('#records'); $('#modalAdvSearch').modal('hide');"><?=$this->translate('Search now'); ?></button>
+    </div>
+</div>
+
+<div id="modalCsvImport" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel"><?= $this->translate('Import CSV'); ?></h3>
+    </div>
+    <div class="modal-body">
+        <form id="frmCsvImport" class="form-vertical" method="post" enctype="multipart/form-data" data-import-url="<?=$this->url(array('action'=>'import'));?>">
+            <span class="btn btn-inverse fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span><?=$this->translate('Selec file');?></span>
+                <input id="fileupload" type="file" name="files[]" data-url="/ui/upload/post"/>
+            </span>
+        </form>
+	<div id="fileContainer"></div>
+	<div class="alert alert-info hidden">
+	    <div class="alert-message processing">
+		<img src="/resources/img/ajax-loader.gif" />  <?=$this->translate('Processing...'); ?>
+	    </div>
+	    <div class="alert-message import-result"></div>
+	</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+        <button class="btn btn-primary" onclick="csvUpload(this);" disabled="disabled" data-widget="import"><?= $this->translate('Import'); ?></button>
     </div>
 </div>

@@ -1,26 +1,28 @@
 <div class="row-fluid text-center">
     <div class="span12">
 	<img src="/resources/img/logo.png" />
-	<h4>Web Conference</h4>
+	<h4>
+            <a href="<?=IMDT_Util_Config::getInstance()->get('web_base_url');?>"><?=BBBManager_Util_Skinning::getInstance()->get('company_name') . ' - ' . BBBManager_Util_Skinning::getInstance()->get('system_title');?></a>
+        </h4>
     </div>
 </div>
 
 <div class="innerContainer">
     <div class="row-fluid">
 	<div class="span12">
-	    <h2 class="form-signin-heading">Acesso à sala "<?= $this->room['name']; ?>"</h2>
+	    <h2 class="form-signin-heading"><?= $this->translate('Access meeting room'); ?> "<?= $this->room['name']; ?>"</h2>
 	    <input type="hidden" id="roomId" value="<?= $this->room['meeting_room_id']; ?>" />
 	    <p>
-		O acesso desta sala é público.
+		<?= $this->translate('The access of this room is public'); ?>.
 	    </p>
 	    <p>
-		Caso você tenha um login, sugerimos utilizá-lo, para usar todos os recursos do sistema.
+		<?= $this->translate('If you have a login credential, we suggest using it, to use all system resources.'); ?>.
 	    </p>
 	</div>
     </div>
     <div class="row-fluid">
 	<div class="span6 pull-left">
-	    <h4>Acesso Autenticado</h4>
+	    <h4><?= $this->translate('Authenticated Access'); ?></h4>
 	    <form class="form-signin" method="post" action="/login/auth/auth">
 		<input type="text" class="input-block-level" placeholder="<?= $this->translate('User'); ?>" name="user">
 		<input type="password" class="input-block-level" placeholder="<?= $this->translate('Password'); ?>" name="password">
@@ -29,8 +31,8 @@
 	    </form>
 	</div>
 	<div class="span6 pull-right">
-	    <h4>Acesso Público (Mozilla Persona)</h4>
-	    <a href="#" class="persona-button persona-signin"><span>Sign in with Persona</span></a>
+	    <h4><?= $this->translate('Public Access (Mozilla Persona)'); ?></h4>
+	    <a href="#" class="persona-button persona-signin"><span><?= $this->translate('Sign in with Persona'); ?></span></a>
 	</div>
     </div>
 </div>

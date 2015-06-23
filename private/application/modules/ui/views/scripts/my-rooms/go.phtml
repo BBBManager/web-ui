@@ -1,14 +1,26 @@
 <?
-    if($this->errorMessage != null):
+    if($this->errorMessage != null && ($this->acessable != false)):
 ?>
 <div class="row text-center">
     <div class="span12">
-        <button class="btn" type="button" onclick="window.location.reload();"><i class="icon-refresh"></i> Tentar Novamente!</button>
+        <button class="btn" type="button" onclick="window.location.reload();"><i class="icon-refresh"></i> <?=  IMDT_Util_Translate::_('Try again');?>!</button>
     </div>
 </div>
 <?
     endif;
 ?>
+<?
+    if($this->acessable == false):
+?>
+<div class="row text-center">
+    <div class="span12">
+        <a class="btn" href="/"><i class="icon-refresh"></i> <?=  IMDT_Util_Translate::_('Back');?>!</a>
+    </div>
+</div>
+<?
+    endif;
+?>
+
 <div class="row text-center">
     <div class="span12">
 	<img src="/resources/img/logo.png" />

@@ -59,7 +59,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExport,$this->parameters),null,true);?>">CSV</a></li>
-                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExportPdf),null,true);?>" href="#" data-href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
                 </ul>
             </div>
             <button class="btn"><?=$this->translate('Import CSV'); ?></button>

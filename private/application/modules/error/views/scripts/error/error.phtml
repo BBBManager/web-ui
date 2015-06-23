@@ -2,11 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Zend Framework Default Application</title>
 </head>
 <body>
-  <h1>An error occurred</h1>
-  <h2><?php echo $this->message ?></h2>
+    <?
+        if($this->showGoToHomeButton):
+    ?>
+    <div class="row text-center">
+        <div class="span12">
+            <a class="btn" href="/"><i class="icon-refresh"></i> <?=  IMDT_Util_Translate::_('Back');?>!</a>
+        </div>
+    </div>
+    <?
+        endif;
+    ?>
+    <h2><?php echo $this->message ?></h2>
 
   <?php if (isset($this->exception)): ?>
   

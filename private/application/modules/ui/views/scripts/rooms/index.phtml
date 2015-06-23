@@ -1,6 +1,6 @@
 <h4><?= $this->translate('Meeting Rooms Management'); ?></h4>
 
-<div  class="pull-left">
+<div class="pull-left">
     <?
     if (IMDT_Util_Acl::getInstance()->isAllowed('rooms', 'insert')):
     ?>
@@ -28,32 +28,57 @@
 
 <div class="pull-right">
     <form id="frmMainFilter" class="form-inline" method="GET">
-	<div class="row-filter" style="float:left;">
-	    <input type="hidden" class="column" value="date_start" column-type="date" />
-	    <div class="filter-values date_start">
-    		<input type="hidden" class="condition" value="b" />
-    		
-    		<label class="text" for="minDate">
-                <?=$this->translate('column-access_log-create_date'); ?> <?=$this->translate('between'); ?> 
-                <div class="input-append datetime">
-                    <input id="minDate" type="text" class="input-small value sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=isset($this->parameters['date_start']) ? Imdt_Util_Date::filterDatetimeToCurrentLang($this->parameters['date_start'], false) : ''; ?>">
-                     <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
-                </div>
-            </label>
-            <label class="text" for="maxDate">
-                 <?=$this->translate('and'); ?>
-                 <div class="input-append datetime">
-                    <input id="maxDate" type="text" class="input-small value_2 sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=isset($this->parameters['date_start_2']) ? Imdt_Util_Date::filterDatetimeToCurrentLang($this->parameters['date_start_2'], false) : ''; ?>">
-                    <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
-                </div>
-            </label>
-        </div>
-	</div>
-    
-	<div class="" style="float:left; margin-left:4px;">
-	    <button class="btn" type="button" onclick="applyFilter('#records');"><i class="icon-search"></i> <?= $this->translate('Search'); ?>!</button>
-	    <button class="btn" type="button" id="advSearch" modal-open="#modalAdvSearch" style=""><?= $this->translate('Advanced search'); ?></button>
-	</div>
+        
+        <?
+        $paramName = 'main_date_start';
+        $conditionValue = 'b';
+        $mainValue = '';
+        $mainUntil = '';
+        
+        foreach($this->parameters['q'] as $currParam) {
+            if($currParam['n'] == $paramName) {
+                $mainValue = $currParam['v'];
+                
+                if($conditionValue == 'b' && isset($currParam['u'])) {
+                    $mainUntil = $currParam['u'];
+                }
+            }
+        }
+        
+        if(strlen($mainValue) > 0) $mainValue = Imdt_Util_Date::filterDatetimeToCurrentLang($mainValue, false);
+        if(strlen($mainUntil) > 0) $mainUntil = Imdt_Util_Date::filterDatetimeToCurrentLang($mainUntil, false);
+        
+        ?>
+        
+    	<div class="row-filter" style="float:left;">
+    	    <!--
+    	    <input type="hidden" class="column" value="date_start" column-type="date" />
+    	    -->
+    	    <div class="filter-values">
+    	        <!--
+        		<input type="hidden" class="condition" value="b" />
+        		-->
+        		<label class="text" for="minDate">
+                    <?=$this->translate('column-access_log-create_date'); ?> <?=$this->translate('between'); ?> 
+                    <div class="input-append datetime" copy-to="#frmAdvFilter div.filter-values.main_date_start div.datetime.first">
+                        <input id="minDate" type="text" class="input-small value sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=$mainValue; ?>">
+                         <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </label>
+                <label class="text" for="maxDate">
+                     <?=$this->translate('and'); ?>
+                     <div class="input-append datetime" copy-to="#frmAdvFilter div.filter-values.main_date_start div.datetime.second">
+                        <input id="maxDate" type="text" class="input-small value_2 sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=$mainUntil; ?>">
+                        <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </label>
+            </div>
+    	</div>
+        
+    	<div class="" style="float:left; margin-left:4px;">
+    	    <button class="btn" type="button" onclick="applyFilter('#records');"><i class="icon-search"></i> <?= $this->translate('Search'); ?>!</button>
+    	    <button class="btn" type="button" id="advSearch" modal-open="#modalAdvSearch" style=""><?= $this->translate('Advanced search'); ?></button>
+    	</div>
     </form>
 </div>
 
@@ -64,7 +89,7 @@
             <th><?= $this->translate('column-meeting_room-name'); ?></th>
             <th class="no-search"><?= $this->translate('column-meeting_room-date_start'); ?></th>
             <th class="no-search"><?= $this->translate('column-meeting_room-date_end'); ?></th>
-            <th style="width:140px; text-align:center;" class="no-sort no-search"><?= $this->translate('Actions'); ?></th>
+            <th style="width:160px; text-align:center;" class="no-sort no-search"><?= $this->translate('Actions'); ?></th>
         </tr>
     </thead>
     <tbody>
@@ -86,7 +111,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a export="records" href-origin="<?= $this->url($this->uriExport, null, true); ?>" href="<?= $this->url($this->uriExport, null, true); ?>?<?= $this->parametersString; ?>">CSV</a></li>
-                    <li><a export="records" href-origin="<?= $this->url($this->uriExportPdf, null, true); ?>" href="<?= $this->url($this->uriExportPdf, null, true); ?>?<?= $this->parametersString; ?>">PDF</a></li>
+                    <li><a export="records" href-origin="<?= $this->url($this->uriExportPdf, null, true); ?>" href="#" data-href="<?= $this->url($this->uriExportPdf, null, true); ?>?<?= $this->parametersString; ?>">PDF</a></li>
                 </ul>
             </div>
 	    <?
@@ -106,7 +131,7 @@
 	<h3 id="myModalLabel"><?= $this->translate('Advanced search'); ?></h3>
     </div>
     <div class="modal-body">
-	<form id="frmAdvFilter" class="form-vertical" onsubmit="applyFilter('#records'); $('#modalAdvSearch').modal('hide'); return false;" source="<?=$this->url(array('action'=>'adv-search-filter'));?>">
+	<form id="frmAdvFilter" class="form-vertical" onsubmit="applyFilter('#records','#modalAdvSearch'); $('#modalAdvSearch').modal('hide'); return false;" source="<?=$this->url(array('action'=>'adv-search-filter'));?>">
 	    <?= $this->formFilters($this->filters, $this->parameters); ?>
 	</form>
     </div>
@@ -118,37 +143,37 @@
 
 <div id="modalDuplicate" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form id="formDuplicate" action="/ui/rooms/duplicate/">
-	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h3 id="myModalLabel"><?= $this->translate('Duplicate'); ?></h3>
-	</div>
-	<div class="modal-body">
-	    <input type="hidden" name="duplicated_id" id="duplicatedId" />
-            <div class="control-group">
-                <label class="control-label" for="duplicateName"><?= $this->translate('column-meeting_room-name'); ?></label>
-                <input type="text" class="input-block-level" name="name" id="duplicateName" />
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="duplicateUrl"><?= $this->translate('column-meeting_room-url'); ?></label>
-		<input type="text" class="input-block-level" name="url" id="duplicateUrl" />
-            </div>
-	</div>
-	<div class="modal-footer">
-	    <div class="hide alert alert-error" style="text-align:center;"><?= $this->translate('Alert'); ?></div>
-	    <span class="loading hide">
-		<div style="text-align:center;"><?= $this->translate('Saving'); ?></div>
-		<div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
-	    </span>
-	    <span class="save-buttons">
-		<button type="submit" class="btn btn-primary"><?= $this->translate('Duplicate now'); ?></button>
-		<button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
-	    </span>
-	    <span class="success-buttons hide">
-		<div class="alert alert-success" style="text-align:center;"><?= $this->translate('Data was saved successfully'); ?></div>
-		<button id="btn_edit_copy" class="btn btn-primary"><?= $this->translate('Edit copy'); ?></button>
-		<button id="btn_close_copy" class="btn"><?= $this->translate('Close'); ?></button>
-	    </span>
-	</div>
+    	<div class="modal-header">
+    	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    	    <h3 id="myModalLabel"><?= $this->translate('Duplicate'); ?></h3>
+    	</div>
+    	<div class="modal-body">
+    	    <input type="hidden" name="duplicated_id" id="duplicatedId" />
+                <div class="control-group">
+                    <label class="control-label" for="duplicateName"><?= $this->translate('column-meeting_room-name'); ?></label>
+                    <input type="text" class="input-block-level" name="name" id="duplicateName" />
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="duplicateUrl"><?= $this->translate('column-meeting_room-url'); ?></label>
+    		        <input type="text" class="input-block-level" name="url" id="duplicateUrl" />
+                </div>
+    	</div>
+    	<div class="modal-footer">
+    	    <div class="hide alert alert-error" style="text-align:center;"><?= $this->translate('Alert'); ?></div>
+    	    <span class="loading hide">
+    		<div style="text-align:center;"><?= $this->translate('Saving'); ?></div>
+    		<div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
+    	    </span>
+    	    <span class="save-buttons">
+    		<button type="submit" class="btn btn-primary"><?= $this->translate('Duplicate now'); ?></button>
+    		<button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+    	    </span>
+    	    <span class="success-buttons hide">
+    		<div class="alert alert-success" style="text-align:center;"><?= $this->translate('Data was saved successfully'); ?></div>
+    		<button id="btn_edit_copy" class="btn btn-primary"><?= $this->translate('Edit copy'); ?></button>
+    		<button id="btn_close_copy" class="btn"><?= $this->translate('Close'); ?></button>
+    	    </span>
+    	</div>
     </form>
 </div>
 

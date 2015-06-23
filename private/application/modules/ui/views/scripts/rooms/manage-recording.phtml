@@ -1,0 +1,166 @@
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Meeting Rooms Management'); ?></a> / <h4><?= $this->title; ?></h4>
+
+<table class="table table-condensed table-striped">
+    <thead>
+    <th>Nome</th>
+    <th>Início</th>
+    <th>Fim</th>
+    <th>Duração</th>
+    <th>Situação</th>
+    <th>Ações</th>
+</thead>
+<tbody>
+    <?
+    foreach($this->recordings as $recording):
+    ?>
+    <tr>
+        <td><?= $recording['name']; ?></td>
+        <td><?= IMDT_Util_Date::filterDatetimeToCurrentLang($recording['date_start'], false); ?></td>
+        <td><?= IMDT_Util_Date::filterDatetimeToCurrentLang($recording['date_end'], false); ?></td>
+        <td><?= $recording['duration']; ?></td>
+        <td><?= ($recording['sync_done'] == '1' ? 'Pronta' : 'Processando'); ?></td>
+        <td>
+            <a title="<?= IMDT_Util_Translate::_('Edit Recording'); ?>" data-recording-id="<?= $recording['record_id']; ?>" data-toggle="tooltip" class="btn btn-mini edit-recording<?=($recording['sync_done'] != '1' ? ' disabled' : '');?>" href="javascript:void(0)" data-original-title="<?= IMDT_Util_Translate::_('Edit Recording'); ?>"><i class="icon-pencil"></i></a>
+        </td>
+    </tr>
+    <?
+    endforeach;
+    ?>
+</tbody>
+</table>
+
+<div id="editRecording" class="hidden">
+    <form id="formEdit" class="form-horizontal ajaxsubmit" method="POST" action="/ui/recordings/form-post">
+        <div class="well">
+            <h4>Gravação</h4>
+            <input type="hidden" name="record_id" id="record_id"/>
+            <input type="hidden" name="meeting_room_id" id="meeting_room_id"/>
+
+            <div class="control-group">
+                <label class="control-label" for="name"><?= $this->translate('column-meeting_room-name'); ?></label>
+                <div class="controls">
+                    <div class="span7">
+                        <input type="text" name="name" id="name" class="input-block-level"/>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date_start"><?= $this->translate('column-meeting_room-date_start'); ?></label>
+                <div class="controls">
+                    <div class="input-append datetime">
+                        <input type="text" id="date_start" name="date_start" class="input-block-level" disabled="disabled"/>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="date_end"><?= $this->translate('column-meeting_room-date_end'); ?></label>
+                <div class="controls">
+                    <div class="input-append datetime">
+                        <input type="text" id="date_end" name="date_end" class="input-block-level" disabled="disabled"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="duration">Duração</label>
+                <div class="controls">
+                    <div class="span7">
+                        <input type="text" id="duration" name="duration" class="input-block-level" disabled="disabled"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><?= $this->translate('Save'); ?></button>
+                <a class="btn" href="/ui/rooms/index"><?= $this->translate('Cancel'); ?></a>
+            </div>
+        </div>
+
+        <div class="well">
+            <h4>Tags</h4>
+            <div class="form-actions">
+                <a class="btn" href="javascript:void(0);" open-modal-form="#modalTagEditor">Adicionar Tag</a>
+            </div>
+            <div id="tagsContainer" style="position:relative;">
+                <div class="alert alert-info">Não há tags cadastradas</div>
+
+                <table class="table table-striped hidden">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Posição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hidden refresh">
+                            <td colspan="4">
+                                <div class="progress progress-striped active"><div class="bar" style="width: 100%;">Atualizando...</div></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div id="modalTagEditor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="formEdit" class="form-horizontal no-loading no-reset" method="POST" action="/ui/tags/form-post" data-success-callback="addTagSuccessCallback">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><?= $this->translate('Tag Management'); ?></h3>
+        </div>
+        <div class="modal-body">
+            <div class="control-group">
+                <label class="control-label" for="name">Nome</label>
+                <div class="controls">
+                    <div class="span7">
+                        <input type="text" id="tag-name" name="tag-name" class="input-block-level"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="start_time"><?=$this->translate('column-record_tag-start_time'); ?></label>
+                <div class="controls">
+                    <div class="span5">
+                        <input type="text" id="start_time" name="start_time"/>
+                        <br/>
+                        <span class="input-observation">Usar o formato HH:MM:SS.milisegundos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="description">Descrição</label>
+                <div class="controls">
+                    <div class="span12">
+                        <textarea id="description" name="description" class="input-block-level" rows="6"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="record_id" id="record_id" />
+            <input type="hidden" name="id" id="id" value="new" />
+        </div>
+
+        <div class="modal-footer">
+            <div class="hide alert alert-error" style="text-align:center;"><?= $this->translate('Alert'); ?></div>
+            <span class="save-buttons">
+                <button type="submit" class="btn btn-primary"><?= $this->translate('Save'); ?></button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            </span>
+            <span class="success-buttons hide">
+                <div class="alert alert-success" style="text-align:center;"></div>
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
+            </span>
+            <span class="loading hide">
+                <div style="text-align:center;"><?= $this->translate('Saving'); ?></div>
+                <div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>
+            </span
+        </div>
+    </form>
+</div>

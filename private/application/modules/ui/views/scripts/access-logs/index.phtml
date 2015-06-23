@@ -2,22 +2,45 @@
 
 <div class="pull-right">
      <form id="frmMainFilter" class="form-inline" method="GET">
+         
+         <?
+        $paramName = 'main_create_date';
+        $conditionValue = 'b';
+        $mainValue = '';
+        $mainUntil = '';
+        
+        foreach($this->parameters['q'] as $currParam) {
+            if($currParam['n'] == $paramName) {
+                $mainValue = $currParam['v'];
+                
+                if($conditionValue == 'b' && isset($currParam['u'])) {
+                    $mainUntil = $currParam['u'];
+                }
+            }
+        }
+        
+        if(strlen($mainValue) > 0) $mainValue = Imdt_Util_Date::filterDatetimeToCurrentLang($mainValue, false);
+        if(strlen($mainUntil) > 0) $mainUntil = Imdt_Util_Date::filterDatetimeToCurrentLang($mainUntil, false);
+        
+        ?>
+         
         <div class="row-filter" style="float:left;">
             <div class="filter-values create_date">
+                <!--
                 <input type="hidden" class="column" value="create_date" column-type="datetime" />
                 <input type="hidden" class="condition" value="b" />
-            
+                -->
                 <label class="text" for="minDate">
                     <?=$this->translate('column-access_log-create_date'); ?> <?=$this->translate('between'); ?> 
-                    <div class="input-append datetime">
-                        <input id="minDate" type="text" class="input-small value sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=isset($this->parameters['create_date']) ? Imdt_Util_Date::filterDatetimeToCurrentLang($this->parameters['create_date'], false) : ''; ?>">
+                    <div class="input-append datetime" copy-to="#frmAdvFilter div.filter-values.main_create_date div.datetime.first">
+                        <input id="minDate" type="text" class="input-small value sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=$mainValue; ?>">
                          <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
                     </div>
                 </label>
                 <label class="text" for="maxDate">
                      <?=$this->translate('and'); ?>
-                     <div class="input-append datetime">
-                        <input id="maxDate" type="text" class="input-small value_2 sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=isset($this->parameters['create_date_2']) ? Imdt_Util_Date::filterDatetimeToCurrentLang($this->parameters['create_date_2'], false) : ''; ?>">
+                     <div class="input-append datetime" copy-to="#frmAdvFilter div.filter-values.main_create_date div.datetime.second">
+                        <input id="maxDate" type="text" class="input-small value_2 sdatetime" data-format="<?=$this->translate('dateFormat-datetimepicker'); ?>" value="<?=$mainUntil; ?>">
                         <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
                     </div>
                 </label>
@@ -55,7 +78,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a export="records" href-origin="<?=$this->url($this->uriExport,null,true);?>" href="<?=$this->url($this->uriExport,null,true);?>?<?=http_build_query($this->parameters); ?>">CSV</a></li>
-                    <li><a export="records" href-origin="<?=$this->url($this->uriExportPdf,null,true);?>" href="<?=$this->url($this->uriExportPdf,null,true);?>?<?=http_build_query($this->parameters); ?>">PDF</a></li>
+                    <li><a export="records" href-origin="<?=$this->url($this->uriExportPdf,null,true);?>" href="#" data-href="<?=$this->url($this->uriExportPdf,null,true);?>?<?=http_build_query($this->parameters); ?>">PDF</a></li>
                 </ul>
             </div>
         </form>

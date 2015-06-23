@@ -20,9 +20,37 @@
     </div>
 </div>
 
+<? $mainFilters = array(); ?>
+
+<? if(isset($this->filters) && count($this->filters) > 0): ?>
+    <? foreach($this->filters as $paramName=>$paramOptions): ?>
+        <? if(!isset($paramOptions['main']) || $paramOptions['main'] !== true) continue; ?>
+        
+        <? //$name = $curr['n']; ?>
+        <? $mainFilters[] = $paramName; ?>
+        
+        <div class="row-fluid row-filter" style="border-bottom: 1px solid #CCCCCC; margin-bottom: 10px;">
+            <div class="span2" style="margin-left:0px">
+                <input type="hidden" class="column" value="<?= $paramName; ?>" column-type="date" />
+                <?= $paramOptions['label']; ?>
+            </div>
+            
+            <?=$this->partial('/partials/form_filters_div_main.phtml',array('paramName'=>$paramName,'paramOptions'=>$paramOptions, 'parameters'=>$this->parameters)); ?>
+            
+            <div class="span2">
+                <!--
+                <a href="javascript:void(0);" class="btn delete"><i class="icon-minus"></i></a>
+                -->
+            </div>
+        </div>
+    <? endforeach; ?>
+<? endif; ?>
+
+
 <? foreach($this->parameters['q'] as $curr): ?>
     <?
     $name = $curr['n'];
+    if(in_array($name,$mainFilters)) continue;
     ?>
     
     <div class="row-fluid row-filter" style="border-bottom: 1px solid #CCCCCC; margin-bottom: 10px;">
@@ -30,6 +58,7 @@
             <select class="column">
                 <? $subSelects = array(); ?>
                 <? foreach($this->filters as $paramName=>$paramOptions): ?>
+                    <? if(isset($paramOptions['main']) && $paramOptions['main'] === true) continue; ?>
                     <? if(isset($paramOptions['hidden'])) continue; ?>
                     <? if($paramOptions['type'] == 'optgroup'): ?>
                         <? 
@@ -57,6 +86,7 @@
         
         
         <? foreach($this->filters as $paramName=>$paramOptions): ?>
+            <? if(isset($paramOptions['main']) && $paramOptions['main'] === true) continue; ?>
             <? if($paramOptions['type'] == 'optgroup'): ?>
                 <? foreach($paramOptions['options'] as $chieldParamName=>$chieldParamOptions): ?>
                     <?=$this->partial('/partials/form_filters_div.phtml',array('paramName'=>$chieldParamName,'paramOptions'=>$chieldParamOptions,'currParam'=>$curr)); ?>

@@ -34,6 +34,13 @@
             <input type="text" id="access_profile_name" name="access_profile_name" class="span6" disabled="disabled"/>
         </div>
     </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="groups"><?=$this->translate('column-user-actived'); ?></label>
+        <div class="controls">
+            <input type="text" id="actived" name="actived" class="span2" source="actived" readonly="readonly" disabled="disabled"/>
+        </div>
+    </div>
 
     <div class="form-actions">
 	<a class="btn" href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Back'); ?></a>

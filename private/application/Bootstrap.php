@@ -169,6 +169,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/jquery/plugins/fileupload/jquery.iframe-transport.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/jquery/plugins/fileupload/jquery.fileupload.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/jquery/plugins/autosize/jquery.autosize.min.js'))
+                ->addJavascriptFile($this->_view->baseUrl('/resources/js/jquery/plugins/filedownload/jquery.fileDownload.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/assets/langjs'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/app.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/main.js'));

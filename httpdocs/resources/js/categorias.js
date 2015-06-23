@@ -1,13 +1,13 @@
 $(document).ready(function(){
-    if($("#tblTree tbody tr").length > 0){
-        $("#tblTree").treeTable({treeColumn: 1, clickableNodeNames: true, indent: 25});
+    if($("#records tbody tr").length > 0){
+        $("#records").treeTable({treeColumn: 1, clickableNodeNames: true, indent: 25});
     }
     
-    $("#tblTree").find('input[type="checkbox"]').live('click', function(){
+    $("#records").find('input[type="checkbox"]').live('click', function(){
         nodeId = $(this).parents('tr').attr('id');
         thisIsChecked = $(this).attr('checked');
         
-        childNodes = $("#tblTree").find('tr[class^="child-of-' + nodeId + '"]');
+        childNodes = $("#records").find('tr[class^="child-of-' + nodeId + '"]');
         $(childNodes).each(function(){
             if(thisIsChecked == 'checked'){
                 $(this).find('input[type="checkbox"]').attr('checked', 'checked');    
@@ -16,9 +16,22 @@ $(document).ready(function(){
             }
         })
     });
+    
+    $('.category-edit-trigger').click(function(){
+        categoryManagement(this, false);
+    });
+    
+    $('.category-add-trigger').click(function(){
+        categoryManagement(this, true);
+    });
+    
+    $('.category-delete-trigger').click(function(){
+        categoryDelete(this);
+    });
 });
 
-adicionarCategoria = function(idPai){
+
+categoryManagement = function(node, isNew){
     $("#modalCategory").modal().css({
             "width": function () {
                 return ($(document).width() * .5) + "px";
@@ -26,89 +39,138 @@ adicionarCategoria = function(idPai){
             "margin-left": function () {
                 return -($(this).width() / 2);
     }});
-    $('#addBtn').click(function(){
-        catName = $("#catName").val();
-        parentId = idPai;
-        $.ajax({
-            url         : "/categories/edit",
-            method      : 'post',
-            data        : {
-                catName : catName,
-                parentId: parentId
-            },
-            dataType    : 'json',
-            success     : function(a){
-                if(a.redirectTo){
-                   document.location=a.redirectTo;
-                }
 
+    $("#modalCategory").find('input').val('');
+
+    if(isNew == false){
+        $("#modalCategory").find('#category-name').val($(node).attr('data-category-name'));
+        $("#modalCategory").find('#category-parent-id').val($(node).attr('data-category-parent-id'));
+        $("#modalCategory").find('#category-id').val($(node).attr('data-category-id'));
+    }else{
+        if($(node).attr('data-category-parent-id')){
+            $("#modalCategory").find('#category-parent-id').val($(node).attr('data-category-parent-id'));
+        }
+    }
+    
+    $('#addBtn').unbind('click');
+    
+    $('#addBtn').click(function(){
+        $('#addBtn').attr('disabled', 'disabled');
+        
+        postData = {
+            name : $("#modalCategory").find('#category-name').val(),
+            parent_id : $("#modalCategory").find('#category-parent-id').val(),
+        }
+        
+        if(isNew == false){
+            postData.id = $("#modalCategory").find('#category-id').val();
+        }
+        
+        $.ajax({
+            url             : "/ui/categories/form-post",
+            type            : 'post',
+            data            : postData,
+            dataType        : 'json',
+            success         : function(a){
+                if(a.success == '1'){
+                   document.location.reload();
+                }else{
+                    _alert({
+                        type: 'error',
+                        title: 'Error',
+                        text: a.msg
+                    });
+                }
             }
         });
     });
 }
 
-editarCategoria = function(idGrupo){
-    if((!idGrupo) || (idGrupo == undefined)){
-        return;
-    }       
-
-    $.get('/financeiro/lancamento-grupo/get-form',{id: idGrupo}, function(data){
-        $('#modal-from-js').modal({
-            title   : 'Editar Grupo de Lançamento',
-            content : data,
-            clean : true,
-            buttons : {
-                'Confirmar' : {
-                    type: 'primary',
-                    onClick: (function(){
-                        callbackParams = {
-                            hdnId: idGrupo,
-                            edNomeGrupo: $(this).find('#edNomeGrupo').val()
-                        };
-                        confirmCallback(callbackParams);
-                        $(this).modal('hide');
-                    })
-                },
-                'Cancelar' : {
-                    onClick: (function(){
-                        $(this).modal('hide');
-                    })
-                }
-            }
-        }); 
-    });
-}
-
-
 $('#buscaCategorias').typeahead({
     updater : function(a,b){
         $('tr[data-description="' + a + '"]').reveal();
     },
-    source : nomesCategorias
+    source : categoriesName
 });
 
 
-$('#selecionarTodos').click(function(e){
-    $("#tblTree").find('tbody').find('tr').expand();
-    $("#tblTree").find('tbody').find('tr:last').reveal();
+$('#selectAll').click(function(e){
+    $("#records").find('tbody').find('tr').expand();
+    $("#records").find('tbody').find('tr:last').reveal();
 });
 
+categoryDelete = function(node){
+    confirmOptions = {
+        title: app_messages['confirm_single_delete_title'],
+        text: app_messages['confirm_category_deleting'],
+        ok: app_messages['remove'],
+        cancel: app_messages['cancel']
+    };
+    
+    isChild = false;
+    parentNodeId = '';
+    
+    console.log(node);
+    
+    if($(node).hasClass('category-delete-trigger-all') == false){
+        _tr = $(node).parents('tr');
+        _tbody = $(_tr).parents('tbody');
+        
+        subcategories = $(_tbody).find('tr[class^="child-of-' + $(_tr).attr('id') + '"]');
 
-confirmaDelecaoCategoria = function(node){
-    _tr = $(node).parents('tr');
-    _tbody = $(_tr).parents('tbody');
-    _description = $(_tr).attr('data-description');
-    _trId = $(_tr).attr('id');
-    
-    _hasChild = ($(_tbody).find('tr[class^="child-of-' + _trId + '"]').length > 0);
-    
-    if(_hasChild){
-        if(confirm('Você está prestes a excluir a categoria ' + _description + '. Todas as suas subordinadas serão excluídas. Você deseja continuar?')){
-            alert('Exclusão categorias + filhas');
+        if($(subcategories).length > 0){
+            confirmOptions.text = app_messages['confirm_category_with_sub_deleting'];
         }
+        
+        elementCssClass = $(_tr).attr('class').split(' ');
+
+        $(elementCssClass).each(function(a, b){
+            if(b.indexOf('child-of-') != -1){
+                isChild = true;
+                parentNodeId = b.substring(9+(b.indexOf('child-of-')), b.length);
+            }
+        });
+        
+        idToDelete = $(node).attr('data-category-id');
     }else{
-        if(confirm('Você está prestes a excluir a categoria  ' + _description + '. Você deseja continuar?')){
-            alert('Exclusão da categoria');
-        }
+        isChild = false;
+        
+        toDeleteCollection = new Array();
+        
+        $('.cboxSelectRow:checked').each(function(){
+            toDeleteCollection[toDeleteCollection.length] = $(this).val();
+        });
+        
+        idToDelete = toDeleteCollection.join(',');
     }
-}
+    
+    _confirm(
+        confirmOptions
+    ).done(function() {
+        _wait({
+            'text': app_messages['loading_content']
+        });
+
+        $.ajax({
+            url: '/ui/categories/delete',
+            data : {id:idToDelete},
+            type: 'post',
+            dataType: 'json',
+            success: function(a) {
+                if (a.success == '1') {
+                    window.location.reload();
+                } else {
+                    _alert({
+                        type: 'error',
+                        title: 'Error',
+                        text: a.msg
+                    });
+                    
+                    _wait.stop();
+                }
+            }
+        });
+    }).fail(function() {
+        // your optional alert code
+    });
+};

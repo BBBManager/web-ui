@@ -10,21 +10,21 @@ body {
 .input-small.sdatetime{width:130px !important;}
 
 #modalAdvSearch select, #modalLogsAdvSearch select, #modalAdvSearch input[type="text"],  #modalLogsAdvSearch input[type="text"] {
-	width:80%;
+    width:80%;
 }
 
 #modalAdvSearch .row-fluid .span2, #modalLogsAdvSearch .row-fluid .span2 {
-	width:20%;
+    width:20%;
 }
 
 #modalAdvSearch .row-fluid .input-append, #modalLogsAdvSearch .row-fluid .input-append {
-	width:100%;
+    width:100%;
 }
 
 span.input-observation {
-	color: #808080;
-	font-size: 12px;
-	font-style: italic;
+    color: #808080;
+    font-size: 12px;
+    font-style: italic;
 }
 
 h6.subgroup{
@@ -36,26 +36,39 @@ h6.subgroup{
 }
 
 .fileinput-button {
-  position: relative;
-  overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 .fileinput-button input {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  opacity: 0;
-  -ms-filter: 'alpha(opacity=0)';
-  font-size: 200px;
-  direction: ltr;
-  cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px;
+    direction: ltr;
+    cursor: pointer;
 }
 
 /* Fixes for IE < 8 */
 @media screen\9 {
-  .fileinput-button input {
-    filter: alpha(opacity=0);
-    font-size: 100%;
-    height: 100%;
-  }
+    .fileinput-button input {
+        filter: alpha(opacity=0);
+        font-size: 100%;
+        height: 100%;
+    }
+}
+
+.meetingRoomStatus1, .meetingRoomStatus2, .meetingRoomStatus3,
+.meetingRoomStatus1 a, .meetingRoomStatus2 a, .meetingRoomStatus3 a{color:#fff !important;font-weight:bold !important;}
+
+.meetingRoomStatus1{background-color: #f89406 !important;}
+.meetingRoomStatus2{background-color: #5bb75b !important;}
+.meetingRoomStatus3{background-color: #da4f49 !important;}
+
+.select-category.active{
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  background-color: #0088cc;
 }

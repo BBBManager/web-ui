@@ -3,7 +3,11 @@
     <?=$this->renderMessages();?>
     <div class="row-fluid">
         <div class="span6 pull-left">
-            <h4>Web Conference</h4>
+            <h4>
+                <?=BBBManager_Util_Skinning::getInstance()->get('company_name');?>
+                <br/>
+                <?=BBBManager_Util_Skinning::getInstance()->get('system_title');?>
+            </h4>
             <img src="/resources/img/logo.png" />
             <div style="margin-top:20px;">
                 <a href="#" id="forget-my-pass"><?= $this->translate('Forgot password.'); ?></a>

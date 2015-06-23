@@ -11,8 +11,29 @@
             </div>
             <div class="control-group">
                 <label class="control-label" for="nome"><?=$this->translate('column-meeting_room-category'); ?></label>
-                <div class="controls" style="color:#FFBF00">
-                    FASE 02
+                <div class="controls">
+                    <div class="tree well" style="height:220px;overflow: scroll;">
+                        <table id="categoriesTree">
+                            <tbody>
+                                <?
+                                    foreach($this->categories as $category):
+                                ?>
+                                <tr data-description="<?=$category['name'];?>" data-row-id="<?= $category['meeting_room_category_id']; ?>" id="tblTree-<?= (($category['parent_id'] != '') ? $category['hierarchy'] . '-' : '') . $category['meeting_room_category_id']; ?>" <?= (($category['parent_id'] != '') ? 'class="child-of-tblTree-' . $category['hierarchy'] . '"' : ''); ?>>
+                                    <td><span><a class='select-category' href='javascript:void(0);'><?=$category['name'];?></a></span></td>
+                                </tr>
+                                <?
+                                    endforeach;
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="category_id"><?=$this->translate('Selected category');?></label>
+                <div class="controls">
+                    <input type="hidden" name="category_id" id="category_id" />
+                    <input type="text" id="category-name" readonly="readonly" disabled="disabled"/>
                 </div>
             </div>
             <h5><?=$this->translate('Schedule'); ?></h5>

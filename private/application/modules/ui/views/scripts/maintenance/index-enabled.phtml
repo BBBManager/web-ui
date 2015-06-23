@@ -14,7 +14,6 @@ if (IMDT_Util_Acl::getInstance()->isAllowed('maintenance', 'edit')):
 ?>
     <div class="form-actions">
 	<form action="<?= $this->url(array('action' => 'form-post')); ?>" class="ajaxsubmit">
-	    <input type="hidden" name="id" value="<?= (isset($this->maintenance['maintenance_id']) ? $this->maintenance['maintenance_id'] : ''); ?>" />
 	    <input type="hidden" name="active" value="0" />
 	    <input type="hidden" name="download" value="0" />
 	    <button type="submit" class="btn btn-primary"><?= $this->translate('Disable now'); ?></button>
@@ -28,7 +27,6 @@ endif;
 
 <div id="modalMaintenance" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 80%; margin-left:-40%;">
     <form method="post" action="<?= $this->url(array('action' => 'form-post')); ?>" class="no-reset">
-        <input type="hidden" name="id" value="<?= (isset($this->maintenance['maintenance_id']) ? $this->maintenance['maintenance_id'] : ''); ?>" />
         <input type="hidden" name="active" value="1" />
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

@@ -9,6 +9,8 @@ class Ui_SpeedProfilesController extends IMDT_Controller_Abstract {
         $this->filters['max_upload'] = array('name'=>'name','label'=>$this->_helper->translate('column-ic_profile-max_upload'),'type'=>'integer');
         $this->filters['observations'] = array('name'=>'observations','label'=> $this->_helper->translate('column-ic_profile-observations'),'type'=>'text');
         
+        $this->filters['main_name'] = array('main'=>true, 'name'=>'name', 'label'=>$this->_helper->translate('column-ic_profile-name'), 'type'=>'text', 'condition'=>'in');
+        
         $this->api = 'speed-profiles';
         $this->pkey = 'ic_profile_id';
         
@@ -89,6 +91,7 @@ class Ui_SpeedProfilesController extends IMDT_Controller_Abstract {
         } else {
             header('Content-type: '.BBBManager_Config_Defines::$CONTENT_TYPE_PDF);
         }
+        header('Set-Cookie: fileDownload=true; path=/');
         header('Content-Disposition: attachment; filename="'.$this->_request->getControllerName().'.pdf"');
         echo file_get_contents($response['url']);
         exit;

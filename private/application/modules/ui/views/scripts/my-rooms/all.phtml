@@ -1,0 +1,132 @@
+<h4><?=$this->translate('All Meetings'); ?></h4>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="pull-left">
+            <a class="btn" href="<?=$this->url(array('module' => 'ui', 'controller' => 'my-rooms'),'default', true);?>"><i class="icon-arrow-left"></i> <?=$this->translate('Back'); ?>!</a>
+        </div>
+
+        <div class="pull-right">
+            <form id="frmMainFilter" class="form-inline" method="POST">
+                <div class="row-filter" style="float: left;">
+                    <input type="hidden" class="column" value="recordings_count" column-type="integer" />
+                    <div class="filter-values recordings_count">
+                        <input type="hidden" class="condition" value="g" />
+                        <label class="checkbox" style="margin-right:20px;margin-top:4px;">
+                            <input type="checkbox" name="hide-rooms-without-recordings" id="hideRoomsWithoutRecordings" value="0" class="value view-mode-<?=$this->view_mode;?>" <?=((isset($this->parameters['recordings_count'])) && ($this->parameters['recordings_count'] > 0) ? ' checked="checked"' : '');?>> <?=IMDT_Util_Translate::_('Hide rooms without recordings');?>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row-filter" style="float: left;">
+                    <input type="hidden" class="column" value="date_start" column-type="date" />
+                    <div class="filter-values date_start">
+                        <input type="hidden" class="condition" value="b" />
+                        <label class="text" for="minDate">
+                            <?=$this->translate('column-meeting_room-date_start-filter'); ?> <?=$this->translate('between'); ?> 
+                            <div class="input-append datepick">
+                                <input name="min-date" id="minDate" type="text" class="input-small value" data-format="<?=$this->translate('dateFormat-datepicker'); ?>" value="<?=isset($this->parameters['date_start']) ? IMDT_Util_Date::filterDateToCurrentLang($this->parameters['date_start']) : ''; ?>">
+                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                            </div>
+                        </label>
+                        <label class="text" for="maxDate">
+                             <?=$this->translate('and'); ?>
+                             <div class="input-append datepick">
+                                <input name="max-date" id="maxDate" type="text" class="input-small value_2" data-format="<?=$this->translate('dateFormat-datepicker'); ?>" value="<?=isset($this->parameters['date_start_2']) ? IMDT_Util_Date::filterDateToCurrentLang($this->parameters['date_start_2']) : ''; ?>">
+                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <?
+                    if($this->view_mode == 'tree'):
+                ?>
+                <button class="btn" type="submit" style="margin-left:8px;"><i class="icon-search"></i> <?=$this->translate('Refresh'); ?>!</button>
+                <?
+                    else:
+                ?>
+                <button class="btn" type="button" onclick="applyFilter('#records');" style="margin-left:8px;"><i class="icon-search"></i> <?=$this->translate('Refresh'); ?>!</button>
+                <?
+                    endif;
+                ?>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="btn-group">
+            <a class="btn<?=($this->view_mode == 'list' ? ' active' : '');?>" href="<?=$this->url(array('module'=>'ui','controller'=>'my-rooms','action'=>'all'), 'default', true);?>"><i class="icon-list"></i> Visualização em Lista</a>
+            <a class="btn<?=($this->view_mode == 'tree' ? ' active' : '');?>" href="<?=$this->url(array('module'=>'ui','controller'=>'my-rooms','action'=>'all', 'view-mode'=>'tree'), 'default', true);?>"><i class="icon-indent-left"></i> Visualização em Árvore</a>
+        </div>
+    </div>
+</div>
+
+
+<?
+    if($this->view_mode == 'tree'):
+?>
+
+    <div class="row-fluid">
+        <div class="span9 well" style="margin-top:8px;">
+            <table id="categoriesTree">
+                <tbody>
+                    <?
+                        foreach($this->collection as $item):
+                    ?>
+                    <tr data-description="<?=$item['name'];?>" data-row-id="<?= $item['id']; ?>" id="tblTree-<?= (($item['parent_id'] != '') ? $item['hierarchy'] . '-' : '') . $item['id']; ?>" <?= (($item['parent_id'] != '') ? 'class="child-of-tblTree-' . $item['hierarchy'] . '"' : ''); ?>>
+                        <td><span <?=(isset($item['status']) ? ' class="badge meetingRoomStatus' . $item['status'] . '"': '');?>><a <?=(isset($item['date_start']) ? ' data-toggle="tooltip" title="' . $item['date_start'] . '-' . $item['date_end'] . '"' : '');?> href="<?=$this->url(array_merge(array('module'=>'ui','controller'=>'recordings', 'action'=>'view', 'id'=>$item['id']), $this->ui_state), 'default', true);?>"><?=$item['name'];?></a></span></td>
+                    </tr>
+                    <?
+                        endforeach;
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?
+    else:
+?>
+
+<div class="row-fluid" style="margin-top:8px;">
+    <table class="table dtables" id="records" ajaxsource="<?=$this->url(array_merge($this->tableSource,$this->parameters),null,true);?>" ajaxsource-nofilters="<?=$this->url($this->tableSource,null,true);?>">
+        <thead>
+            <tr>
+                <th><?=$this->translate('column-meeting_room-name'); ?></th>
+                <th class="no-search"><?=$this->translate('column-meeting_room-date_start'); ?></th>
+                <th class="no-search"><?=$this->translate('column-meeting_room-date_end'); ?></th>
+                <th nowrap="nowrap" class="no-sort"><?=$this->translate('Actions'); ?></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<?
+    endif;
+?>
+
+<div class="row-fluid">
+    <div class="span12">
+        <h4><?=IMDT_Util_Translate::_('Legend');?></h4>
+    </div>
+    
+    <div class="row-fluid">
+        <div class="span12">
+            <a class="btn btn-mini btn-success">&nbsp;</a> <?=BBBManager_Config_Defines::getMeetingRoomStatus(BBBManager_Config_Defines::$ROOM_OPENED);?>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <a class="btn btn-mini btn-warning">&nbsp;</a> <?=BBBManager_Config_Defines::getMeetingRoomStatus(BBBManager_Config_Defines::$ROOM_WAITING);?>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <a class="btn btn-mini btn-danger">&nbsp;</a> <?=BBBManager_Config_Defines::getMeetingRoomStatus(BBBManager_Config_Defines::$ROOM_CLOSED);?>
+        </div>
+    </div>
+</div>

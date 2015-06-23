@@ -12,6 +12,9 @@ class Error_ErrorController extends Zend_Controller_Action
             return;
         }
         
+        $showDetails = true;
+        $showGoToHomeButton = false;
+        
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -20,6 +23,8 @@ class Error_ErrorController extends Zend_Controller_Action
                 $this->getResponse()->setHttpResponseCode(404);
                 $priority = Zend_Log::NOTICE;
                 $this->view->message = $this->_helper->translate('Page not found');
+                $showDetails = false;
+                $showGoToHomeButton = true;
                 break;
             default:
                 // application error
@@ -36,11 +41,15 @@ class Error_ErrorController extends Zend_Controller_Action
         }
         
         // conditionally display exceptions
-        if ($this->getInvokeArg('displayExceptions') == true) {
+        if ($this->getInvokeArg('displayExceptions') == true && ($showDetails == true)) {
             $this->view->exception = $errors->exception;
         }
-		
-        $this->view->request   = $errors->request;
+        
+        if($showDetails == true){
+            $this->view->request   = $errors->request;    
+        }
+        
+        $this->view->showGoToHomeButton = $showGoToHomeButton;
     }
 
     public function getLog()

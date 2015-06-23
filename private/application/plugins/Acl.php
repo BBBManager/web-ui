@@ -2,7 +2,10 @@
 class BBBManager_Plugin_Acl extends Zend_Controller_Plugin_Abstract {
     public function preDispatch(Zend_Controller_Request_Abstract $request) {
 		
-	if(Zend_Auth::getInstance()->hasIdentity() == false){
+	//if(Zend_Auth::getInstance()->hasIdentity() == false){
+        $authData = Zend_Auth::getInstance()->getStorage()->read();
+        
+        if(! isset($authData['id'])){
 	    return;
 	}
 	

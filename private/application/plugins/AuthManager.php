@@ -18,6 +18,23 @@ class BBBManager_Plugin_AuthManager extends Zend_Controller_Plugin_Abstract {
         //$hasUserAndPassword = ((isset($arguments['user']) && $arguments['user'] != '') && ((isset($arguments['password']) && $arguments['password'] != '')));
         $hasUserIdAndToken = ((isset($arguments['userId']) && $arguments['userId'] != '') && ((isset($arguments['token']) && $arguments['token'] != '')));*/
         
+        $autoJoinToken = $request->getParam('aj', null);
+	$uid =  $request->getParam('uid', null);
+        
+        if($autoJoinToken != null){
+		IMDT_Util_Auth::getInstance()->set('token', $autoJoinToken);
+		IMDT_Util_Auth::getInstance()->set('userId', $uid);
+            $apiResponse = IMDT_Util_Rest::get('/api/auto-join/' . $autoJoinToken);
+            if($apiResponse['success'] == '1'){
+		Zend_Auth::getInstance()->getStorage()->write($apiResponse['data']);
+		$redirectToRefererNs = new Zend_Session_Namespace('redirectToReferer');
+		/*var_dump($redirectToRefererNs->uri);
+		var_dump( Zend_Auth::getInstance()->hasIdentity());die;
+		$this->getResponse()->setRedirect('/ui/my-rooms/go/id/' . $request->getParam('id'));*/
+		$redirectToRefererNs->uri = '/ui/my-rooms/go/id/' . $request->getParam('id');
+            }
+		
+        }
         $requestingPublicResource = ($request->getModuleName() == 'ui' && $request->getControllerName() == 'assets');
         $requestingPublicResource = $requestingPublicResource || ($request->getModuleName() == 'ui' && $request->getControllerName() == 'public-rooms');
         $requestingPublicResource = $requestingPublicResource || ($request->getModuleName() == 'login' && $request->getControllerName() == 'auth' && $request->getActionName() == 'auth');
@@ -33,15 +50,23 @@ class BBBManager_Plugin_AuthManager extends Zend_Controller_Plugin_Abstract {
             return;
         }*/
         
-        if((! Zend_Auth::getInstance()->hasIdentity()) && (! $requestingPublicResource)) {
+        $authData = Zend_Auth::getInstance()->getStorage()->read();
+        
+        if((! isset($authData['id'])) && (! $requestingPublicResource)) {
             $request->setModuleName('login')
                     ->setControllerName('auth')
                     ->setActionName('index');
             
             Zend_Layout::getMvcInstance()->setLayout('auth');
-	    
-	    $redirectToRefererNs = new Zend_Session_Namespace('redirectToReferer');
-	    $redirectToRefererNs->uri = $this->_originalRequestedUrl;
+            
+            $ignoredRedirects = array(
+                '/favicon.ico'
+            );
+            
+            if(! in_array($this->_originalRequestedUrl, $ignoredRedirects)){
+                $redirectToRefererNs = new Zend_Session_Namespace('redirectToReferer');
+                $redirectToRefererNs->uri = $this->_originalRequestedUrl;
+            }
         }
     }
 }

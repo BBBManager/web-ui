@@ -2,170 +2,164 @@
 
 class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
-    protected $_meetingRoomCategoryDbTable;
-
     public function init() {
-        $this->_meetingRoomCategoryDbTable = new Ui_Model_MeetingRoomCategory();
         $this->view->headScript()->appendFile($this->view->baseUrl('/resources/js/categorias.js'));
     }
 
     public function indexAction() {
-
-        $this->view->arrCategorias = array(
-            array(
-                'id' => 19,
-                'description' => 'Debates',
-                'parentId' => ''
-            ),
-            array(
-                'id' => 20,
-                'description' => 'Eleições',
-                'parentId' => 19,
-                'hierarchy' => '19'
-            ),
-            array(
-                'id' => 21,
-                'description' => 'Outros',
-                'parentId' => 19,
-                'hierarchy' => '19'
-            ),
-            array(
-                'id' => 1,
-                'description' => 'Treinamentos',
-                'parentId' => ''
-            ),
-array(
-                'id' => 15,
-                'description' => 'Administrativos',
-                'parentId' => 1,
-                'hierarchy' => '1'
-            ),
-            array(
-                'id' => 17,
-                'description' => 'CIPA',
-                'parentId' => 15,
-                'hierarchy' => '1-15'
-            ),
-            array(
-                'id' => 16,
-                'description' => 'Gestão',
-                'parentId' => 15,
-                'hierarchy' => '1-15'
-            ),
-            array(
-                'id' => 2,
-                'description' => 'Jurídicos',
-                'parentId' => 1,
-                'hierarchy' => '1'
-            ),
-            array(
-                'id' => 3,
-                'description' => 'Cível',
-                'parentId' => 2,
-                'hierarchy' => '1-2'
-            ),
-            array(
-                'id' => 4,
-                'description' => 'Atualização de Processo Civil',
-                'parentId' => 3,
-                'hierarchy' => '1-2-3'
-            ),
-            array(
-                'id' => 5,
-                'description' => 'Aula 1/3',
-                'parentId' => 4,
-                'hierarchy' => '1-2-3-4'
-            ),
-            array(
-                'id' => 6,
-                'description' => 'Aula 2/3',
-                'parentId' => 4,
-                'hierarchy' => '1-2-3-4'
-            ),
-            array(
-                'id' => 7,
-                'description' => 'Aula 3/3',
-                'parentId' => 4,
-                'hierarchy' => '1-2-3-4'
-            ),
-            array(
-                'id' => 8,
-                'description' => 'Direito do Consumidor',
-                'parentId' => 3,
-                'hierarchy' => '1-2-3'
-            ),
-            array(
-                'id' => 9,
-                'description' => 'Aula 1/2',
-                'parentId' => 8,
-                'hierarchy' => '1-2-3-8'
-            ),
-            array(
-                'id' => 10,
-                'description' => 'Aula 2/2',
-                'parentId' => 8,
-                'hierarchy' => '1-2-3-8'
-            ),
-            array(
-                'id' => 11,
-                'description' => 'Constitucional',
-                'parentId' => 2,
-                'hierarchy' => '1-2'
-            ),
-            array(
-                'id' => 12,
-                'description' => 'Criminal',
-                'parentId' => 2,
-                'hierarchy' => '1-2'
-            ),
-            array(
-                'id' => 13,
-                'description' => 'Crimes Ambientais',
-                'parentId' => 12,
-                'hierarchy' => '1-2-12'
-            ),
-            array(
-                'id' => 14,
-                'description' => 'Efeitos da PEC/37',
-                'parentId' => 12,
-                'hierarchy' => '1-2-12'
-            ),            
-            array(
-                'id' => 18,
-                'description' => 'Integração',
-                'parentId' => 1,
-                'hierarchy' => '1'
-            )
-        );
-
-        $nomeCategorias = array();
-
-        foreach ($this->view->arrCategorias as $categoria) {
-            $nomeCategorias[] = $categoria['description'];
+        $objResponse = new stdClass();
+        try{
+            $response = IMDT_Util_Rest::get('/api/categories');
+            
+            if($response['success'] != '1'){
+                throw new Exception($response['msg']);
+            }
+            
+            $this->view->rCategories = array();
+            $this->view->rCategoriesName = array();
+            
+            foreach($response['collection'] as $category){
+                
+                if(isset($category['hierarchy'])){
+                    $this->view->rCategories[] = array(
+                        'id'            => $category['meeting_room_category_id'],
+                        'name'          => $category['name'],
+                        'parent_id'     => $category['parent_id'],
+                        'hierarchy'     => $category['hierarchy'],
+                        'path'          => $category['path']
+                    );
+                }else{
+                    $this->view->rCategories[] = array(
+                        'id'            => $category['meeting_room_category_id'],
+                        'name'          => $category['name'],
+                        'parent_id'     => $category['parent_id']
+                    );
+                }
+                
+                $this->view->rCategoriesName[] = $category['name'];
+            }
+        } catch (Exception $ex) {
+            $objResponse->success = '0';
+            $objResponse->msg = $ex->getMessage();
         }
-
-        $this->view->nomeCategorias = $nomeCategorias;
+        $this->view->uriExport = array('module' => $this->_request->getModuleName(), 'controller' => $this->_request->getControllerName(), 'action' => 'export');
+        $this->view->uriExportPdf = array('module' => $this->_request->getModuleName(), 'controller' => $this->_request->getControllerName(), 'action' => 'export-pdf');
     }
 
-    public function editAction() {
+    public function formPostAction() {
+        $this->_disableViewAndLayout();
+        
+        $objResponse = new stdClass();
 
-        $catId = $this->_getParam('catId', null);
-        $parentId = $this->_getParam('parentId', null);
-        $isEdit = is_null($catId) ? false : true;
+        try {
+            $id = $this->_request->getParam('id', null);
 
-        if (!$isEdit) {
-            $insert = array(
-                'name' => $this->_getParam('catName', null),
-                'create_date' => date("Y-m-d H:i:s"),
-                'parent_id' => $parentId
-            );
-            $newRoomId = $this->_meetingRoomCategoryDbTable->insert($insert);
-            if ($this->_request->isXmlHttpRequest()) {
-                $this->addMessage(array('success' => 'Categoria adicionda com sucesso'));
-                $this->_helper->json(array('redirectTo' => '/categories/index'));
+            if (!$this->_request->isPost())
+                throw new Exception($this->_helper->translate('Invalid Request'));
+
+            $data = array();
+            $data['name'] = $this->_request->getPost('name', null);
+            $data['parent_id'] = $this->_request->getPost('parent_id', null);
+
+            if ($id == null) {
+                $arrRestResponse = IMDT_Util_Rest::post('/api/categories', $data);
+            } else {
+                $arrRestResponse = IMDT_Util_Rest::put('/api/categories/' . $id, $data);
             }
+
+            $objResponse->success = '1';
+            $objResponse->msg = $arrRestResponse['msg'];
+            $objResponse->redirect = $this->view->url(array('action' => 'index'));
+        } catch (IMDT_Controller_Exception_InvalidToken $e1) {
+            $objResponse->success = '-1';
+            $objResponse->msg = '';
+        } catch (Exception $e) {
+            $objResponse->success = '0';
+            $objResponse->msg = $e->getMessage();
         }
+
+        $this->_helper->json($objResponse);
+    }
+    
+    public function deleteAction(){
+        $objResponse = new stdClass();
+
+        try {
+            $id = $this->_request->getParam('id', null);
+            
+            if($id == null || (trim($id)) == ''){
+                throw new Exception(IMDT_Util_Translate::_('Invalid category'). '.');
+            }
+            
+            $response = IMDT_Util_Rest::delete('/api/categories/' . $id);
+
+            $objResponse->success = '1';
+            $objResponse->msg = $response['msg'];
+        } catch (IMDT_Controller_Exception_InvalidToken $e1) {
+            $objResponse->success = '-1';
+            $objResponse->msg = '';
+        } catch (Exception $e) {
+            $objResponse->success = '0';
+            $objResponse->msg = $e->getMessage();
+        }
+
+        $this->_helper->json($objResponse);
+    }
+    
+    public function exportAction() {
+        $this->_disableViewAndLayout();
+
+        $params = array();
+        $params['export'] = 'csv';
+
+        $headers = array();
+        $headers['columns-leach'] = 'meeting_room_category_id,name,parent_id';
+
+        $response = IMDT_Util_Rest::get('/api/categories.json', $params, $headers);
+
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('utf8', 0)) {
+            header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_CSV . '; charset=utf-8');
+        } else {
+            header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_CSV);
+        }
+        header('Content-Disposition: attachment; filename="' . $this->_request->getControllerName() . '.csv"');
+        echo file_get_contents($response['url']);
+        exit;
+    }
+
+    public function exportPdfAction() {
+        $this->_disableViewAndLayout();
+
+        $params = array();
+        $params['export'] = 'pdf';
+
+        $headers = array();
+        $headers['columns-leach'] = 'meeting_room_category_id,name,parent_id';
+        $headers['columns-desc'] = $this->_helper->translate('column-category-id');
+        $headers['columns-desc'] .= ',' . $this->_helper->translate('column-category-name');
+        $headers['columns-desc'] .= ',' . $this->_helper->translate('column-category-parent_id');
+        
+        $headers['columns-format'] = 'null';
+        $headers['columns-format'] .= ',' . 'null';
+        $headers['columns-format'] .= ',' . 'null';
+        
+        $response = IMDT_Util_Rest::get('/api/categories.json', $params, $headers);
+
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('utf8', 0)) {
+            header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_PDF . '; charset=utf-8');
+        } else {
+            header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_PDF);
+        }
+        header('Set-Cookie: fileDownload=true; path=/');
+        header('Content-Disposition: attachment; filename="' . $this->_request->getControllerName() . '.pdf"');
+        echo file_get_contents($response['url']);
+        exit;
     }
 
 }
-

@@ -22,4 +22,7 @@ class IMDT_Util_Auth{
     public function getData(){
 	return $this->_authData;
     }
+public function set($key, $value){
+	$this->_authData[$key] = $value;
+}
 }

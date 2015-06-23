@@ -9,8 +9,8 @@
     </div>
     <div class="control-group">
         <label class="control-label" for="nome"><?=$this->translate('column-meeting_room-category'); ?></label>
-        <div class="controls" style="color:#FFBF00">
-            FASE 02
+        <div class="controls">
+            <input type="text" id="category_name" name="category_name" readonly="readonly" disabled="disabled"/>
         </div>
     </div>
     <h5><?=$this->translate('Schedule'); ?></h5>
@@ -132,19 +132,6 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label"><?=$this->translate('column-meeting_room-lock_allow_moderator_locking'); ?></label>
-            <div class="controls">
-                <label class="radio" style="display:inline-block;">
-                    <input type="radio" name="lock_allow_moderator_locking" value="1" />
-                    <?=$this->translate('Yes'); ?>
-                </label> <br />
-                <label class="radio" style="display:inline-block;">
-                    <input type="radio" name="lock_allow_moderator_locking" value="0" />
-                    <?=$this->translate('No'); ?>
-                </label>
-            </div>
-        </div>
-        <div class="control-group">
             <label class="control-label"><?=$this->translate('column-meeting_room-lock_disable_mic_for_locked_users'); ?></label>
             <div class="controls">
                 <label class="radio" style="display:inline-block;">
@@ -192,6 +179,20 @@
                 </label> <br />
                 <label class="radio" style="display:inline-block;">
                     <input type="radio" name="lock_disable_private_chat_for_locked_users" value="0" />
+                    <?=$this->translate('No'); ?>
+                </label>
+            </div>
+        </div>
+    
+        <div class="control-group">
+            <label class="control-label"><?=$this->translate('column-meeting_room-lock_layout_for_locked_users'); ?></label>
+            <div class="controls">
+                <label class="radio" style="display:inline-block;">
+                    <input type="radio" name="lock_layout_for_locked_users" value="1" />
+                    <?=$this->translate('Yes'); ?>
+                </label> <br />
+                <label class="radio" style="display:inline-block;">
+                    <input type="radio" name="lock_layout_for_locked_users" value="0" />
                     <?=$this->translate('No'); ?>
                 </label>
             </div>
@@ -323,7 +324,10 @@
         <?
         if (IMDT_Util_Acl::getInstance()->isAllowed('rooms', 'send_invites')):
         ?>
-        <a class="btn" href="#" open-modal-form="#modalInvite" form-data=''><i class="icon-envelope"></i> <?=$this->translate('Send invitations'); ?></a>
+        <a href="#" class="btn btn-primary send-invitatios" data-meeting-room-id="<?=$this->id;?>" form-data=''><?= $this->translate('Send invitations'); ?></a>
+        <!--
+        <a class="btn" href="#" open-modal-form="modalInvite" form-data=''><i class="icon-envelope"></i> <?=$this->translate('Send invitations'); ?></a>
+        -->
         <?
             endif;
         ?>
@@ -338,26 +342,32 @@
 </form>
 
 
-<div id="modalInvite" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form id="form-invite" class="form-horizontal no-loading no-reset" action="<?=$this->url(array('action'=>'form-invite-post'));?>" source="<?=$this->url(array('action'=>'form-invite-content','id'=>$this->id));?>">
+<div id="modalInvite-<?=$this->id;?>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="form-invite" data-form-invite="form-invite" class="form-vertical no-loading no-reset load-onclick" action="<?=$this->url(array('action'=>'form-invite-post'));?>" source="<?=$this->url(array('action'=>'form-invite-content','id'=>$this->id));?>">
         <input type="hidden" name="meeting_room_id" id="meeting_room_id" value="<?=$this->id;?>" />
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><?=$this->translate('Send invitations'); ?></h3>
         </div>
         <div class="modal-body">
-            <div class="control-group">
-                <label class="control-label" for="invite_template_id"><?=$this->translate('column-invite_template-name'); ?></label>
-                <input type="hidden" id="invite_template_id" name="invite_template_id" class="span6 select2" source="templates" />
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="subject"><?=$this->translate('column-invite_template-subject'); ?></label>
-                <input type="text" class="span6" id="subject" name="subject" style="margin-left:45px;" />
-            </div>
-            
-            <div class="control-group">
-                <label class="control-label" for="body"><?=$this->translate('column-invite_template-body'); ?></label> <br clear="all" />
-                <textarea class="input-block-level" name="body" id="body" rows="8" class="ckeditor"></textarea>
+            <div class="row-fluid">
+                <div class="span3">
+                    <div class="control-group">
+                        <label class="control-label" for="invite_template_id"><?=$this->translate('column-invite_template-name'); ?></label>
+                        <input type="hidden" id="invite_template_id" name="invite_template_id" class="span12 select2" source="templates" />
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="subject"><?=$this->translate('column-invite_template-subject'); ?></label>
+                        <input type="text" class="input-block-level" id="subject" name="subject" />
+                    </div>
+                </div>
+                
+                <div class="span9">
+                    <div class="control-group">
+                        <label class="control-label" for="body"><?=$this->translate('column-invite_template-body'); ?></label> <br clear="all" />
+                        <textarea class="input-block-level" name="body" id="body" rows="6" class="ckeditor"></textarea>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -379,10 +389,12 @@
             <span class="save-buttons">
                 <button type="submit" class="btn btn-primary"><?=$this->translate('Send now'); ?></button>
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+                
             </span>
             <span class="success-buttons hide">
                 <div class="alert alert-success" style="text-align:center;"></div>
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><?=$this->translate('Close'); ?></button>
+                <button type="btn" class="btn btn-primary hidden confirm"><?= $this->translate('Confirm'); ?></button>
             </span>
             <span class="loading hide">
                 <div style="text-align:center;"><?=$this->translate('Invitations are being sent'); ?></div>

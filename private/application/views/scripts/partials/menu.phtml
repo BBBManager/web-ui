@@ -1,47 +1,22 @@
 <div class="accordion" id="accordion2">
     <?
 	$roomAccess = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_MY_ROOMS_RESOURCE]) ? true : false);
-	$recordingAccess = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_ACCESS_RECORDING_RESOURCE]) ? true : false);
 	$groups = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_GROUP_RESOURCE]) ? true : false);
 	$speedProfiles = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_SPEED_PROFILES_RESOURCE]) ? true : false);
 	$tags = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_TAG_RESOURCE]) ? true : false);
 	$users = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_USER_RESOURCE]) ? true : false);
 	$rooms = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_ROOM_RESOURCE]) ? true : false);
-	$categories = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_CATEGORY_RESOURCE]) ? true : false);
-	$recordings = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_RECORDING_RESOURCE]) ? true : false);
-    $accessLogs = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_ACCESS_LOGS_RESOURCE]) ? true : false);
+	$roomCategories = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_CATEGORY_RESOURCE]) ? true : false);
+        $accessLogs = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_ACCESS_LOGS_RESOURCE]) ? true : false);
 	$inviteTemplates = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_INVITE_TEMPLATE_RESOURCE]) ? true : false);
 	$maintenanceMode = (isset($this->allowedMenuItens[BBBManager_Config_Defines::$ACL_MAINTENANCE_RESOURCE]) ? true : false);
     ?>
-    
     <?
-	if($roomAccess || $recordingAccess):
+	if($roomAccess):
     ?>
     <div class="accordion-group">
       <div class="accordion-heading">
-	<a class="accordion-toggle filhos" data-toggle="collapse" data-parent="#accordion2" href="#collapseAcessar">
-	  <?= $this->translate('Access'); ?><i class="icon-chevron-right pull-right"></i>
-	</a>
-      </div>
-      <div id="collapseAcessar" class="accordion-body collapse">
-	<div class="accordion-inner">
-	    <ul class="nav nav-list">
-		<?
-		    if($recordingAccess):
-		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/recordings/list')) ? ' class="active"' : '');?>><a href="/ui/recordings/list"><?= $this->translate('Records'); ?></a></li>
-		<?
-		    endif;
-		?>
-		<?
-		    if($roomAccess):
-		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/my-rooms/index', '/ui/my-rooms')) ? ' class="active"' : '');?>><a href="/ui/my-rooms"><?= $this->translate('Meeting Rooms'); ?></a></li>
-		<?
-		    endif;
-		?>
-	    </ul>
-	</div>
+	<a class="accordion-toggle" data-parent="#accordion2" <a href="/ui/my-rooms"><?= $this->translate('Meeting Rooms Access'); ?></a>
       </div>
     </div>
     <?
@@ -74,54 +49,18 @@
 	endif;
     ?>
     <?
-	if($categories || $recordings || $rooms || $tags):
+	if($rooms):
     ?>
     <div class="accordion-group">
       <div class="accordion-heading">
-	<a class="accordion-toggle filhos" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-	  <?= $this->translate('Meeting Rooms'); ?><i class="icon-chevron-right pull-right"></i>
-	</a>
-      </div>
-      <div id="collapseOne" class="accordion-body collapse">
-	<div class="accordion-inner">
-	    <ul class="nav nav-list">
-		<?
-		    if($categories):
-		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/categories/index')) ? ' class="active"' : '');?>><a href="/ui/categories"><?= $this->translate('Categories'); ?></a></li>
-		<?
-		    endif;
-		?>
-		<?
-		    if($recordings):
-		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/recordings/index','/ui/recordings/edit')) ? ' class="active"' : '');?>><a href="/ui/recordings/index"><?= $this->translate('Records'); ?></a></li>
-		<?
-		    endif;
-		?>
-		<?
-		    if($rooms):
-		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/rooms/index', '/ui/rooms/edit')) ? ' class="active"' : '');?>><a href="/ui/rooms/index"><?= $this->translate('Meeting Rooms'); ?></a></li>
-		<?
-		    endif;
-		?>
-		<?
-		    if($tags):
-		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/tags/index')) ? ' class="active"' : '');?>><a href="/ui/tags/index"><?= $this->translate('Tags'); ?></a></li>
-		<?
-		    endif;
-		?>
-	    </ul>
-	</div>
+	<a class="accordion-toggle" data-parent="#accordion2" <a href="/ui/rooms/index"><?= $this->translate('Meeting Rooms'); ?></a>
       </div>
     </div>
     <?
 	endif;
     ?>
     <?
-	if($inviteTemplates || $maintenanceMode || $accessLogs):
+	if($roomCategories || $inviteTemplates || $maintenanceMode || $accessLogs):
     ?>
     <div class="accordion-group">
       <div class="accordion-heading">
@@ -133,9 +72,9 @@
 	<div class="accordion-inner">
 	    <ul class="nav nav-list">
 		<?
-		    if($inviteTemplates):
+		    if($roomCategories):
 		?>
-		<li <?=(in_array($this->currentUrl, array('/ui/invite-templates/index')) ? ' class="active"' : '');?>><a href="/ui/invite-templates/index"><?= $this->translate('Invite Templates'); ?></a></li>
+		<li <?=(in_array($this->currentUrl, array('/ui/categories/index')) ? ' class="active"' : '');?>><a href="/ui/categories"><?= $this->translate('Categories'); ?></a></li>
 		<?
 		    endif;
 		?>
@@ -143,6 +82,13 @@
 		    if($accessLogs):
 		?>
 		<li <?=(in_array($this->currentUrl, array('/ui/access-logs/index')) ? ' class="active"' : '');?>><a href="/ui/access-logs/index"><?= $this->translate('Access Logs'); ?></a></li>
+		<?
+		    endif;
+		?>
+		<?
+		    if($inviteTemplates):
+		?>
+		<li <?=(in_array($this->currentUrl, array('/ui/invite-templates/index')) ? ' class="active"' : '');?>><a href="/ui/invite-templates/index"><?= $this->translate('Invite Templates'); ?></a></li>
 		<?
 		    endif;
 		?>

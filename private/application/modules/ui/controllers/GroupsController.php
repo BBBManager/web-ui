@@ -4,7 +4,7 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
     public function init() {
         $this->filters = array();
         $this->filters['name'] = array('name'=>'name','label'=> $this->_helper->translate('column-group-name'),'type'=>'text');
-        $this->filters['auth_mode_id'] = array('name'=>'auth_mode_id','label'=> $this->_helper->translate('column-auth_mode-name'),'type'=>'combo','source'=>'auth_mode');
+        $this->filters['auth_mode_id'] = array('name'=>'auth_mode_id','label'=> $this->_helper->translate('column-group-auth_mode-name'),'type'=>'combo','source'=>'group_auth_mode');
         $this->filters['access_profile_id'] = array('name'=>'access_profile_id','label'=> $this->_helper->translate('column-access_profile-name'),'type'=>'combo','source'=>'access_profile');
         $this->filters['user_attendee'] = array('name'=>'user_attendee','label'=> $this->_helper->translate('column-group-user_attendee'),'type'=>'combo-remote','url'=>array('controller'=>'users','action'=>'remote-search'));
         $this->filters['user_attendee_login'] = array('name'=>'user_attendee_login','label'=> $this->_helper->translate('column-group-user_attendee_login'),'type'=>'text');
@@ -12,8 +12,10 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
         $this->filters['user_attendee_auth_mode'] = array('name'=>'user_attendee_auth_mode','label'=> $this->_helper->translate('column-group-user_attendee_auth_mode'),'type'=>'combo','source'=>'auth_mode');
         $this->filters['group_attendee'] = array('name'=>'group_attendee','label'=> $this->_helper->translate('column-group-group_attendee'),'type'=>'combo','source'=>'group');
         $this->filters['group_attendee_name'] = array('name'=>'group_attendee_name','label'=> $this->_helper->translate('column-group-group_attendee_name'),'type'=>'text');
-        $this->filters['group_attendee_auth_mode'] = array('name'=>'group_attendee_auth_mode','label'=> $this->_helper->translate('column-group-group_attendee_auth_mode'),'type'=>'combo','source'=>'auth_mode');
+        $this->filters['group_attendee_auth_mode'] = array('name'=>'group_attendee_auth_mode','label'=> $this->_helper->translate('column-group-group_attendee_auth_mode'),'type'=>'combo','source'=>'group_auth_mode');
         $this->filters['observations'] = array('name'=>'observations','label'=> $this->_helper->translate('column-group-observations'),'type'=>'text');
+        
+        $this->filters['main_name'] = array('main'=>true, 'name'=>'name', 'label'=>$this->_helper->translate('column-group-name'), 'type'=>'text', 'condition'=>'in');
         
         $this->api = 'groups';
         $this->pkey = 'group_id';
@@ -35,7 +37,7 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
         
         $this->view->parameters = IMDT_Util_Url::getThisParams($this->filters);
         $this->view->parametersString = http_build_query($this->view->parameters);
-	
+        
 	   $this->view->hasFilters = ((isset($this->view->parameters['q']) && (count($this->view->parameters['q']) > 0)) ? true : false);
     }
     
@@ -95,6 +97,7 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
         } else {
             header('Content-type: '.BBBManager_Config_Defines::$CONTENT_TYPE_PDF);
         }
+        header('Set-Cookie: fileDownload=true; path=/');
         header('Content-Disposition: attachment; filename="'.$this->_request->getControllerName().'.pdf"');
         echo file_get_contents($response['url']);
         exit;
@@ -423,7 +426,17 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
                 $strOptions .= '<option value="'.$obj['id'].'">'.$obj['name'].'</option>';
             }
             $arrSelect['auth_mode'] = $strOptions;
+
             
+            $strOptions = '';
+            foreach ($arrAuthMode as $obj) {
+                if($obj['id'] == BBBManager_Config_Defines::$PERSONA_AUTH_MODE){
+                    continue;
+                }
+
+                $strOptions .= '<option value="'.$obj['id'].'">'.$obj['name'].'</option>';
+            }
+            $arrSelect['group_auth_mode'] = $strOptions;
             
             $arrRestResponse = IMDT_Util_Rest::get('/api/groups.json', array(array('columns-leach' => 'group_id,name')));
             $arr = $arrRestResponse['collection'];
@@ -454,6 +467,47 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
             $objResponse->msg = $e->getMessage();
         }
 
+        $this->_helper->json($objResponse);
+    }
+    
+    public function importAction(){
+	$this->_disableViewAndLayout();
+	$objResponse = new stdClass();
+        
+        try {
+	    $csvFile = $this->_getParam('files', null);
+	    
+	    if($csvFile == null){
+		throw new Exception(IMDT_Util_Translate::_('You must provide a CSV file'));
+	    }
+	    
+	    $csvFileUrl = current($csvFile);
+	    $decodedCsvFileUrl = urldecode($csvFileUrl);
+	    $csvFileRelativeToDocumentRootPath = str_replace(IMDT_Util_Config::getInstance()->get('web_base_url'),'',$decodedCsvFileUrl);
+	    $csvFileFullPath = realpath($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $csvFileRelativeToDocumentRootPath);
+	    
+	    if($csvFileFullPath == false){
+		throw new Exception(IMDT_Util_Translate::_('CSV file not found'));
+	    }
+	    
+	    $csvFileContents = file_get_contents($csvFileFullPath);
+	    
+	    $data = array(
+		'file-contents' => utf8_encode($csvFileContents)
+	    );
+	    
+	    $arrRestResponse = IMDT_Util_Rest::post('/api/'.$this->api . '/index/import/groups',$data);
+	    
+            $objResponse->success = '1';
+            $objResponse->msg = $arrRestResponse['msg'];
+        }catch(IMDT_Controller_Exception_InvalidToken $e1){
+            $objResponse->success = '-1';
+            $objResponse->msg = '';
+        } catch(Exception $e) {
+            $objResponse->success = '0';
+            $objResponse->msg = $e->getMessage();
+        }
+        
         $this->_helper->json($objResponse);
     }
     

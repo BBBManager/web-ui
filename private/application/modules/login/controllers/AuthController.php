@@ -31,6 +31,14 @@ class Login_AuthController extends IMDT_Controller_Abstract{
             }
             
             $loginResponse = IMDT_Util_Rest::get('api/login', array('username'=>$username, 'password' => $password));
+            
+            $currentAuthData = Zend_Auth::getInstance()->getStorage()->read();
+            
+            /* Defined in BBBManager_Plugin_Maintenance */
+            if(isset($currentAuthData['maintenanceAccessAuthorized'])){
+                $loginResponse['data']['maintenanceAccessAuthorized'] = $currentAuthData['maintenanceAccessAuthorized'];
+            }
+
 	    Zend_Auth::getInstance()->getStorage()->write($loginResponse['data']);
         }catch(Exception $e){
             $this->addMessage(array('error' => $e->getMessage()));

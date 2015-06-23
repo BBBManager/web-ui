@@ -22,7 +22,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     
-                    <a class="brand" href="/"><?=  BBBManager_Util_Skinning::getInstance()->get('company_name');?> - <?= $this->translate('BBB Manager'); ?> </a>
+                    <a class="brand" href="<?=IMDT_Util_Config::getInstance()->get('web_base_url');?>"><?=  BBBManager_Util_Skinning::getInstance()->get('company_name');?> -  <?=  BBBManager_Util_Skinning::getInstance()->get('system_title');?></a>
                     
                     <ul class="nav pull-right">
                         <li class="dropdown">
@@ -39,8 +39,13 @@
         </div>
         <div class="container-fluid">
             <div class="row-fluid">
+                
 	<?
-	    if(IMDT_Util_Auth::getInstance()->get('systemUser')):
+        
+            $hideMenu = IMDT_Util_Auth::getInstance()->get('systemUser');
+            $hideMenu = $hideMenu | (Zend_Registry::isRegistered('recordingVisualization') && (Zend_Registry::get('recordingVisualization') == true));
+        
+	    if($hideMenu):
 	?>
                 <div class="span12">
                     <?=$this->renderMessages();?>

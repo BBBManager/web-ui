@@ -10,8 +10,29 @@
         </div>
         <div class="control-group">
             <label class="control-label" for="nome"><?=$this->translate('column-meeting_room-category'); ?></label>
-            <div class="controls" style="color:#FFBF00">
-                FASE 02
+            <div class="controls">
+                <div class="tree well" style="height:220px;overflow: scroll;">
+                    <table id="categoriesTree">
+                        <tbody>
+                            <?
+                                foreach($this->categories as $category):
+                            ?>
+                            <tr data-description="<?=$category['name'];?>" data-row-id="<?= $category['meeting_room_category_id']; ?>" id="tblTree-<?= (($category['parent_id'] != '') ? $category['hierarchy'] . '-' : '') . $category['meeting_room_category_id']; ?>" <?= (($category['parent_id'] != '') ? 'class="child-of-tblTree-' . $category['hierarchy'] . '"' : ''); ?>>
+                                <td><span><a class='select-category' href='javascript:void(0);'><?=$category['name'];?></a></span></td>
+                            </tr>
+                            <?
+                                endforeach;
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="category_id"><?=$this->translate('Selected category');?></label>
+            <div class="controls">
+                <input type="hidden" name="category_id" id="category_id" />
+                <input type="text" id="category-name" readonly="readonly" disabled="disabled"/>
             </div>
         </div>
         <h5><?=$this->translate('Schedule'); ?></h5>
@@ -71,7 +92,7 @@
             <label class="control-label"><?=$this->translate('column-meeting_room-encrypted'); ?></label>
             <div class="controls">
                 <label class="radio" style="display:inline-block;">
-                    <input type="radio" name="encrypted" value="1" disabled="disabled"/>
+                    <input type="radio" name="encrypted" value="1"/>
                     <?=$this->translate('Yes'); ?>
                 </label> <br />
                 <label class="radio" style="display:inline-block;">
@@ -84,7 +105,7 @@
             <label class="control-label"><?=$this->translate('column-meeting_room-record'); ?></label>
             <div class="controls">
                 <label class="radio" style="display:inline-block;">
-                    <input type="radio" name="record" value="1" disabled="disabled"/>
+                    <input type="radio" name="record" value="1"/>
                     <?=$this->translate('Yes'); ?>
                 </label> <br />
                 <label class="radio" style="display:inline-block;">
@@ -130,19 +151,6 @@
                 </label> <br />
                 <label class="radio" style="display:inline-block;">
                     <input type="radio" name="meeting_lock_on_start" value="0" />
-                    <?=$this->translate('No'); ?>
-                </label>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"><?=$this->translate('column-meeting_room-lock_allow_moderator_locking'); ?></label>
-            <div class="controls">
-                <label class="radio" style="display:inline-block;">
-                    <input type="radio" name="lock_allow_moderator_locking" value="1" />
-                    <?=$this->translate('Yes'); ?>
-                </label> <br />
-                <label class="radio" style="display:inline-block;">
-                    <input type="radio" name="lock_allow_moderator_locking" value="0" />
                     <?=$this->translate('No'); ?>
                 </label>
             </div>
@@ -200,6 +208,19 @@
             </div>
         </div>
         
+        <div class="control-group">
+            <label class="control-label"><?=$this->translate('column-meeting_room-lock_layout_for_locked_users'); ?></label>
+            <div class="controls">
+                <label class="radio" style="display:inline-block;">
+                    <input type="radio" name="lock_layout_for_locked_users" value="1" />
+                    <?=$this->translate('Yes'); ?>
+                </label> <br />
+                <label class="radio" style="display:inline-block;">
+                    <input type="radio" name="lock_layout_for_locked_users" value="0" />
+                    <?=$this->translate('No'); ?>
+                </label>
+            </div>
+        </div>
         
         <h5><?=$this->translate('Permissions'); ?></h5>
         <h6 class="subgroup"><?=$this->translate('Administrators'); ?><span class="pull-right"><button class="btn csvImportUser" data-permission="<?=  BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE;?>"><?= $this->translate('Import Users'); ?></button></span></h6>

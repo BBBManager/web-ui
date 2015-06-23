@@ -27,16 +27,29 @@
 
 <div class="pull-right">
      <form id="frmMainFilter" class="form-inline" method="GET" filter="#records" context="">
+         
+          <?
+        $paramName = 'main_name';
+        $conditionValue = 'in';
+        $mainValue = '';
+        
+        foreach($this->parameters['q'] as $currParam) {
+            if($currParam['n'] == $paramName) {
+                $mainValue = $currParam['v'];
+            }
+        }
+        ?>
+         
      	<div class="row-filter" style="float:left;">
-			<input type="hidden" class="column" value="name" column-type="text" />
+			<!--<input type="hidden" class="column" value="name" column-type="text" />-->
 			
 			<div class="filter-values name">
-    			<input type="hidden" class="condition" value="i" />
+    			<!--<input type="hidden" class="condition" value="i" />-->
          		
     	        <label class="text" for="search1">
     	            <?=$this->translate('column-invite_template-name'); ?>
     	            <div class="input-append">
-    	                <input id="search1" type="text" class="input-small value" value="<?=isset($this->parameters['name']) ? $this->parameters['name'] : ''; ?>">
+    	                <input copy-to="#frmAdvFilter div.filter-values.main_name input.value" id="search1" type="text" class="input-small value" value="<?=$mainValue; ?>">
     	            </div>
     	        </label>
             </div>
@@ -73,7 +86,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExport,$this->parameters),null,true);?>">CSV</a></li>
-                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExport),null,true);?>" href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
+                    <li><a export="records" href-origin="<?=$this->url(array_merge($this->uriExportPdf),null,true);?>" href="#" data-href="<?=$this->url(array_merge($this->uriExportPdf,$this->parameters),null,true);?>">PDF</a></li>
                 </ul>
             </div>
 	    <?

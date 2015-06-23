@@ -6,9 +6,9 @@ if (count($this->collection) > 0):
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Sala</th>
-                <th nowrap="nowrap">Data de Início</th>
-                <th nowrap="nowrap" class="no-sort">Acessar</th>
+                <th><?=$this->translate('Meeting Room');?></th>
+                <th nowrap="nowrap"><?=$this->translate('Start time');?></th>
+                <th nowrap="nowrap" class="no-sort"><?=$this->translate('Access');?></th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@ if (count($this->collection) > 0):
 	            <td width="100%"><?= $publicRoom['name']; ?></td>
 	            <td nowrap="nowrap"><?= date($this->translate('dateTimeFormat-php'), strtotime($publicRoom['date_start'])); ?></td>
 	            <td style="text-align:center;">
-			<a class="btn" href="<?= $this->url(array('action' => 'enter', 'id' => $publicRoom['meeting_room_id'])); ?>" title="Visualizar" data-toggle="tooltip" data-original-title="Visualizar"><i class="icon-eye-open"></i></a>
+			<a class="btn" href="<?= $this->url(array('action' => 'enter', 'id' => $publicRoom['meeting_room_id'])); ?>" title="<?=$this->translate('Access');?>" data-toggle="tooltip" data-original-title="<?=$this->translate('Access');?>"><i class="icon-eye-open"></i></a>
 		    </td>
 	        </tr>
 		<?

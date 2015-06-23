@@ -1,34 +1,50 @@
-<h4>Categorias</h4>
-<div class="pull-left">
-    <a href="#" onclick="adicionarCategoria('null');return false;" class="btn"><i class="icon-plus-sign"></i> Nova Categoria Raiz</a>
-    <button class="btn" id="excluirSelecionados"><i class="icon-trash"></i> Excluir Selecionados</button>
-    <a class="btn" id="selecionarTodos"><i class="icon-ok"></i> Selecionar Todos</a>
-</div>
+<h4><?= $this->translate('Categories Management'); ?></h4>
 
-<div class="pull-right">
-    <div class="input-append pull-right">
-        <input type="text" id="buscaCategorias">
+<div class="row-fluid">
+    <div class="pull-left">
+        <button class="btn" onclick="$('#records').treeTableExpandAll();"><i class="icon-plus-sign"></i> <?=IMDT_Util_Translate::_('Expand All');?></button>
+        <button class="btn" onclick="$('#records').treeTableCollapseAll();"><i class="icon-minus-sign"></i> <?=IMDT_Util_Translate::_('Collpase All');?></button>
+    </div>
+
+    <div class="pull-right">
+        <?=IMDT_Util_Translate::_('Find Category');?> <input type="text" id="buscaCategorias">
     </div>
 </div>
 
-<table class="table table-striped" id="tblTree">
+<div class="row-fluid">
+    <div class="pull-left">
+        <a href="#" class="btn category-add-trigger"><i class="icon-plus-sign"></i> <?=IMDT_Util_Translate::_('New Root Category');?></a>
+        <a class="btn category-delete-trigger category-delete-trigger-all" onclick="javascript:void(0)"><i class="icon-trash"></i> <?= $this->translate('Delete selected'); ?></a>
+        <div class="btn-group">
+            <a class="btn" id="selectAll" onclick="selectAll('#records'); return false;"><i class="icon-ok"></i> <?= $this->translate('Select all'); ?></a>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" onclick="unselectAll('#records'); return false;"><i class="icon-remove"></i> <?= $this->translate('Unselect all'); ?></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<table class="table rows-selectable" id="records">
     <thead>
         <tr>                
             <th>#</th>
-            <th>Categoria</th>
-            <th>Ações</th>
+            <th><?= $this->translate('column-category-name'); ?></th>
+            <th style="width:140px; text-align:center;"><?= $this->translate('Actions'); ?></th>
         </tr>
     </thead>
     <tbody>
         <?
-        if (!empty($this->arrCategorias)):
-            foreach ($this->arrCategorias as $categoria):
-                echo $this->partial('categories/row.phtml', array('item'=>$categoria));
+        if (!empty($this->rCategories)):
+            foreach ($this->rCategories as $category):
+                echo $this->partial('categories/row.phtml', array('item'=>$category));
             endforeach;
         else:
         ?>
             <tr>
-                <td colspan="3">Nenhum registro encontrado.</td>
+                <td colspan="3"><?=  IMDT_Util_Translate::_('No matching records found');?>.</td>
             </tr>
         <? endif; ?>
     </tbody>
@@ -36,37 +52,40 @@
 
 <div class="row-fluid">
     <div class="span12 pull-left">
-        <div class="btn-group">
-            <button class="btn">Exportar</button>
-            <button class="btn dropdown-toggle" data-toggle="dropdown">
+        <form class="form-inline">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle btn-export" data-toggle="dropdown">
+		    <?= $this->translate('Export'); ?>
                     <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="#">CSV</a></li>
-                <li><a href="#">PDF</a></li>
-            </ul>
-        </div>
-        <button class="btn">Importar CSV</button>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a export="records" href-origin="<?= $this->url($this->uriExport, null, true); ?>" href="<?= $this->url($this->uriExport, null, true); ?>?<?= $this->parametersString; ?>">CSV</a></li>
+                    <li><a export="records" href-origin="<?= $this->url($this->uriExportPdf, null, true); ?>" href="#" data-href="<?= $this->url($this->uriExportPdf, null, true); ?>?<?= $this->parametersString; ?>">PDF</a></li>
+                </ul>
+            </div>
+        </form>
     </div>
 </div>
 
 <div id="modalCategory" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Nova Categoria</h3>
+        <h3 id="myModalLabel"><?= $this->translate('New Category'); ?></h3>
     </div>
     <div class="modal-body">
         <div class="control-group">
-            <label class="control-label">Nome</label>
-            <input type="text" class="input-block-level" id="catName" />
+            <label class="control-label"><?= $this->translate('column-category-name'); ?></label>
+            <input type="text" class="input-block-level" id="category-name" />
+            <input type="hidden" id="category-parent-id" />
+            <input type="hidden" id="category-id" />
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" aria-hidden="true" id="addBtn">Adicionar</button>
-        <button class="btn " data-dismiss="modal" aria-hidden="true">Fechar</button>
+        <button class="btn btn-primary" aria-hidden="true" id="addBtn"><?= $this->translate('Save'); ?></button>
+        <button class="btn " data-dismiss="modal" aria-hidden="true"><?= $this->translate('Close'); ?></button>
     </div>
 </div>
 
 <script>
-    nomesCategorias = <?=json_encode($this->nomeCategorias);?>;
+    categoriesName = <?=json_encode($this->rCategoriesName);?>;
 </script>

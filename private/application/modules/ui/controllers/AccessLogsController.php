@@ -17,6 +17,8 @@ class Ui_AccessLogsController extends IMDT_Controller_Abstract {
         $this->filters['description_hash'] = array('name'=>'description_hash','label'=>$this->_helper->translate('column-access_log_description-description'),'type'=>'combo','source'=>'access_log_description');
         $this->filters['detail'] = array('column'=>'detail','label'=>$this->_helper->translate('column-access_log-detail'),'type'=>'text');
         
+        $this->filters['main_create_date'] = array('main'=>true,'name'=>'create_date', 'label'=>$this->_helper->translate('column-access_log-create_date'), 'type'=>'datetime', 'condition'=>'b');
+        
         $this->api = 'access-logs';
         $this->pkey = 'access_log_id';
     }
@@ -60,10 +62,23 @@ class Ui_AccessLogsController extends IMDT_Controller_Abstract {
         $this->view->uriExport = array('module'=>$this->_request->getModuleName(),'controller'=>$this->_request->getControllerName(),'action'=>'export');
         $this->view->uriExportPdf = array('module'=>$this->_request->getModuleName(),'controller'=>$this->_request->getControllerName(),'action'=>'export-pdf');
         
+        /*
         if(!$this->_request->getParam('create_date')) {
             $this->_request->setParam('create_date',IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i'), false));
             $this->_request->setParam('create_date_2',IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+5 minutes')), false));
             $this->_request->setParam('create_date_c','b');
+        }
+        */
+        
+        //Set defaults
+        $existsParam = false;
+        $q = $this->_request->getParam('q',array());
+        if(count($q) > 0) {
+            foreach($q as $currQuery) if($currQuery['n'] == 'main_create_date') $existsParam = true;
+        }
+        if($existsParam == false) {
+            $q[] = array('n'=>'main_create_date','c'=>'b','v'=>IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i'), false),'u'=>IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+5 minutes')), false));
+            $this->_request->setParam('q', $q);
         }
         
         $this->view->parameters = IMDT_Util_Url::getThisParams($this->filters);
@@ -165,6 +180,7 @@ class Ui_AccessLogsController extends IMDT_Controller_Abstract {
         } else {
             header('Content-type: '.BBBManager_Config_Defines::$CONTENT_TYPE_PDF);
         }
+        header('Set-Cookie: fileDownload=true; path=/');
         header('Content-Disposition: attachment; filename="'.$this->_request->getControllerName().'.pdf"');
         echo file_get_contents($response['url']);
         exit;
@@ -196,6 +212,7 @@ class Ui_AccessLogsController extends IMDT_Controller_Abstract {
         try {
             $params = IMDT_Util_Url::getThisParams($this->filters);
             $response = IMDT_Util_Rest::get('/api/'.$this->api.'.json',$params);
+            
             
             $arrTable = array();
             foreach($response['collection'] as $curr) {

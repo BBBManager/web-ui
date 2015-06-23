@@ -18,7 +18,7 @@ class IMDT_Util_Rest {
 	    'userId' => IMDT_Util_Auth::getInstance()->get('login'),
 	    'token' => IMDT_Util_Auth::getInstance()->get('token'),
 	    'Accept-Language' => Zend_Registry::get('Zend_Locale'),
-            'clientIpAddress' => $_SERVER['REMOTE_ADDR']
+            'clientIpAddress' => isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR']
 	);
 
 	$allHeaders = array();
