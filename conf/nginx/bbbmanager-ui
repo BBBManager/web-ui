@@ -1,6 +1,6 @@
 server {
         listen         80;
-        server_name    ;
+        server_name    <<BBBMANAGER_HOSTNAME>>;
         access_log  /var/log/nginx/bbbmanager-ui.access.log;
 
         location / {
