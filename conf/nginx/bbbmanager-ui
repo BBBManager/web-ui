@@ -24,6 +24,6 @@ server {
                 proxy_temp_file_write_size 64k;
         }
 
-        include /etc/bigbluebutton/nginx/bbbmanager.nginx;
+        include /etc/bigbluebutton/nginx/bbbmanager-agent.nginx;
 
 }
