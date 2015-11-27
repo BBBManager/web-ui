@@ -1,7 +1,7 @@
 <?php
 
 class IMDT_Util_Rest {
-    
+
     private static $_timeout = 300;
 
     private static function performRequest($method, $uri, $data = null, $headers = null) {
@@ -18,7 +18,7 @@ class IMDT_Util_Rest {
 	    'userId' => IMDT_Util_Auth::getInstance()->get('login'),
 	    'token' => IMDT_Util_Auth::getInstance()->get('token'),
 	    'Accept-Language' => Zend_Registry::get('Zend_Locale'),
-            'clientIpAddress' => isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR']
+      'clientIpAddress' => isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
 	);
 
 	$allHeaders = array();
@@ -36,7 +36,7 @@ class IMDT_Util_Rest {
 	$clientHttp->setHeaders($allHeaders);
 
 	$client = new Zend_Rest_Client(IMDT_Util_Config::getInstance()->get('api_base_url'));
-	
+
 	$client->setHttpClient($clientHttp);
 
 	$response = null;
@@ -59,7 +59,7 @@ class IMDT_Util_Rest {
 	$responseBody = $response->getBody();
 
 	session_start();
-	
+
 	try {
 	    $parsed = self::parseResponse($uri, $responseBody);
 	} catch (Exception $e) {
@@ -79,7 +79,7 @@ class IMDT_Util_Rest {
 
     private static function parseResponse($uri, $responseBody) {
 	$extension = pathinfo($uri, PATHINFO_EXTENSION);
-	
+
 	try{
 	    if ($extension == 'xml') {
 		$obj = IMDT_Util_Xml::xmlToArray($responseBody);
@@ -124,14 +124,14 @@ class IMDT_Util_Rest {
     	return self::performRequest('put', $uri, $data, $headers);
     }
 
-    
+
 
     public static function post($uri, $data, $headers = null) {
     	$data = self::parseInputParameters($uri, $data);
     	return self::performRequest('post', $uri, $data, $headers);
     }
 
-   
+
 
     public static function delete($uri, $headers = null) {
 	   return self::performRequest('delete', $uri, null, $headers);
