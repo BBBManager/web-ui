@@ -7,7 +7,7 @@
     foreach($this->recordings as $recording):
 ?>
 <option data-record-id="<?=$recording['record_id'];?>" value="<?=$recording['playback_url'];?>"><?=$recording['name'] . ' (' . date('d/m/Y H:i:s', strtotime($recording['date_start'])) . ' - ' . $recording['duration'] . ')';?></option>
-<?
+<?php
     endforeach;
 ?>
         </select>
