@@ -11,4 +11,3 @@ class Ui_SkinningController extends IMDT_Controller_Abstract {
     }
 
 }
-

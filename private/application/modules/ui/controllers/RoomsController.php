@@ -10,9 +10,9 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $this->filters['timezone'] = array('name' => 'timezone', 'label' => $this->_helper->translate('column-meeting_room-timezone'), 'type' => 'combo', 'source' => 'timezone');
         $this->filters['privacy_policy'] = array('name' => 'privacy_policy', 'label' => $this->_helper->translate('column-meeting_room-privacy_policy'), 'type' => 'combo', 'source' => 'privacy_policy');
         $this->filters['url'] = array('name' => 'url', 'label' => $this->_helper->translate('column-meeting_room-url'), 'type' => 'text');
-        $this->filters['encrypted'] = array('name'=>'encrypted','label'=> $this->_helper->translate('column-meeting_room-encrypted'),'type'=>'boolean');
-        $this->filters['record'] = array('name'=>'record','label'=> $this->_helper->translate('column-meeting_room-record'),'type'=>'boolean');
-        $this->filters['has_recordings'] = array('name'=>'has_recordings','label'=> $this->_helper->translate('meeting_room-has_recordings'),'type'=>'boolean');
+        $this->filters['encrypted'] = array('name' => 'encrypted', 'label' => $this->_helper->translate('column-meeting_room-encrypted'), 'type' => 'boolean');
+        $this->filters['record'] = array('name' => 'record', 'label' => $this->_helper->translate('column-meeting_room-record'), 'type' => 'boolean');
+        $this->filters['has_recordings'] = array('name' => 'has_recordings', 'label' => $this->_helper->translate('meeting_room-has_recordings'), 'type' => 'boolean');
         $this->filters['participants_limit'] = array('name' => 'participants_limit', 'label' => $this->_helper->translate('column-meeting_room-participants_limit'), 'type' => 'integer');
         $this->filters['meeting_room_category_id'] = array('name' => 'meeting_room_category_id', 'label' => $this->_helper->translate('column-meeting_room-category'), 'type' => 'combo', 'source' => 'categories');
 
@@ -31,7 +31,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $arrAdminOptions['group_admin_name'] = array('name' => 'group_admin_name', 'label' => $this->_helper->translate('column-meeting_room-group_admin_name'), 'type' => 'text');
         $arrAdminOptions['group_admin_auth_mode'] = array('name' => 'group_admin_auth_mode', 'label' => $this->_helper->translate('column-meeting_room-group_admin_auth_mode'), 'type' => 'combo', 'source' => 'auth_mode');
         $this->filters['admin'] = array('name' => 'admin', 'label' => $this->_helper->translate('column-meeting_room-admin'), 'type' => 'optgroup', 'options' => $arrAdminOptions);
-        
+
         $arrModeratorOptions['user_moderator'] = array('name' => 'user_moderator', 'label' => $this->_helper->translate('column-meeting_room-user_moderator'), 'type' => 'combo-remote', 'url' => array('controller' => 'users', 'action' => 'remote-search'));
         $arrModeratorOptions['user_moderator_login'] = array('name' => 'user_moderator_login', 'label' => $this->_helper->translate('column-meeting_room-user_moderator_login'), 'type' => 'text');
         $arrModeratorOptions['user_moderator_name'] = array('name' => 'user_moderator_name', 'label' => $this->_helper->translate('column-meeting_room-user_moderator_name'), 'type' => 'text');
@@ -58,11 +58,11 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $arrAttendeeOptions['group_attendee_name'] = array('name' => 'group_attendee_name', 'label' => $this->_helper->translate('column-meeting_room-group_attendee_name'), 'type' => 'text');
         $arrAttendeeOptions['group_attendee_auth_mode'] = array('name' => 'group_attendee_auth_mode', 'label' => $this->_helper->translate('column-meeting_room-group_attendee_auth_mode'), 'type' => 'combo', 'source' => 'auth_mode');
         $this->filters['attendee'] = array('name' => 'attendee', 'label' => $this->_helper->translate('column-meeting_room-attendee'), 'type' => 'optgroup', 'options' => $arrAttendeeOptions);
-        
+
         //$this->view->mainFilters = array();
         //$this->view->mainFilters['main_date_start'] = array('name'=>'date_start', 'label'=>$this->_helper->translate('column-access_log-create_date'), 'type'=>'datetime', 'condition'=>'b');
-        $this->filters['main_date_start'] = array('main'=>true,'name'=>'date_start', 'label'=>$this->_helper->translate('column-access_log-create_date'), 'type'=>'datetime', 'condition'=>'b');
-        
+        $this->filters['main_date_start'] = array('main' => true, 'name' => 'date_start', 'label' => $this->_helper->translate('column-access_log-create_date'), 'type' => 'datetime', 'condition' => 'b');
+
         /*
           Permissões - Administradores
           -Usuário (Lista)-> abre seleção dos usuários possíveis
@@ -107,7 +107,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $this->pkey = 'meeting_room_id';
 
         $this->logsFilters = array();
-        $this->logsFilters['meeting_room_id'] = array('name'=>'meeting_room_id','label'=>$this->_helper->translate('column-meeting_room_log-meeting_room_id'),'type'=>'text','value'=>null);
+        $this->logsFilters['meeting_room_id'] = array('name' => 'meeting_room_id', 'label' => $this->_helper->translate('column-meeting_room_log-meeting_room_id'), 'type' => 'text', 'value' => null);
         $this->logsFilters['user'] = array('name' => 'user', 'label' => $this->_helper->translate('column-user-name'), 'type' => 'combo', 'source' => 'user');
         $this->logsFilters['user_name'] = array('name' => 'user_name', 'label' => $this->_helper->translate('column-meeting_room_log-user_name'), 'type' => 'text');
         $this->logsFilters['user_login'] = array('name' => 'user_login', 'label' => $this->_helper->translate('column-meeting_room_log-user_login'), 'type' => 'text');
@@ -125,26 +125,28 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
 
         /*
-        if (!$this->_request->getParam('date_start')) {
-            $this->_request->setParam('date_start', IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('-30 days'))));
-            $this->_request->setParam('date_start_2', IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+30 days'))));
-            $this->_request->setParam('date_start_c', 'b');
-        }
-        */
-        
+          if (!$this->_request->getParam('date_start')) {
+          $this->_request->setParam('date_start', IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('-30 days'))));
+          $this->_request->setParam('date_start_2', IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+30 days'))));
+          $this->_request->setParam('date_start_c', 'b');
+          }
+         */
+
         //Set defaults
         $existsDateStart = false;
-        $q = $this->_request->getParam('q',array());
-        if(count($q) > 0) {
-            foreach($q as $currQuery) if($currQuery['n'] == 'main_date_start') $existsDateStart = true;
+        $q = $this->_request->getParam('q', array());
+        if (count($q) > 0) {
+            foreach ($q as $currQuery)
+                if ($currQuery['n'] == 'main_date_start')
+                    $existsDateStart = true;
         }
-        if($existsDateStart == false) {
-            $q[] = array('n'=>'main_date_start','c'=>'b','v'=>IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('-30 days'))),'u'=>IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+30 days'))));
+        if ($existsDateStart == false) {
+            $q[] = array('n' => 'main_date_start', 'c' => 'b', 'v' => IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('-30 days'))), 'u' => IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+30 days'))));
             $this->_request->setParam('q', $q);
         }
-        
-        
-        
+
+
+
         $params = $this->_request->getParam('q');
 
         $this->view->parameters = IMDT_Util_Url::getThisParams($this->filters);
@@ -152,7 +154,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $this->view->parametersString = http_build_query($this->view->parameters);
 
         $this->view->filters = $this->filters;
-        
+
         //debug($this->view->parameters);
 
         $this->view->hasFilters = ((isset($this->view->parameters['q']) && (count($this->view->parameters['q']) > 0)) ? true : false);
@@ -244,14 +246,14 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function editAction() {
-        try{
+        try {
             $response = IMDT_Util_Rest::get('/api/categories');
             $categories = $response['collection'];
             $this->view->categories = $categories;
         } catch (Exception $ex) {
-
+            
         }
-        
+
         $this->view->id = $this->_getParam('id', null);
         $this->view->title = $this->_helper->translate('Edit');
     }
@@ -268,7 +270,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
         $room = $response['collection'][$this->view->id];
         $this->view->profile = $room['user_profile_in_meeting'];
-        
+
         $response = IMDT_Util_Rest::get('/api/categories');
         $categories = $response['collection'];
         $this->view->categories = $categories;
@@ -314,8 +316,8 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
                 $data['user_attendee_local'] = $this->_request->getPost('user_attendee_local', '');
                 $data['user_attendee_ldap'] = $this->_request->getPost('user_attendee_ldap', '');
             }
-            
-            if($this->_request->getPost('category_id')){
+
+            if ($this->_request->getPost('category_id')) {
                 $data['meeting_room_category_id'] = $this->_request->getPost('category_id');
             }
 
@@ -349,12 +351,12 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function newAction() {
-        try{
+        try {
             $response = IMDT_Util_Rest::get('/api/categories');
             $categories = $response['collection'];
             $this->view->categories = $categories;
         } catch (Exception $ex) {
-
+            
         }
         $this->view->id = 'new';
         $this->view->title = $this->_helper->translate('New');
@@ -369,7 +371,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
             $response = IMDT_Util_Rest::get('/api/rooms.json', $params);
 
             $arrTable = array();
-            
+
             foreach ($response['collection'] as $curr) {
                 $row = array();
                 if ($curr['_removable'] == '1') {
@@ -399,12 +401,12 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
                 } else {
                     $actions .= '<a title="' . $this->_helper->translate('Delete') . '" data-toggle="tooltip" class="btn btn-mini btn-delete" disabled="disabled" data-original-title="Excluir"><i class="icon-trash"></i></a>';
                 }
-                
+
                 if ($curr['status'] == BBBManager_Config_Defines::$ROOM_CLOSED) {
                     $actions .= '<a title="' . $this->_helper->translate('History') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/rooms/history/id/' . $curr[$this->pkey] . '" data-original-title="' . $this->_helper->translate('History') . '"><i class="icon-list-alt"></i></a>';
                 }
-                
-                if($curr['recordings_count'] > 0){
+
+                if ($curr['recordings_count'] > 0) {
                     $actions .= '<a title="' . $this->_helper->translate('Manage Recording') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/rooms/manage-recording/id/' . $curr[$this->pkey] . '" data-original-title="' . $this->_helper->translate('Manage Recording') . '"><i class="icon-facetime-video"></i></a>';
                 }
 
@@ -605,8 +607,8 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
             $data['user_presenter_ldap'] = $this->_request->getPost('user_presenter_ldap', '');
             $data['user_attendee_local'] = $this->_request->getPost('user_attendee_local', '');
             $data['user_attendee_ldap'] = $this->_request->getPost('user_attendee_ldap', '');
-            
-            if($this->_request->getPost('category_id')){
+
+            if ($this->_request->getPost('category_id')) {
                 $data['meeting_room_category_id'] = $this->_request->getPost('category_id');
             }
 
@@ -864,23 +866,23 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
             $data['meeting_room_id'] = $this->_getParam('meeting_room_id');
             $data['subject'] = $this->_getParam('subject');
             $data['body'] = $this->_getParam('body');
-            
-            if($this->_getParam('max_rcpt_confirmed', null) != null){
+
+            if ($this->_getParam('max_rcpt_confirmed', null) != null) {
                 $data['max_rcpt_confirmed'] = '1';
             }
-            
+
             //$response = IMDT_Util_Rest::get('/api/rooms/' . $duplicatedRowId . '.json');
             //unset($response['row']['meeting_room_id']);
             //$response['row']['name'] = $name;
             //$response['row']['url'] = $url;
 
             $postResponse = IMDT_Util_Rest::post('/api/room-invites.json', $data);
-            
-            if($postResponse['success'] == '1' && isset($postResponse['data']) && isset($postResponse['data']['toCount'])){
+
+            if ($postResponse['success'] == '1' && isset($postResponse['data']) && isset($postResponse['data']['toCount'])) {
                 $objResponse->success = '1';
                 $objResponse->msg = $postResponse['msg'];
                 $objResponse->mustConfirm = '1';
-            }else{
+            } else {
                 $objResponse->success = '1';
                 $objResponse->msg = $postResponse['msg'];
             }
@@ -943,7 +945,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $headers['columns-desc'] .= ',' . $this->_helper->translate('column-audience-date_left');
 
         $response = IMDT_Util_Rest::get('/api/rooms-audience.json', $params, $headers);
-        
+
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
@@ -999,7 +1001,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
                 $strOptions .= '<option value="' . $obj['group_id'] . '">' . $obj['name'] . '</option>';
             }
             $arrSelect['group'] = $strOptions;
-            
+
             $arrRestResponse = IMDT_Util_Rest::get('/api/categories/leaf');
             $arr = $arrRestResponse['collection'];
             $strOptions = '';
@@ -1146,41 +1148,41 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
         $this->_helper->json($objResponse);
     }
-    
-    public function manageRecordingAction(){
-        try{
+
+    public function manageRecordingAction() {
+        try {
             $meetingRoomId = $this->_getParam('id', null);
-            
-            if($meetingRoomId == null){
+
+            if ($meetingRoomId == null) {
                 throw new Exception('Invalid room id');
             }
-            
+
             $parameters['meeting_room_id'] = $meetingRoomId;
             $parameters['meeting_room_id_c'] = 'e';
 
             $response = IMDT_Util_Rest::get('/api/recordings', $parameters);
-            
-            if(is_array($response['collection']) && (count($response['collection']) > 0)){
-                foreach($response['collection'] as &$recording){
+
+            if (is_array($response['collection']) && (count($response['collection']) > 0)) {
+                foreach ($response['collection'] as &$recording) {
                     $start_date = new DateTime(date('Y-m-d H:i:s', strtotime($recording['date_start'])));
                     $end_date = new DateTime(date('Y-m-d H:i:s', strtotime($recording['date_end'])));
                     $interval = $start_date->diff($end_date);
-                    $hours   = $interval->format('%h'); 
+                    $hours = $interval->format('%h');
                     $minutes = $interval->format('%i');
                     $seconds = $interval->format('%s');
 
                     //$recording['duration'] = sprintf('%s:%s',$hours,$minutes);
-                    $recording['duration'] = sprintf('%02d:%02d:%02d',$hours,$minutes,$seconds);
+                    $recording['duration'] = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
                 }
             }
-            
+
             $this->view->recordings = $response['collection'];
         } catch (Exception $ex) {
-
+            
         }
-        
+
         $this->view->id = $meetingRoomId;
         $this->view->title = $this->_helper->translate('Recording Management');
-
     }
+
 }

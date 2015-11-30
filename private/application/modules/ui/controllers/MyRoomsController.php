@@ -103,12 +103,12 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
 
             if ($response['meetingRoomStatus'] == BBBManager_Config_Defines::$ROOM_OPENED) {
                 $bbbApiResponse = Zend_Json::decode($response['bbbApiResponse']);
-                
-                if(isset($bbbApiResponse['joinURL'])) {
-                        $joinUrl = trim($bbbApiResponse['joinURL']);
+
+                if (isset($bbbApiResponse['joinURL'])) {
+                    $joinUrl = trim($bbbApiResponse['joinURL']);
                 } else {
-                        error_log($response['bbbApiResponse']);
-                        $errorMessage = 'Erro na resposta da API (verifique os LOGS)';
+                    error_log($response['bbbApiResponse']);
+                    $errorMessage = 'Erro na resposta da API (verifique os LOGS)';
                 }
             }
 

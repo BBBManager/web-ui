@@ -158,13 +158,11 @@ return array(
     'System User' => 'Utilizador do Sistema',
     'Date from which will be able to login with this user, if not filled start date will not be restricted' => 'Data a partir da qual estará habilitado o login com este usuário; se não preenchido não fará restrição de data inicial',
     'Date from which will not be able to login with this user, if not filled start end will not be restricted' => 'Data a partir da qual ficará desabilitado o login com este usuário; se não preenchido não fará restrição de data final',
-    
     'BBB Manager' => 'Administração BBB',
     'Groups Management' => 'Gerenciamento de Grupos',
     'New group' => 'Novo grupo',
     'Users Management' => 'Gerenciamento de Usuários',
     'New user' => 'Novo usuário',
-    
     'The maintenance mode is' => 'O modo de manutenção está',
     'Enable maintenance mode' => 'Ativar Modo de Manutenção',
     'Enabled' => 'Habilitado',
@@ -245,8 +243,6 @@ return array(
     'weekdayNameFriday' => 'Sexta-feira',
     'weekdayNameFridayShort' => 'Sexta',
     'weekdayNameSaturday' => 'Sábado',
-    
-    
     'table-meeting_room' => 'Sala',
     'column-meeting_room-id' => 'Id',
     'column-meeting_room-name' => 'Nome da Sala',
@@ -319,14 +315,11 @@ return array(
     'column-meeting_room-group_attendee' => 'Grupo (Lista)',
     'column-meeting_room-group_attendee_name' => 'Grupo (Nome)',
     'column-meeting_room-group_attendee_auth_mode' => 'Grupo (Tipo)',
-    
     'column-meeting_room-subject' => 'Assunto',
     'column-meeting_room-body' => 'Mensagem do Convite',
-    
     'table-meeting_room_action' => 'Ação',
     'column-meeting_room_action-id' => 'Id',
     'column-meeting_room_action-name' => 'Nome da ação',
-    
     'table-meeting_room_log' => 'Log',
     'column-meeting_room_log-id' => 'Id',
     'column-meeting_room_log-user' => 'Usuário',
@@ -334,12 +327,10 @@ return array(
     'column-meeting_room_log-user_login' => 'Usuário - Login',
     'column-meeting_room_log-ip_address' => 'Endereço de IP',
     'column-meeting_room_log-create_date' => 'Ocorrido em',
-    
     'table-auth_mode' => 'Modo de autenticação',
     'column-auth_mode-id' => 'Id',
     'column-auth_mode-name' => 'Tipo de login',
     'column-auth_mode-system_key' => 'Chave para o sistema',
-    
     'table-user' => 'Usuário',
     'column-user-id' => 'Id',
     'column-user-name' => 'Nome do Usuário',
@@ -359,7 +350,6 @@ return array(
     'column-user-group' => 'Grupo (Lista)',
     'column-user-group_auth_mode' => 'Grupo (Tipo de login)',
     'column-user-group_name' => 'Grupo (Nome)',
-    
     'table-group' => 'Grupo',
     'column-group-id' => 'Id',
     'column-group-name' => 'Nome do Grupo',
@@ -378,7 +368,6 @@ return array(
     'column-group-observations' => 'Observações',
     'column-group-create_date' => 'Data de criação',
     'column-group-last_update' => 'Data da última modificação',
-    
     'table-record' => 'Gravação',
     'column-record-id' => 'Id',
     'column-record-name' => 'Nome da sala',
@@ -387,20 +376,17 @@ return array(
     'column-record-privacy_policy' => 'Tipo da Gravação',
     'column-record-create_date' => 'Data de criação',
     'column-record-last_update' => 'Data da última modificação',
-    
     'table-record_tag' => 'Tag',
     'column-record_tag-id' => 'Id',
     'column-record_tag-name' => 'Nome da tag',
     'column-record_tag-create_date' => 'Data de criação',
     'column-record_tag-last_update' => 'Data da última modificação',
     'column-record_tag-start_time' => 'Posição',
-
     'table-access_profile' => 'Perfil de Acesso',
     'column-access_profile-id' => 'Id',
     'column-access_profile-name' => 'Perfil de Acesso',
     'column-access_profile-create_date' => 'Data de criação',
     'column-access_profile-last_update' => 'Data da última modificação',
-    
     'table-invite_template' => 'Modelo de Convite',
     'column-invite_template-id' => 'Id',
     'column-invite_template-name' => 'Nome do modelo de convite',
@@ -408,14 +394,12 @@ return array(
     'column-invite_template-body' => 'Mensagem do Convite',
     'column-invite_template-create_date' => 'Data de criação',
     'column-invite_template-last_update' => 'Data da última modificação',
-    
     'table-maintenance' => 'Manutenção',
     'column-maintenance-id' => 'Id',
     'column-maintenance-description' => 'Mensagem',
     'column-maintenance-active' => 'Estado',
     'column-maintenance-create_date' => 'Data de criação',
     'column-maintenance-last_update' => 'Data da última modificação',
-    
     'table-ic_profile' => 'Perfil de velocidade',
     'column-ic_profile-id' => 'Id',
     'column-ic_profile-name' => 'Nome',
@@ -427,12 +411,10 @@ return array(
     'column-ic_profile-observations' => 'Observações',
     'column-ic_profile-create_date' => 'Data de criação',
     'column-ic_profile-last_update' => 'Data da última modificação',
-    
     'column-audience-online_time' => 'Tempo Total de Conexão',
     'column-audience-ip_address' => 'IPs de Conexão',
     'column-audience-date_join' => 'Datas de Conexão',
     'column-audience-date_left' => 'Datas de Desconexão',
-    
     'table-access_log' => 'Log de acesso',
     'column-access_log-id' => 'Id',
     'column-access_log-user_id' => 'Usuário',
@@ -449,12 +431,10 @@ return array(
     'column-access_log-user_auth_mode' => 'Usuário (Tipo de login)',
     'column-access_log-user_login' => 'Usuário (Login)',
     'column-access_log-user_name' => 'Usuário (Nome do Usuário)',
-    
     'table-access_log_description' => 'Log de acesso - Descrição',
     'column-access_log_description-controller' => 'Controlador',
     'column-access_log_description-action' => 'Ação',
     'column-access_log_description-description' => 'Descrição',
-    
     'advs-text-in' => 'Contiver',
     'advs-text-nin' => 'Não contiver',
     'advs-text-is' => 'For',
@@ -490,7 +470,6 @@ return array(
     'advs-bool-is' => 'For',
     'advs-bool-empty' => 'Estiver vazio',
     'advs-bool-nempty' => 'Não estiver vazio',
-    
     'Import Users' => 'Importar Usuários',
     'Import' => 'Importar',
     'Selec file' => 'Selecionar arquivo',
@@ -533,7 +512,6 @@ return array(
     'Sign in with Persona' => 'Acesse com o Persona',
     'Selected category' => 'Categoria selecionada',
     'meeting_room-has_recordings' => 'Possui gravações',
-    
     'table-category' => 'Categoria',
     'column-category-id' => 'Id',
     'column-category-name' => 'Nome',

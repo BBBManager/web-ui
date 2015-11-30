@@ -1,3 +1,5 @@
 <?php
-class Ui_Bootstrap extends Zend_Application_Module_Bootstrap{
+
+class Ui_Bootstrap extends Zend_Application_Module_Bootstrap {
+    
 }

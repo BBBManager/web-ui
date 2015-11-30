@@ -125,18 +125,19 @@ final class BBBManager_Config_Defines {
             return $rAccessProfile[$accessProfileId];
         }
     }
-    
-    public static function getMeetingRoomStatus($meetingRoomStatusId = null){
-	$rMeetingRoomStatus = array(
-	    self::$ROOM_OPENED          => IMDT_Util_Translate::_('Started Rooms'),
-	    self::$ROOM_WAITING         => IMDT_Util_Translate::_('Waiting Rooms'),
-	    self::$ROOM_CLOSED          => IMDT_Util_Translate::_('Ended Rooms')
-	);
-	
-	if($meetingRoomStatusId == null){
-	    return $rMeetingRoomStatus;
-	}else{
-	    return $rMeetingRoomStatus[$meetingRoomStatusId];
-	}
+
+    public static function getMeetingRoomStatus($meetingRoomStatusId = null) {
+        $rMeetingRoomStatus = array(
+            self::$ROOM_OPENED => IMDT_Util_Translate::_('Started Rooms'),
+            self::$ROOM_WAITING => IMDT_Util_Translate::_('Waiting Rooms'),
+            self::$ROOM_CLOSED => IMDT_Util_Translate::_('Ended Rooms')
+        );
+
+        if ($meetingRoomStatusId == null) {
+            return $rMeetingRoomStatus;
+        } else {
+            return $rMeetingRoomStatus[$meetingRoomStatusId];
+        }
     }
+
 }

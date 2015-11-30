@@ -1,7 +1,8 @@
 <?php
-class BBBManager_Plugin_ErrorControllerSwitcher extends Zend_Controller_Plugin_Abstract
-{
-    public function routeShutdown (Zend_Controller_Request_Abstract $request) {
+
+class BBBManager_Plugin_ErrorControllerSwitcher extends Zend_Controller_Plugin_Abstract {
+
+    public function routeShutdown(Zend_Controller_Request_Abstract $request) {
         $front = Zend_Controller_Front::getInstance();
         if (!($front->getPlugin('Zend_Controller_Plugin_ErrorHandler') instanceof Zend_Controller_Plugin_ErrorHandler)) {
             return;
@@ -9,10 +10,11 @@ class BBBManager_Plugin_ErrorControllerSwitcher extends Zend_Controller_Plugin_A
         $error = $front->getPlugin('Zend_Controller_Plugin_ErrorHandler');
         $testRequest = new Zend_Controller_Request_Http();
         $testRequest->setModuleName($request->getModuleName())
-                    ->setControllerName($error->getErrorHandlerController())
-                    ->setActionName($error->getErrorHandlerAction());
+                ->setControllerName($error->getErrorHandlerController())
+                ->setActionName($error->getErrorHandlerAction());
         if ($front->getDispatcher()->isDispatchable($testRequest)) {
             $error->setErrorHandlerModule($request->getModuleName());
         }
     }
+
 }

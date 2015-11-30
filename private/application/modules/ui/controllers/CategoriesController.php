@@ -8,34 +8,34 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
     public function indexAction() {
         $objResponse = new stdClass();
-        try{
+        try {
             $response = IMDT_Util_Rest::get('/api/categories');
-            
-            if($response['success'] != '1'){
+
+            if ($response['success'] != '1') {
                 throw new Exception($response['msg']);
             }
-            
+
             $this->view->rCategories = array();
             $this->view->rCategoriesName = array();
-            
-            foreach($response['collection'] as $category){
-                
-                if(isset($category['hierarchy'])){
+
+            foreach ($response['collection'] as $category) {
+
+                if (isset($category['hierarchy'])) {
                     $this->view->rCategories[] = array(
-                        'id'            => $category['meeting_room_category_id'],
-                        'name'          => $category['name'],
-                        'parent_id'     => $category['parent_id'],
-                        'hierarchy'     => $category['hierarchy'],
-                        'path'          => $category['path']
+                        'id' => $category['meeting_room_category_id'],
+                        'name' => $category['name'],
+                        'parent_id' => $category['parent_id'],
+                        'hierarchy' => $category['hierarchy'],
+                        'path' => $category['path']
                     );
-                }else{
+                } else {
                     $this->view->rCategories[] = array(
-                        'id'            => $category['meeting_room_category_id'],
-                        'name'          => $category['name'],
-                        'parent_id'     => $category['parent_id']
+                        'id' => $category['meeting_room_category_id'],
+                        'name' => $category['name'],
+                        'parent_id' => $category['parent_id']
                     );
                 }
-                
+
                 $this->view->rCategoriesName[] = $category['name'];
             }
         } catch (Exception $ex) {
@@ -48,7 +48,7 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
     public function formPostAction() {
         $this->_disableViewAndLayout();
-        
+
         $objResponse = new stdClass();
 
         try {
@@ -80,17 +80,17 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
         $this->_helper->json($objResponse);
     }
-    
-    public function deleteAction(){
+
+    public function deleteAction() {
         $objResponse = new stdClass();
 
         try {
             $id = $this->_request->getParam('id', null);
-            
-            if($id == null || (trim($id)) == ''){
-                throw new Exception(IMDT_Util_Translate::_('Invalid category'). '.');
+
+            if ($id == null || (trim($id)) == '') {
+                throw new Exception(IMDT_Util_Translate::_('Invalid category') . '.');
             }
-            
+
             $response = IMDT_Util_Rest::delete('/api/categories/' . $id);
 
             $objResponse->success = '1';
@@ -105,7 +105,7 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
         $this->_helper->json($objResponse);
     }
-    
+
     public function exportAction() {
         $this->_disableViewAndLayout();
 
@@ -141,11 +141,11 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
         $headers['columns-desc'] = $this->_helper->translate('column-category-id');
         $headers['columns-desc'] .= ',' . $this->_helper->translate('column-category-name');
         $headers['columns-desc'] .= ',' . $this->_helper->translate('column-category-parent_id');
-        
+
         $headers['columns-format'] = 'null';
         $headers['columns-format'] .= ',' . 'null';
         $headers['columns-format'] .= ',' . 'null';
-        
+
         $response = IMDT_Util_Rest::get('/api/categories.json', $params, $headers);
 
         $this->_helper->layout->disableLayout();

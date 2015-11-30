@@ -8,7 +8,7 @@ class Ui_InviteTemplatesController extends IMDT_Controller_Abstract {
         $this->filters['subject'] = array('name' => 'subject', 'label' => $this->_helper->translate('column-invite_template-subject'), 'type' => 'text');
         $this->filters['create_date'] = array('name' => 'create_date', 'label' => $this->_helper->translate('column-invite_template-create_date'), 'type' => 'datetime');
 
-        $this->filters['main_name'] = array('main'=>true, 'name'=>'name', 'label'=>$this->_helper->translate('column-invite_template-name'), 'type'=>'text', 'condition'=>'in');
+        $this->filters['main_name'] = array('main' => true, 'name' => 'name', 'label' => $this->_helper->translate('column-invite_template-name'), 'type' => 'text', 'condition' => 'in');
 
         $this->api = 'invite-templates';
         $this->pkey = 'invite_template_id';
@@ -200,10 +200,10 @@ class Ui_InviteTemplatesController extends IMDT_Controller_Abstract {
                 throw new Exception($this->_helper->translate('Invalid Request'));
             if ($id == null)
                 throw new Exception($this->_helper->translate('Invalid Id'));
-            
+
             $subject = $this->_request->getPost('subject', null);
             $body = $this->_request->getPost('body', null);
-            
+
             $tags = array(
                 '__ROOM_START__',
                 '__ROOM_END__',
@@ -211,17 +211,17 @@ class Ui_InviteTemplatesController extends IMDT_Controller_Abstract {
                 '__ROOM_URL__',
                 '__ROOM_PRESENTER__'
             );
-            
-            foreach($tags as $tag){
+
+            foreach ($tags as $tag) {
                 $body = str_replace($this->_helper->translate($tag), $tag, $body);
                 $subject = str_replace($this->_helper->translate($tag), $tag, $subject);
             }
-            
+
             $data = array();
             $data['subject'] = $subject;
             $data['body'] = $body;
             $data['name'] = $this->_request->getPost('name', null);
-            
+
             if ($id == 'new') {
                 $arrRestResponse = IMDT_Util_Rest::post('/api/' . $this->api, $data);
             } else {

@@ -185,41 +185,41 @@ class Ui_TagsController extends IMDT_Controller_Abstract {
 
         $this->_helper->json($objResponse);
     }
-    
-    public function getTagsByRecordingAction(){
+
+    public function getTagsByRecordingAction() {
         $this->_disableViewAndLayout();
-        
+
         $objResponse = new stdClass();
 
         try {
             $recordingId = $this->_getParam('id', null);
             $asHtml = $this->_getParam('asHtml', false);
-            
+
             $parameters['record_id'] = $recordingId;
             $parameters['record_id_c'] = 'e';
 
             $response = IMDT_Util_Rest::get('/api/record-tags', $parameters);
-            
-            if($asHtml != false){
+
+            if ($asHtml != false) {
                 $htmlStr = '';
 
-                foreach($response['collection'] as $item){
+                foreach ($response['collection'] as $item) {
                     $htmlStr .= '<tr>';
                     $htmlStr .= '<td>' . $item['name'] . '</td>';
                     $htmlStr .= '<td>' . $item['description'] . '</td>';
                     $htmlStr .= '<td>' . IMDT_Util_Time::millisecondsTohhmmssmil($item['start_time']) . '</td>';
                     $htmlStr .= '<td>';
-                    $htmlStr .= '<a title="' . $this->_helper->translate('Edit') . '" data-toggle="tooltip" class="btn btn-mini" href="javascript:void(0);" open-modal-form="#modalTagEditor" form-data=\'' . json_encode(array('tag-name' => $item['name'], 'description' => $item['description'], 'start_time' => IMDT_Util_Time::millisecondsTohhmmssmil($item['start_time']), 'id'=>$item['record_tag_id'])) .'\' data-original-title="' . $this->_helper->translate('Edit') . '"><i class="icon-pencil"></i></a>';
+                    $htmlStr .= '<a title="' . $this->_helper->translate('Edit') . '" data-toggle="tooltip" class="btn btn-mini" href="javascript:void(0);" open-modal-form="#modalTagEditor" form-data=\'' . json_encode(array('tag-name' => $item['name'], 'description' => $item['description'], 'start_time' => IMDT_Util_Time::millisecondsTohhmmssmil($item['start_time']), 'id' => $item['record_tag_id'])) . '\' data-original-title="' . $this->_helper->translate('Edit') . '"><i class="icon-pencil"></i></a>';
                     $htmlStr .= '<a title="' . $this->_helper->translate('Delete') . '" data-toggle="tooltip" class="btn btn-mini tag-delete" href="javascript:void(0);" data-tag-id="' . $item['record_tag_id'] . '" data-original-title="' . $this->_helper->translate('Delete') . '" ><i class="icon-trash"></i></a>';
                     $htmlStr .= '</td>';
                     $htmlStr .= '</tr>';
                 }
 
                 $objResponse->html = $htmlStr;
-            }else{
+            } else {
                 $objResponse->collection = $response['collection'];
             }
-            
+
             $objResponse->success = '1';
             $objResponse->msg = '';
         } catch (IMDT_Controller_Exception_InvalidToken $e1) {
