@@ -225,12 +225,6 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
         try {
             $params = IMDT_Util_Url::getThisParams($this->filters);
 
-            /* $params['status'] = BBBManager_Config_Defines::$ROOM_CLOSED;
-              $params['status_c'] = 'e'; */
-
-            /* echo '<pre>';
-              var_dump($params);
-              echo '</pre>';;die; */
             $response = IMDT_Util_Rest::get('/api/my-rooms', $params);
             $arrTable = array();
             foreach ($response['collection'] as $curr) {
@@ -239,11 +233,8 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                 $row[] = IMDT_Util_Date::filterDatetimeToCurrentLang($curr['date_start'], false);
                 $row[] = IMDT_Util_Date::filterDatetimeToCurrentLang($curr['date_end'], false);
                 $actions = '<td nowrap="nowrap">';
-                //$actions .= '<a title="' . $this->_helper->translate('View') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/rooms/view/id/' . $curr['meeting_room_id'] . '" data-original-title="' . $this->_helper->translate('View') . '"><i class="icon-eye-open"></i></a>';
                 $showHistory = (in_array($curr['user_profile_in_meeting'], array(BBBManager_Config_Defines::$ROOM_MODERATOR_PROFILE, BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE)) != false);
-                /* $showHistory = $showHistory || (IMDT_Util_Auth::getInstance()->get('globalRead') == true);
-                  $showHistory = $showHistory || (IMDT_Util_Auth::getInstance()->get('globalWrite') == true); */
-
+                
                 if ($curr['recordings_count'] > 0) {
                     $actions .= '<a title="' . $this->_helper->translate('View Recording') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/recordings/view/id/' . $curr['meeting_room_id'] . ((isset($params['recordings_count']) && ($params['recordings_count'] != '0')) ? '/hide-without-recordings/1' : '') . '" data-original-title="' . $this->_helper->translate('View Recording') . '"><i class="icon-eye-open"></i></a>';
                 }
@@ -272,155 +263,4 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
         }
         $this->_helper->json($objResponse);
     }
-
-    /*
-      public function formManageAttendessContentAction() {
-      $objResponse = new stdClass();
-
-      try {
-      $objResponse = new stdClass();
-      $id = $this->_request->getParam('id');
-
-      if ($id == 'new') {
-      $oAuth = Zend_Auth::getInstance();
-      if ($oAuth->hasIdentity()) {
-      $auth = $oAuth->getStorage()->read();
-
-      if ($auth['auth_mode'] == BBBManager_Config_Defines::$LOCAL_AUTH_MODE) {
-      $arrForm['user_admin_local'] = $auth['id'];
-      } else if ($auth['auth_mode'] == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
-      $arrForm['user_admin_ldap'] = $auth['id'];
-      }
-      }
-
-      $objResponse->form = $arrForm;
-      } elseif ($id) {
-      $response = IMDT_Util_Rest::get('/api/rooms/' . $id . '.json');
-
-      $row = $response['row'];
-      $arrForm['name'] = $row['name'];
-      $arrForm['date_start'] = IMDT_Util_Date::filterDatetimeToCurrentLang($row['date_start'], false);
-      $arrForm['date_end'] = IMDT_Util_Date::filterDatetimeToCurrentLang($row['date_end'], false);
-      $arrForm['timezone'] = $row['timezone'];
-      $arrForm['encrypted'] = $row['encrypted'];
-      $arrForm['privacy_policy'] = $row['privacy_policy'];
-      $arrForm['record'] = $row['record'];
-      $arrForm['url'] = $row['url'];
-      $arrForm['participants_limit'] = $row['participants_limit'];
-      $arrForm['group_admin_local'] = $row['group_admin_local'];
-      $arrForm['group_admin_ldap'] = $row['group_admin_ldap'];
-      $arrForm['group_moderator_local'] = $row['group_moderator_local'];
-      $arrForm['group_moderator_ldap'] = $row['group_moderator_ldap'];
-      $arrForm['group_presenter_local'] = $row['group_presenter_local'];
-      $arrForm['group_presenter_ldap'] = $row['group_presenter_ldap'];
-      $arrForm['group_attendee_local'] = $row['group_attendee_local'];
-      $arrForm['group_attendee_ldap'] = $row['group_attendee_ldap'];
-      $arrForm['user_admin_local'] = $row['user_admin_local'];
-      $arrForm['user_admin_ldap'] = $row['user_admin_ldap'];
-      $arrForm['user_moderator_local'] = $row['user_moderator_local'];
-      $arrForm['user_moderator_ldap'] = $row['user_moderator_ldap'];
-      $arrForm['user_presenter_local'] = $row['user_presenter_local'];
-      $arrForm['user_presenter_ldap'] = $row['user_presenter_ldap'];
-      $arrForm['user_attendee_local'] = $row['user_attendee_local'];
-      $arrForm['user_attendee_ldap'] = $row['user_attendee_ldap'];
-
-      $objResponse->form = $arrForm;
-      }
-
-      $arrSelect2 = array('group_local' => array(), 'group_ldap' => array(), 'user_local' => array(), 'user_ldap' => array());
-
-      $collectionGroups = IMDT_Util_Rest::get('/api/groups.json');
-      foreach ($collectionGroups['collection'] as $obj) {
-      $nRow = array();
-      $nRow['id'] = $obj['group_id'];
-      $nRow['text'] = $obj['name'];
-
-      if ($obj['auth_mode_id'] == '1') {// Local
-      $arrSelect2['group_local'][] = $nRow;
-      } elseif ($obj['auth_mode_id'] == '2') {//Ldap
-      $arrSelect2['group_ldap'][] = $nRow;
-      }
-      }
-
-      $collectionUsers = IMDT_Util_Rest::get('/api/users.json');
-      foreach ($collectionUsers['collection'] as $obj) {
-      $nRow = array();
-      $nRow['id'] = $obj['user_id'];
-      $nRow['text'] = $obj['name'];
-      //$nRow['auth_mode_id'] = $obj['auth_mode_id'];
-
-      if ($obj['auth_mode_id'] == BBBManager_Config_Defines::$LOCAL_AUTH_MODE) {// Local
-      $arrSelect2['user_local'][] = $nRow;
-      } elseif ($obj['auth_mode_id'] == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {//Ldap
-      $arrSelect2['user_ldap'][] = $nRow;
-      }
-      }
-
-      $objResponse->select2 = $arrSelect2;
-      $objResponse->success = '1';
-      $objResponse->msg = '';
-      } catch (IMDT_Controller_Exception_InvalidToken $e1) {
-      $objResponse->success = '-1';
-      $objResponse->msg = '';
-      } catch (Exception $e) {
-      $objResponse->success = '0';
-      $objResponse->msg = $e->getMessage();
-      }
-
-      $this->_helper->json($objResponse);
-      }
-
-      public function formManageAttendessPostAction() {
-      $objResponse = new stdClass();
-
-      try {
-      $id = $this->_request->getParam('meeting_room_id', null);
-      $profileId = $this->_request->getParam('meeting_room_profile_id', null);
-
-      if (!$this->_request->isPost())
-      throw new Exception($this->_helper->translate('Invalid Request'));
-      if ($id == null)
-      throw new Exception($this->_helper->translate('Invalid Id'));
-
-      $data = array();
-
-      if($profileId == BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE) {
-      $data['group_admin_local'] = $this->_request->getPost('group_admin_local', '');
-      $data['group_admin_ldap'] = $this->_request->getPost('group_admin_ldap', '');
-      $data['group_moderator_local'] = $this->_request->getPost('group_moderator_local', '');
-      $data['group_moderator_ldap'] = $this->_request->getPost('group_moderator_ldap', '');
-      $data['user_admin_local'] = $this->_request->getPost('user_admin_local', '');
-      $data['user_admin_ldap'] = $this->_request->getPost('user_admin_ldap', '');
-      $data['user_moderator_local'] = $this->_request->getPost('user_moderator_local', '');
-      $data['user_moderator_ldap'] = $this->_request->getPost('user_moderator_ldap', '');
-      }
-
-      if(in_array($profileId, array(BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE, BBBManager_Config_Defines::$ROOM_MODERATOR_PROFILE))){
-      $data['group_presenter_local'] = $this->_request->getPost('group_presenter_local', '');
-      $data['group_presenter_ldap'] = $this->_request->getPost('group_presenter_ldap', '');
-      $data['group_attendee_local'] = $this->_request->getPost('group_attendee_local', '');
-      $data['group_attendee_ldap'] = $this->_request->getPost('group_attendee_ldap', '');
-      $data['user_presenter_local'] = $this->_request->getPost('user_presenter_local', '');
-      $data['user_presenter_ldap'] = $this->_request->getPost('user_presenter_ldap', '');
-      $data['user_attendee_local'] = $this->_request->getPost('user_attendee_local', '');
-      $data['user_attendee_ldap'] = $this->_request->getPost('user_attendee_ldap', '');
-      }
-
-      $arrRestResponse = IMDT_Util_Rest::put('/api/rooms/' . $id, $data);
-
-      $objResponse->success = '1';
-      $objResponse->msg = $arrRestResponse['msg'];
-      $objResponse->redirect = $this->view->url(array('action' => 'index'));
-      } catch (IMDT_Controller_Exception_InvalidToken $e1) {
-      $objResponse->success = '-1';
-      $objResponse->msg = '';
-      } catch (Exception $e) {
-      $objResponse->success = '0';
-      $objResponse->msg = $e->getMessage();
-      }
-
-      $this->_helper->json($objResponse);
-      }
-     * *
-     */
 }
