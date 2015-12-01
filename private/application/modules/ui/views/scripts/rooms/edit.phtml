@@ -3,7 +3,7 @@
 <div id="dados">
     <form id="formEdit" class="form-horizontal ajaxsubmit" method="POST" action="<?=$this->url(array('action'=>'form-post','id'=>$this->id));?>" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
         <div class="control-group">
-            <label class="control-label" for="name"><?=$this->translate('column-meeting_room-name'); ?></label>
+            <label class="control-label" for="name"><?=$this->translate('column-meeting_room-name'); ?>*</label>
             <div class="controls">
                 <input type="text" name="name" id="name"/>
             </div>
@@ -37,7 +37,7 @@
         </div>
         <h5><?=$this->translate('Schedule'); ?></h5>
         <div class="control-group">
-            <label class="control-label" for="date_start"><?=$this->translate('column-meeting_room-date_start'); ?></label>
+            <label class="control-label" for="date_start"><?=$this->translate('column-meeting_room-date_start'); ?>*</label>
             <div class="controls">
                 <div class="input-append datetime">
                     <input type="text" id="date_start" name="date_start" class="input-block-level" data-format="<?=$this->translate('dateFormat-datepicker'); ?> hh:mm"/>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="date_end"><?=$this->translate('column-meeting_room-date_end'); ?></label>
+            <label class="control-label" for="date_end"><?=$this->translate('column-meeting_room-date_end'); ?>*</label>
             <div class="controls">
                 <div class="input-append datetime">
                     <input type="text" id="date_end" name="date_end" class="input-block-level" data-format="<?=$this->translate('dateFormat-datepicker'); ?> hh:mm"/>
@@ -80,7 +80,7 @@
         </div>
         
         <div class="control-group">
-            <label class="control-label" for="url"><?=$this->translate('column-meeting_room-url'); ?></label>
+            <label class="control-label" for="url"><?=$this->translate('column-meeting_room-url'); ?>*</label>
             <div class="controls">
 		<strong><?=  IMDT_Util_Config::getInstance()->get('web_base_url');?></strong>
                 <input type="text" name="url" id="url"/>
@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label"><?=$this->translate('column-meeting_room-participants_limit'); ?></label>
+            <label class="control-label"><?=$this->translate('column-meeting_room-participants_limit'); ?>*</label>
             <div class="controls">
                 <input type="text" name="participants_limit" class="int" />
             </div>
