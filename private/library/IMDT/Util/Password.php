@@ -15,4 +15,5 @@ class IMDT_Util_Password {
 
         return $password;
     }
+
 }

@@ -101,9 +101,9 @@ class IMDT_Util_Date {
         return $dateObject ? $dateObject->format($outputFormat) : '';
     }
 
-    public static function dateInformal($tsDate){
+    public static function dateInformal($tsDate) {
         $inputDate = date('d/m/Y', $tsDate);
-        
+
         if ($inputDate == date("d/m/Y")) {
             return IMDT_Util_Translate::_('Today');
         } elseif ($inputDate == date("d/m/Y", time() + 86400)) {
@@ -114,11 +114,11 @@ class IMDT_Util_Date {
             return self::weekDayName(date("w", $tsDate)) . " " . date("d/m", $tsDate); // Ex. Segunda-feira 18/11
         }
     }
-    
+
     public static function weekDaysName($shortName = false) {
-	$rDdays = array();
-        
-	if($shortName == true){
+        $rDdays = array();
+
+        if ($shortName == true) {
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameSunday');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameMondayShort');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameTuesdayShort');
@@ -126,7 +126,7 @@ class IMDT_Util_Date {
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameThursdayShort');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameFridayShort');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameSaturday');
-	} else {
+        } else {
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameSunday');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameMonday');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameTuesday');
@@ -134,13 +134,14 @@ class IMDT_Util_Date {
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameThursday');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameFriday');
             $rDdays[] = IMDT_Util_Translate::_('weekdayNameSaturday');
-	}
-        
-	return $rDdays;
+        }
+
+        return $rDdays;
     }
-    
-    public static function weekDayName($weekDayNumber,$shortName = false) {
-	$rDays = self::weekDaysName($shortName);
-	return $rDays[$weekDayNumber];
+
+    public static function weekDayName($weekDayNumber, $shortName = false) {
+        $rDays = self::weekDaysName($shortName);
+        return $rDays[$weekDayNumber];
     }
+
 }

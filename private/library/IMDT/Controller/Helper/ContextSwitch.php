@@ -109,7 +109,7 @@ class IMDT_Controller_Helper_ContextSwitch extends Zend_Controller_Action_Helper
                     if ($this->_currentContext == 'xml') {
                         $stylesheet = $this->getRequest()->getHeader('X-XSL-Stylesheet');
 
-                        if ($stylesheet !== false and !empty($stylesheet)) {
+                        if ($stylesheet !== false and ! empty($stylesheet)) {
                             $body = str_replace('<?xml version="1.0"?>', sprintf('<?xml version="1.0"?><?xml-stylesheet type="text/xsl" href="%s"?>', $stylesheet), $body);
                         }
                     }
@@ -117,7 +117,7 @@ class IMDT_Controller_Helper_ContextSwitch extends Zend_Controller_Action_Helper
                     if ($this->_currentContext == 'json') {
                         $callback = $this->getRequest()->getParam('jsonp-callback', false);
 
-                        if ($callback !== false and !empty($callback)) {
+                        if ($callback !== false and ! empty($callback)) {
                             $body = sprintf('%s(%s)', $callback, $body);
                         }
                     }

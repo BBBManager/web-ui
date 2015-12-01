@@ -9,7 +9,7 @@ class IMDT_Util_Rest {
         if (self::$_logger == null) {
             $logDir = APPLICATION_PATH . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'log';
             self::$_logger = new Zend_Log();
-            touch($logDir . DIRECTORY_SEPARATOR . 'rest.log') or die ('<br/>Error: <strong>'.$logDir . ' is not writeable'.'</strong>');
+            touch($logDir . DIRECTORY_SEPARATOR . 'rest.log') or die('<br/>Error: <strong>' . $logDir . ' is not writeable' . '</strong>');
             $writer = new Zend_Log_Writer_Stream($logDir . DIRECTORY_SEPARATOR . 'rest.log');
             self::$_logger->addWriter($writer);
         }
