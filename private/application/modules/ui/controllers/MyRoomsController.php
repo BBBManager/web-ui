@@ -212,13 +212,16 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
 
                 foreach ($roomsResponse['collection'] as $room) {
                     if ($room['meeting_room_category_id'] == $category['meeting_room_category_id']) {
-                        if (!isset($categoriesResponse['collection'][$room['meeting_room_category_id']]['hierarchy']))
-                            continue;
+                        if (!isset($categoriesResponse['collection'][$room['meeting_room_category_id']]['hierarchy'])) {
+                            $hierarchy = $room['meeting_room_category_id'];
+                        } else {
+                            $hierarchy = $categoriesResponse['collection'][$room['meeting_room_category_id']]['hierarchy'] . '-' . $room['meeting_room_category_id'];
+                        }
 
                         $collection[] = array(
                             'id' => $room['meeting_room_id'],
                             'name' => $room['name'],
-                            'hierarchy' => $categoriesResponse['collection'][$room['meeting_room_category_id']]['hierarchy'] . '-' . $room['meeting_room_category_id'],
+                            'hierarchy' => $hierarchy,
                             'parent_id' => $room['meeting_room_category_id'],
                             'status' => $room['status'],
                             'date_start' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_start'], false),
