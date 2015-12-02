@@ -97,6 +97,10 @@ class IMDT_Util_Rest {
         try {
             $parsed = self::parseResponse($uri, $responseBody);
         } catch (Exception $e) {
+            echo "<pre>";
+            print_r($responseBody);
+            die;
+
             throw $e;
         }
 

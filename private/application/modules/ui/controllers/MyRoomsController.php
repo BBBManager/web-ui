@@ -170,7 +170,27 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
             $categoriesResponse = IMDT_Util_Rest::get('/api/categories');
             $roomsResponse = IMDT_Util_Rest::get('/api/my-rooms', $this->view->parameters);
 
-            $collection = array();
+            $collection = array(
+                array(
+                    'id' => -1,
+                    'name' => $this->_helper->translate('Uncategorised'),
+                    'parent_id' => null
+                )
+            );
+
+            foreach ($roomsResponse['collection'] as $room) {
+                if ($room['meeting_room_category_id'] == NULL) {
+                    $collection[] = array(
+                        'id' => $room['meeting_room_id'],
+                        'name' => $room['name'],
+                        'hierarchy' => '-1',
+                        'parent_id' => -1,
+                        'status' => $room['status'],
+                        'date_start' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_start'], false),
+                        'date_end' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_end'], false)
+                    );
+                }
+            }
 
             foreach ($categoriesResponse['collection'] as $category) {
                 if (isset($category['hierarchy'])) {
@@ -192,7 +212,6 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
 
                 foreach ($roomsResponse['collection'] as $room) {
                     if ($room['meeting_room_category_id'] == $category['meeting_room_category_id']) {
-
                         if (!isset($categoriesResponse['collection'][$room['meeting_room_category_id']]['hierarchy']))
                             continue;
 
@@ -234,7 +253,7 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                 $row[] = IMDT_Util_Date::filterDatetimeToCurrentLang($curr['date_end'], false);
                 $actions = '<td nowrap="nowrap">';
                 $showHistory = (in_array($curr['user_profile_in_meeting'], array(BBBManager_Config_Defines::$ROOM_MODERATOR_PROFILE, BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE)) != false);
-                
+
                 if ($curr['recordings_count'] > 0) {
                     $actions .= '<a title="' . $this->_helper->translate('View Recording') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/recordings/view/id/' . $curr['meeting_room_id'] . ((isset($params['recordings_count']) && ($params['recordings_count'] != '0')) ? '/hide-without-recordings/1' : '') . '" data-original-title="' . $this->_helper->translate('View Recording') . '"><i class="icon-eye-open"></i></a>';
                 }
