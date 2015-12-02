@@ -52,12 +52,16 @@
 </div>
 
 <h5><?= $this->translate('Results'); ?></h5>
-<table id="logs-report" class="table table-striped dtables" ajaxsource="<?= $this->url(array('action' => 'table-logs', 'meeting_room_id' => $this->id, 'id' => null)); ?>" ajaxsource-nofilters="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'table-logs', 'meeting_room_id' => $this->id), null, true); ?>" uri-export="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'logs-export', 'meeting_room_id' => $this->id), null, true); ?>">
+<table id="logs-report" class="table table-striped dtables"
+       ajaxsource="<?= $this->url(array('action' => 'table-logs', 'meeting_room_id' => $this->id, 'id' => null)); ?>"
+       ajaxsource-nofilters="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'table-logs', 'meeting_room_id' => $this->id), null, true); ?>"
+       uri-export="<?= $this->url(array('module' => 'ui', 'controller' => 'rooms', 'action' => 'logs-export', 'meeting_room_id' => $this->id), null, true); ?>"
+>
     <thead>
         <tr>
             <th><?= $this->translate('column-user-name'); ?></th>
             <th><?= $this->translate('column-meeting_room_action-name'); ?></th>
-            <th class="no-search"><?= $this->translate('column-meeting_room_log-create_date'); ?></th>
+            <th class="sort-desc no-search"><?= $this->translate('column-meeting_room_log-create_date'); ?></th>
             <th><?= $this->translate('column-meeting_room_log-ip_address'); ?></th>
         </tr>
     </thead>

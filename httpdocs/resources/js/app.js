@@ -577,20 +577,26 @@ $(document).ready(function() {
 
         dtablesOptions = dtablesDefaultOptions;
 
-        aoColumns = new Array();
+        aoColumns = [];
+        aaSorting = [];
         iSort = null;
 
         $(this).find('th').each(function(i, curr) {
             sortable = ($(this).hasClass('no-sort')) ? false : true;
             searchable = ($(this).hasClass('no-search')) ? false : true;
-            iSort = ($(this).hasClass('sort-desc')) ? null : i;
+            sortDirection = $(this).hasClass('sort-desc') ? 'desc' : $(this).hasClass('sort-asc') ? 'asc' : null;
 
             aoColumns.push({
                 'bSortable': sortable,
                 "bSearchable": searchable
             });
+
+            if(sortDirection) {
+                aaSorting.push([i, sortDirection]);
+            }
         });
 
+        /*
         if (iSort != null) {
             rSort = new Array();
             rSort[rSort.length] = iSort;
@@ -599,8 +605,10 @@ $(document).ready(function() {
             dtablesOptions.aaSorting = new Array();
             dtablesOptions.aaSorting[dtablesOptions.aaSorting.length] = rSort;
         }
+        */
 
         dtablesOptions.aoColumns = aoColumns;
+        dtablesOptions.aaSorting = aaSorting;
 
         if ($(this).attr('ajaxsource')) {
             dtablesOptions.bProcessing = "true";
