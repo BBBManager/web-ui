@@ -1,7 +1,7 @@
 <a href="<?=$this->url(array('action'=>'index','id'=>null)); ?>"><?=$this->translate('Meeting Rooms Management'); ?></a> / <h4><?=$this->title; ?></h4>
 
 <div id="dados">
-    <form id="formEdit" class="form-horizontal ajaxsubmit" method="POST" action="<?=$this->url(array('action'=>'form-manage-attendees-post','id'=>$this->id));?>" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
+    <form id="fakeEdit" class="form-horizontal" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
         <div readonly="readonly">
             <div class="control-group">
                 <label class="control-label" for="name"><?=$this->translate('column-meeting_room-name'); ?></label>
@@ -18,7 +18,11 @@
                                 <?
                                     foreach($this->categories as $category):
                                 ?>
-                                <tr data-description="<?=$category['name'];?>" data-row-id="<?= $category['meeting_room_category_id']; ?>" id="tblTree-<?= (($category['parent_id'] != '') ? $category['hierarchy'] . '-' : '') . $category['meeting_room_category_id']; ?>" <?= (($category['parent_id'] != '') ? 'class="child-of-tblTree-' . $category['hierarchy'] . '"' : ''); ?>>
+                                <tr style="pointer-events: none;"
+                                    data-description="<?=$category['name'];?>"
+                                    data-row-id="<?= $category['meeting_room_category_id']; ?>"
+                                    id="tblTree-<?= (($category['parent_id'] != '') ? $category['hierarchy'] . '-' : '') . $category['meeting_room_category_id']; ?>"
+                                    <?= (($category['parent_id'] != '') ? 'class="child-of-tblTree-' . $category['hierarchy'] . '"' : ''); ?>>
                                     <td><span><a class='select-category' href='javascript:void(0);'><?=$category['name'];?></a></span></td>
                                 </tr>
                                 <?
@@ -124,9 +128,9 @@
                 </div>
             </div>
         </div>
+    </form>
+    <form id="formEdit" class="form-horizontal ajaxsubmit" method="POST" action="<?=$this->url(array('action'=>'form-manage-attendees-post','id'=>$this->id));?>" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
         <h5><?=$this->translate('Permissions'); ?></h5>
-        
-        
         <? if($this->profile != BBBManager_Config_Defines::$ROOM_ADMINISTRATOR_PROFILE): ?>
             <div readonly="readonly">
         <? endif; ?>
