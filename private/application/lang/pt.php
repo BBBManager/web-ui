@@ -193,6 +193,7 @@ return array(
     'activate to sort column descending' => 'ative para ordenar coluna crescente',
     'record will be completelly removed! Is it ok?' => 'registro será completamente removido! Confirma a exclusão?',
     'records will be completelly removed! Is it ok?' => 'registros serão completamente removidos! Confirma a exclusão?',
+    'Uncategorised' => 'Sem Categoria',
     'Alert' => 'Alerta',
     'Ok' => 'Ok',
     'Remove' => 'Remover',

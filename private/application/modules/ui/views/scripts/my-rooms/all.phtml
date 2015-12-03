@@ -79,11 +79,11 @@
                     <tr data-description="<?=$item['name'];?>" data-row-id="<?= $item['id']; ?>" id="tblTree-<?= (($item['parent_id'] != '') ? $item['hierarchy'] . '-' : '') . $item['id']; ?>" <?= (($item['parent_id'] != '') ? 'class="child-of-tblTree-' . $item['hierarchy'] . '"' : ''); ?>>
                         <td>
                             <span <?=(isset($item['status']) ? ' class="badge meetingRoomStatus' . $item['status'] . '"': '');?>>
-                                <? if($item['id'] !== -1): ?>
+                                <? if(!$item['isCategory'] && $item['recordings_count'] > 0): ?>
                                 <a <?=(isset($item['date_start']) ? ' data-toggle="tooltip" title="' . $item['date_start'] . '-' . $item['date_end'] . '"' : '');?> href="<?=$this->url(array_merge(array('module'=>'ui','controller'=>'recordings', 'action'=>'view', 'id'=>$item['id']), $this->ui_state), 'default', true);?>">
                                 <? endif ?>
                                     <?=$item['name'];?>
-                                <? if($item['id'] !== -1): ?>
+                                <? if(!$item['isCategory'] && $item['recordings_count'] > 0): ?>
                                 </a>
                                 <? endif ?>
                             </span>

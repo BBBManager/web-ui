@@ -1,4 +1,4 @@
-<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->translate('Meeting Rooms Management'); ?></a> / <h4><?= $this->translate('History'); ?></h4>
+<a href="<?=$this->url(array('controller' => 'my-rooms', 'action'=>'index','id'=>null)); ?>"><?= $this->translate('Meeting Rooms Management'); ?></a> / <h4><?= $this->translate('History'); ?></h4>
 <h5><?= $this->translate('Filters'); ?></h5>
 <form id="frmMainFilter" class="form-horizontal no-loading ajaxsubmit" action="<?= $this->url(array('action' => 'table-logs', 'meeting_room_id' => $this->id)); ?>" source="<?= $this->url(array('action' => 'logs-report-filter', 'id' => $this->id)); ?>">
     <div class="control-group row-filter">
