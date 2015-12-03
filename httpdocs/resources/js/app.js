@@ -1,3 +1,5 @@
+moment.locale(navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage));
+
 accessProfileUpdateInterval = null;
 monitoraFrameInterval = null;
 
@@ -585,11 +587,17 @@ $(document).ready(function() {
             sortable = ($(this).hasClass('no-sort')) ? false : true;
             searchable = ($(this).hasClass('no-search')) ? false : true;
             sortDirection = $(this).hasClass('sort-desc') ? 'desc' : $(this).hasClass('sort-asc') ? 'asc' : null;
+            format = $(this).data('format') || false;
+            var columnObj = {
+                bSortable: sortable,
+                bSearchable: searchable
+            };
 
-            aoColumns.push({
-                'bSortable': sortable,
-                "bSearchable": searchable
-            });
+            if(format) {
+                columnObj.mDataProp = renderColumn($(this).data('column'), format);
+            }
+            console.log(columnObj);
+            aoColumns.push(columnObj);
 
             if(sortDirection) {
                 aaSorting.push([i, sortDirection]);
@@ -667,6 +675,28 @@ $(document).ready(function() {
     });
 });
 
+renderColumn = function(column, renderType) {
+    return function ( source, type, val ) {
+        if (type === 'set') {
+            source[column] = val;
+            source[column+'_sort'] = val;
+
+            switch (renderType) {
+                case 'date':
+                    source[column+'_sort'] = moment(val, 'L').unix();
+                    break;
+                case 'datetime':
+                    source[column+'_sort'] = moment(val, 'L HH:mm:ss').unix();
+                    break;
+            }
+            return;
+        } else if (type === 'sort') {
+            source[column+'_sort']
+        }
+
+        return source[column];
+    };
+};
 
 nomeSalaDup = function(idSalaOrigem) {
     $("#modalRoomName").modal().css({

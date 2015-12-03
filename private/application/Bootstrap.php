@@ -156,6 +156,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 
     protected function _initJqueryPlugins() {
         $this->_view->jQuery()
+                ->addJavascriptFile($this->_view->baseUrl('/resources/js/moment-with-locales.min.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/bootstrap/bootstrap.min.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'))
                 ->addJavascriptFile($this->_view->baseUrl('/resources/js/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.pt-BR.js'))
