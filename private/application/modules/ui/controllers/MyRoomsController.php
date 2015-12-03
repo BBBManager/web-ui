@@ -107,15 +107,15 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                 if (isset($bbbApiResponse['joinURL'])) {
                     $joinUrl = trim($bbbApiResponse['joinURL']);
                 } else {
-                    error_log($response['bbbApiResponse']);
-                    $errorMessage = 'Erro na resposta da API (verifique os LOGS)';
+                    $this->view->acessable = true;
+                    $errorMessage = $bbbApiResponse['error'];
                 }
             }
 
             if ($response['success'] == '1' && $joinUrl != '') {
                 header('Location: ' . $joinUrl);
             } elseif ($response['success'] == '1' && trim($errorMessage) != '') {
-                throw new Exception(trim($errorMessage));
+                throw new Exception(trim($this->_helper->translate($errorMessage)));
             } elseif ($response['success'] == '1' && trim($response['timeToWait']) != '') {
                 $this->view->timeToWait = $response['timeToWait'];
                 $this->view->validRoom = true;
@@ -129,11 +129,9 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
             $this->_redirector->goToUrlAndExit('/login/auth/logout');
         } catch (IMDT_Controller_Exception_AccessDennied $e2) {
             $this->addMessage(array('error' => $e2->getMessage()));
-            //$this->_redirector->goToUrlAndExit('/ui/my-rooms');
         } catch (Exception $e) {
             $this->addMessage(array('error' => $e->getMessage()));
             $this->view->errorMessage = true;
-            //$this->_redirector->goToUrlAndExit('/ui/my-rooms');
         }
     }
 
