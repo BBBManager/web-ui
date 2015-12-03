@@ -174,7 +174,8 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                 array(
                     'id' => -1,
                     'name' => $this->_helper->translate('Uncategorised'),
-                    'parent_id' => null
+                    'parent_id' => null,
+                    'isCategory' => true
                 )
             );
 
@@ -186,8 +187,10 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                         'hierarchy' => '-1',
                         'parent_id' => -1,
                         'status' => $room['status'],
+                        'isCategory' => false,
                         'date_start' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_start'], false),
-                        'date_end' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_end'], false)
+                        'date_end' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_end'], false),
+                        'recordings_count' => $room['recordings_count'],
                     );
                 }
             }
@@ -198,13 +201,15 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                         'id' => $category['meeting_room_category_id'],
                         'name' => $category['name'],
                         'parent_id' => $category['parent_id'],
-                        'hierarchy' => $category['hierarchy']
+                        'hierarchy' => $category['hierarchy'],
+                        'isCategory' => true
                     );
                 } else {
                     $collection[] = array(
                         'id' => $category['meeting_room_category_id'],
                         'name' => $category['name'],
-                        'parent_id' => $category['parent_id']
+                        'parent_id' => $category['parent_id'],
+                        'isCategory' => true
                     );
                 }
 
@@ -224,8 +229,10 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                             'hierarchy' => $hierarchy,
                             'parent_id' => $room['meeting_room_category_id'],
                             'status' => $room['status'],
+                            'isCategory' => false,
                             'date_start' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_start'], false),
-                            'date_end' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_end'], false)
+                            'date_end' => IMDT_Util_Date::filterDatetimeToCurrentLang($room['date_end'], false),
+                            'recordings_count' => $room['recordings_count'],
                         );
                     }
                 }
