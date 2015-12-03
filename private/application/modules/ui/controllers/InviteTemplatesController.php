@@ -60,6 +60,7 @@ class Ui_InviteTemplatesController extends IMDT_Controller_Abstract {
 
         $params = IMDT_Util_Url::getThisParams($this->filters);
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Invite Templates Management');
 
         $headers = array();
         $headers['columns-leach'] = 'name,subject,create_date';

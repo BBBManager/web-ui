@@ -86,6 +86,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
 
         $params = IMDT_Util_Url::getThisParams($this->filters);
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Users Management');
 
         $headers = array();
         $headers['columns-leach'] = 'name,login,access_profile,actived';

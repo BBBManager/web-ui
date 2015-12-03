@@ -80,6 +80,7 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
 
         $params = IMDT_Util_Url::getThisParams($this->filters);
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Groups Management');
 
         $headers = array();
         $headers['columns-leach'] = 'name,auth_mode,access_profile';

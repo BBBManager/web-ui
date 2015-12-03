@@ -155,6 +155,7 @@ class Ui_AccessLogsController extends IMDT_Controller_Abstract {
 
         $params = IMDT_Util_Url::getThisParams($this->filters);
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Access Logs');
 
         $headers = array();
         $headers['columns-leach'] = 'user,description,detail,ip_address,create_date';

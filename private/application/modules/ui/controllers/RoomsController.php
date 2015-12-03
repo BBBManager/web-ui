@@ -218,6 +218,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
         $params = IMDT_Util_Url::getThisParams($this->filters);
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Meeting Rooms Management');
 
         $headers = array();
         $headers['columns-leach'] = 'name,date_start,date_end';
@@ -735,14 +736,16 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         } else {
             header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_CSV);
         }
-        header('Content-Disposition: attachment; filename="room-events.csv"');
+        header('Content-Disposition: attachment; filename="room-events-'.$params['meeting_room_id'].'.csv"');
         echo file_get_contents($response['url']);
     }
 
     public function logsExportPdfAction() {
         $this->_disableViewAndLayout();
         $params = IMDT_Util_Url::getThisParams($this->logsFilters);
+
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Meeting Rooms Management') . ' - ' . $this->_helper->translate('History') . ' #'.$params['meeting_room_id'];
 
         $headers = array();
         $headers['columns-leach'] = 'user_name,meeting_room_action_name,create_date,ip_address';
@@ -753,13 +756,18 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
         $response = IMDT_Util_Rest::get('/api/room-logs.json', $params, $headers);
 
+//        Zend_Debug::dump($params);
+//        Zend_Debug::dump($headers);
+//        Zend_Debug::dump($response);
+//        die;
+
         if ($this->_request->getParam('utf8', 0)) {
             header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_PDF . '; charset=utf-8');
         } else {
             header('Content-type: ' . BBBManager_Config_Defines::$CONTENT_TYPE_PDF);
         }
         header('Set-Cookie: fileDownload=true; path=/');
-        header('Content-Disposition: attachment; filename="room-events.pdf"');
+        header('Content-Disposition: attachment; filename="room-events-'.$params['meeting_room_id'].'.pdf"');
         echo file_get_contents($response['url']);
     }
 
@@ -1041,8 +1049,8 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $this->view->parameters = IMDT_Util_Url::getThisParams($this->filters);
         $this->view->parametersString = http_build_query($this->view->parameters);
 
-        $this->view->uriExport = array('module' => $this->_request->getModuleName(), 'controller' => $this->_request->getControllerName(), 'action' => 'logs-export');
-        $this->view->uriExportPdf = array('module' => $this->_request->getModuleName(), 'controller' => $this->_request->getControllerName(), 'action' => 'logs-export-pdf');
+        $this->view->uriExport = array('meeting_room_id' => $this->view->id, 'module' => $this->_request->getModuleName(), 'controller' => $this->_request->getControllerName(), 'action' => 'logs-export');
+        $this->view->uriExportPdf = array('meeting_room_id' => $this->view->id,'module' => $this->_request->getModuleName(), 'controller' => $this->_request->getControllerName(), 'action' => 'logs-export-pdf');
 
         unset($this->logsFilters['user']);
         $this->view->filters = $this->filters;

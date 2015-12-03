@@ -135,6 +135,7 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
         $params = array();
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Categories Management');
 
         $headers = array();
         $headers['columns-leach'] = 'meeting_room_category_id,name,parent_id';
