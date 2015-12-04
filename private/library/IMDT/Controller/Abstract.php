@@ -12,6 +12,16 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
         $this->_authData = Zend_Auth::getInstance()->getStorage()->read();
         $this->_redirector = $this->_helper->getHelper('Redirector');
         $this->view->currentUrl = '/' . $request->getModuleName() . '/' . $request->getControllerName() . '/' . $request->getActionName();
+
+        if($this->_getParam('id', -1) !== -1) {
+            $this->view->breadcrumbIdLink = join('', array(
+                '<a href="',
+                $this->view->url(array('id'=>$this->_getParam('id'))),
+                '">#',
+                $this->_getParam('id'),
+                '</a>'
+            ));
+        }
     }
 
     /* public function init() {

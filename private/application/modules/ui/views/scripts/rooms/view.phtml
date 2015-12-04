@@ -1,4 +1,5 @@
-<a href="<?=$this->url(array('action'=>'index','id'=>null)); ?>"><?=$this->translate('Meeting Rooms Management'); ?></a> / <h4><?=$this->translate('View'); ?></h4>
+<a href="<?=$this->url(array('action'=>'index','id'=>null)); ?>"><?=$this->translate('Meeting Rooms Management'); ?></a> / <?= $this->breadcrumbIdLink ?>
+<h4><?=$this->translate('View'); ?></h4>
 
 <form readonly="readonly" id="formEdit" class="form-horizontal" method="POST" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
     <div class="control-group">

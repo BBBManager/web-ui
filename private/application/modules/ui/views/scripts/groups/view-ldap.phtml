@@ -1,4 +1,5 @@
-<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->controllerTitle; ?></a> / <h4><?= $this->title; ?></h4>
+<a href="<?= $this->url(array('action' => 'index', 'id' => null)); ?>"><?= $this->controllerTitle; ?></a> / <?= $this->breadcrumbIdLink ?>
+<h4><?= $this->title; ?></h4>
 
 <form id="formEdit" class="form-horizontal ajaxsubmit" source="<?= $this->url(array('action' => 'form-content', 'id' => $this->id)); ?>">
     <div class="control-group">

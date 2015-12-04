@@ -1,4 +1,5 @@
-<a href="<?=$this->url(array('controller' => 'my-rooms', 'action'=>'index','id'=>null)); ?>"><?=$this->translate('Meeting Rooms Management'); ?></a> / <h4><?=$this->title; ?></h4>
+<a href="<?=$this->url(array('controller' => 'my-rooms', 'action'=>'index','id'=>null)); ?>"><?=$this->translate('Meeting Rooms Management'); ?></a> / <?= $this->breadcrumbIdLink ?>
+<h4><?=$this->title; ?></h4>
 
 <div id="dados">
     <form id="fakeEdit" class="form-horizontal" source="<?=$this->url(array('action'=>'form-content','id'=>$this->id));?>">
