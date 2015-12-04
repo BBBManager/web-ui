@@ -275,7 +275,7 @@ $(document).ready(function() {
         updateTagsContainer($(this).attr('data-recording-id'));
     });
     
-    $('.send-invitatios').click(function(){
+    $(document).on('click', '.send-invitatios', function(){
         meetingRoomId = $(this).attr('data-meeting-room-id');
         //$('#modalInvite-' + meetingRoomId).modal('show');
         
@@ -289,7 +289,8 @@ $(document).ready(function() {
         });
         
         _modal = $('#modalInvite-' + meetingRoomId).data('modal').$element;
-        
+
+        $('#modalInvite-' + meetingRoomId).off('shown');
         $('#modalInvite-' + meetingRoomId).on('shown', function(){
             $(_modal).find('.save-buttons').show();
             $(_modal).find('.success-buttons').hide();
@@ -320,7 +321,7 @@ $(document).ready(function() {
             return false;
         });
     });
-    
+    $(".invite_template_id").off("change");
     $(".invite_template_id").on("change", function(e) {
         meetingRoomId = $(this).attr('data-meeting-room-id');
         _modal = $(this).parents('.modal').data('modal').$element;
