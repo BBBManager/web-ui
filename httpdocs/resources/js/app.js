@@ -306,8 +306,8 @@ $(document).ready(function() {
             modalFormSubmit($(this), _modal);
             return false;
         });*/
-        
-        $(_modal).find('form').find('[type="submit"],button.confirm').click(function(e){
+        $(_modal).find('form').find('[type="submit"],button.confirm').off('click');
+        $(_modal).find('form').find('[type="submit"],button.confirm').on('click', function(e){
             e.stopPropagation();
             e.preventDefault();
             
@@ -582,6 +582,7 @@ $(document).ready(function() {
 
         aoColumns = [];
         aaSorting = [];
+        aoColumnDefs = [];
         iSort = null;
 
         $(this).find('th').each(function(i, curr) {
@@ -594,14 +595,14 @@ $(document).ready(function() {
                 bSearchable: searchable
             };
 
-            if(format) {
-                columnObj.mDataProp = renderColumn($(this).data('column'), format);
-            }
-            console.log(columnObj);
             aoColumns.push(columnObj);
 
             if(sortDirection) {
                 aaSorting.push([i, sortDirection]);
+            }
+
+            if(format) {
+                aoColumnDefs.push({"sType": format, "aTargets": [i]});
             }
         });
 
@@ -617,6 +618,7 @@ $(document).ready(function() {
         */
 
         dtablesOptions.aoColumns = aoColumns;
+        dtablesOptions.aoColumnDefs = aoColumnDefs;
         dtablesOptions.aaSorting = aaSorting;
 
         if ($(this).attr('ajaxsource')) {
@@ -675,29 +677,6 @@ $(document).ready(function() {
 
     });
 });
-
-renderColumn = function(column, renderType) {
-    return function ( source, type, val ) {
-        if (type === 'set') {
-            source[column] = val;
-            source[column+'_sort'] = val;
-
-            switch (renderType) {
-                case 'date':
-                    source[column+'_sort'] = moment(val, 'L').unix();
-                    break;
-                case 'datetime':
-                    source[column+'_sort'] = moment(val, 'L HH:mm:ss').unix();
-                    break;
-            }
-            return;
-        } else if (type === 'sort') {
-            source[column+'_sort']
-        }
-
-        return source[column];
-    };
-};
 
 nomeSalaDup = function(idSalaOrigem) {
     $("#modalRoomName").modal().css({
@@ -1870,6 +1849,7 @@ formLoadComplete = function(form){
     }
     
     if($(form).attr('data-form-invite')){
+        console.log('oi');
         _textarea = $(form).find('textarea');
         nodeId = $(_textarea).attr('id');
         initCkEditor(nodeId);
@@ -2076,3 +2056,45 @@ checkWebMSupport = function(){
 isWebMSupported = function(){
     return (document.createElement('video').canPlayType('video/webm') != "");
 }
+
+$.extend(jQuery.fn.dataTableExt.oSort, {
+    "date-pre": function (a) {
+        var x;
+        try {
+            x = moment(a, 'L').unix();
+        }
+        catch (err) {
+            x = new Date().getTime();
+        }
+
+        return x;
+    },
+
+    "date-asc": function (a, b) {
+        return a - b;
+    },
+
+    "date-desc": function (a, b) {
+        return b - a;
+    },
+
+    "datetime-pre": function (a) {
+        var x;
+        try {
+            x = moment(a, 'L HH:mm:ss').unix();
+        }
+        catch (err) {
+            x = new Date().getTime();
+        }
+
+        return x;
+    },
+
+    "datetime-asc": function (a, b) {
+        return a - b;
+    },
+
+    "datetime-desc": function (a, b) {
+        return b - a;
+    }
+});

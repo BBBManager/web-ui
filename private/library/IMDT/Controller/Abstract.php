@@ -5,6 +5,8 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
     protected $_redirector;
     protected $_authData;
     protected $_flashMessenger = null;
+    protected $_aclSkipActions = array();
+    protected $_shouldSkipAcl = false;
 
     public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array()) {
         parent::__construct($request, $response, $invokeArgs);
@@ -24,10 +26,6 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
         }
     }
 
-    /* public function init() {
-      $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-      } */
-
     protected function _disableLayout() {
         $this->_helper->layout()->disableLayout();
     }
@@ -39,6 +37,11 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
     protected function _disableViewAndLayout() {
         $this->_disableLayout();
         $this->_disableView();
+        $this->_skipAcl();
+    }
+
+    protected function _skipAcl() {
+        $this->_shouldSkipAcl = true;
     }
 
     /* public function preDispatch() {
@@ -74,6 +77,15 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
         $this->view->messages = array_merge($this->getFlashMessenger()->getMessages(), $this->getFlashMessenger()->getCurrentMessages());
         $this->getFlashMessenger()->clearCurrentMessages();
         $this->getFlashMessenger()->clearMessages();
+
+        if(isset($this->api)) {
+            if(!in_array($this->getRequest()->getActionName(), $this->_aclSkipActions)
+                && !$this->_shouldSkipAcl) {
+                if (!IMDT_Util_Acl::getInstance()->isAllowed($this->api, 'list')) {
+                    throw new IMDT_Controller_Exception_AccessDennied($this->_helper->translate('You don\'t have access to the requested resource'));
+                }
+            }
+        }
     }
 
 }

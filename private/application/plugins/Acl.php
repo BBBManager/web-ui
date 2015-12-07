@@ -17,6 +17,8 @@ class BBBManager_Plugin_Acl extends Zend_Controller_Plugin_Abstract {
             $aclNs->allowedMenuItens = $securityResponse['allowedMenuItens'];
             $aclNs->aclRules = unserialize(base64_decode($securityResponse['acl']));
         }
+
+        //Zend_Debug::dump($aclNs->allowedMenuItens); die;
     }
 
 }

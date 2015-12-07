@@ -2,6 +2,12 @@
 
 class Ui_UsersController extends IMDT_Controller_Abstract {
 
+    protected $_aclSkipActions = array(
+        'edit-me',
+        'editme-form-content',
+        'editme-form-post'
+    );
+
     public function init() {
         $this->filters = array();
         $this->filters['name'] = array('name' => 'name', 'label' => $this->_helper->translate('column-user-name'), 'type' => 'text');

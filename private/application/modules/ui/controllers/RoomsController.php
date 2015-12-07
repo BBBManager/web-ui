@@ -247,19 +247,23 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function editAction() {
-        try {
-            $response = IMDT_Util_Rest::get('/api/categories');
-            $categories = $response['collection'];
-            $this->view->categories = $categories;
-        } catch (Exception $ex) {
-            
+        $response = IMDT_Util_Rest::get('/api/my-rooms', array('meeting_room_id' => $this->_getParam('id', -1)));
+
+        if (!isset($response['collection'][$this->_getParam('id', -1)])) {
+            throw new Exception($this->_helper->translate('Nenhuma sala encontrada para o id informado.'));
         }
+
+        $response = IMDT_Util_Rest::get('/api/categories');
+        $categories = $response['collection'];
+        $this->view->categories = $categories;
 
         $this->view->id = $this->_getParam('id', null);
         $this->view->title = $this->_helper->translate('Edit');
     }
 
     public function manageAttendeesAction() {
+        $this->_skipAcl();
+
         $this->view->id = $this->_getParam('id', null);
         $this->view->title = $this->_helper->translate('Manage attendees');
 
@@ -278,6 +282,8 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function formManageAttendeesPostAction() {
+        $this->_skipAcl();
+
         $objResponse = new stdClass();
 
         try {
@@ -683,6 +689,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function tableLogsAction() {
+        $this->_skipAcl();
         $objResponse = new stdClass();
 
         try {
@@ -716,6 +723,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function logsExportAction() {
+        $this->_skipAcl();
         $this->_disableViewAndLayout();
 
         $filters = array();
@@ -741,6 +749,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function logsExportPdfAction() {
+        $this->_skipAcl();
         $this->_disableViewAndLayout();
         $params = IMDT_Util_Url::getThisParams($this->logsFilters);
 
@@ -772,6 +781,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function logsReportFilterAction() {
+        $this->_skipAcl();
         $objResponse = new stdClass();
 
         try {
@@ -820,6 +830,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
     public function formInviteContentAction() {
         $objResponse = new stdClass();
+        $this->_skipAcl();
 
         try {
             $objResponse = new stdClass();
@@ -867,6 +878,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function formInvitePostAction() {
+        $this->_skipAcl();
         $objResponse = new stdClass();
 
         try {
@@ -906,6 +918,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function audienceReportAction() {
+        $this->_skipAcl();
         $this->_disableViewAndLayout();
 
         $params = array();
@@ -934,6 +947,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function audienceReportPdfAction() {
+        $this->_skipAcl();
         $this->_disableViewAndLayout();
 
         $params = array();
@@ -969,6 +983,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function advSearchFilterAction() {
+        $this->_skipAcl();
         $objResponse = new stdClass();
 
         try {
@@ -1044,6 +1059,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function historyAction() {
+        $this->_skipAcl();
         $this->view->id = $this->_getParam('id', null);
         $params = $this->_request->getParam('q');
         $this->view->parameters = IMDT_Util_Url::getThisParams($this->filters);
@@ -1158,6 +1174,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     }
 
     public function manageRecordingAction() {
+        $this->_skipAcl();
         try {
             $meetingRoomId = $this->_getParam('id', null);
 

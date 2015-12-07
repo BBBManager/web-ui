@@ -4,6 +4,7 @@ class Ui_CategoriesController extends IMDT_Controller_Abstract {
 
     public function init() {
         $this->view->headScript()->appendFile($this->view->baseUrl('/resources/js/categorias.js'));
+        $this->api = 'categories';
     }
 
     public function indexAction() {
