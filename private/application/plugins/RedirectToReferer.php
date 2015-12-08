@@ -11,7 +11,8 @@ class BBBManager_Plugin_RedirectToReferer extends Zend_Controller_Plugin_Abstrac
 
         $redirectToRefererNs = new Zend_Session_Namespace('redirectToReferer');
 
-        if ($redirectToRefererNs->uri != null) {
+        
+        if ($redirectToRefererNs->uri != null && strpos($redirectToRefererNs->uri, '/resources/') === FALSE) {
             $this->getResponse()->setRedirect($redirectToRefererNs->uri);
             $redirectToRefererNs->uri = null;
         }
