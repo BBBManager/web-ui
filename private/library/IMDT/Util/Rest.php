@@ -2,7 +2,7 @@
 
 class IMDT_Util_Rest {
 
-    private static $_timeout = 300;
+    private static $_timeout = 1000;
     private static $_logger = null;
 
     private static function getLogger() {
@@ -20,7 +20,8 @@ class IMDT_Util_Rest {
         self::getLogger()->debug(json_encode($logObject));
     }
 
-    private static function performRequest($method, $uri, $data = null, $headers = null) {
+    private static function performRequest($method, $uri, $data = null, $headers = null, $debug = false) {
+        set_time_limit(0);
         session_write_close();
 
         $requestId = getmypid() . '-' . microtime();
@@ -54,7 +55,6 @@ class IMDT_Util_Rest {
         $clientHttp->setHeaders($allHeaders);
 
         $client = new Zend_Rest_Client(IMDT_Util_Config::getInstance()->get('api_base_url'));
-
         $client->setHttpClient($clientHttp);
 
         $response = null;
@@ -97,7 +97,21 @@ class IMDT_Util_Rest {
         try {
             $parsed = self::parseResponse($uri, $responseBody);
         } catch (Exception $e) {
+            echo $responseBody; die;
             throw $e;
+        }
+
+        if($debug) {
+            Zend_Debug::dump($uri, 'uri');
+            //Zend_Debug::dump($clientHttp, 'http');
+            //Zend_Debug::dump($client, 'client');
+            Zend_Debug::dump($data, 'data');
+            Zend_Debug::dump($response, 'response');
+            Zend_Debug::dump($responseBody, 'parsed');
+        }
+
+        if(!isset($parsed['success'])) {
+            throw new Exception('Error parsing the response');
         }
 
         if ($parsed['success'] == '-1') {
@@ -143,27 +157,25 @@ class IMDT_Util_Rest {
         }
     }
 
-    public static function get($uri, $queryString = null, $headers = null) {
-
-
-        return self::performRequest('get', $uri, $queryString, $headers);
+    public static function get($uri, $queryString = null, $headers = null, $debug = false) {
+        return self::performRequest('get', $uri, $queryString, $headers, $debug);
     }
 
-    public static function put($uri, $data, $headers = null, $timeout = null) {
+    public static function put($uri, $data, $headers = null, $timeout = null, $debug = false) {
         if ($timeout != null) {
             self::$_timeout = $timeout;
         }
         $data = self::parseInputParameters($uri, $data);
-        return self::performRequest('put', $uri, $data, $headers);
+        return self::performRequest('put', $uri, $data, $headers, $debug);
     }
 
-    public static function post($uri, $data, $headers = null) {
+    public static function post($uri, $data, $headers = null, $debug = false) {
         $data = self::parseInputParameters($uri, $data);
-        return self::performRequest('post', $uri, $data, $headers);
+        return self::performRequest('post', $uri, $data, $headers, $debug);
     }
 
-    public static function delete($uri, $headers = null) {
-        return self::performRequest('delete', $uri, null, $headers);
+    public static function delete($uri, $headers = null, $debug = false) {
+        return self::performRequest('delete', $uri, null, $headers, $debug);
     }
 
 }

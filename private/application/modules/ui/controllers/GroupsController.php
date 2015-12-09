@@ -180,15 +180,17 @@ class Ui_GroupsController extends IMDT_Controller_Abstract {
         $this->view->id = $this->_getParam('id', null);
         $this->view->title = $this->_helper->translate('Edit');
 
-        if ($this->getParam('auth_mode', BBBManager_Config_Defines::$LOCAL_AUTH_MODE) == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
-            $this->_helper->viewRenderer('edit-ldap');
+        $response = IMDT_Util_Rest::get('/api/' . $this->api . '/' . $this->view->id . '.json');
+        if ($response['row']['auth_mode_id'] == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
+            $this->_forward('view');
         }
     }
 
     public function viewAction() {
         $this->view->id = $this->_getParam('id', null);
 
-        if ($this->getParam('auth_mode', BBBManager_Config_Defines::$LOCAL_AUTH_MODE) == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
+        $response = IMDT_Util_Rest::get('/api/' . $this->api . '/' . $this->view->id . '.json');
+        if ($response['row']['auth_mode_id'] == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
             $this->_helper->viewRenderer('view-ldap');
         }
     }

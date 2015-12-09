@@ -9,6 +9,8 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
     );
 
     public function init() {
+        set_time_limit(0);
+
         $this->filters = array();
         $this->filters['name'] = array('name' => 'name', 'label' => $this->_helper->translate('column-user-name'), 'type' => 'text');
         $this->filters['login'] = array('name' => 'login', 'label' => $this->_helper->translate('column-user-login'), 'type' => 'text');
@@ -196,11 +198,13 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
     }
 
     public function tableContentAction() {
+        set_time_limit(0);
         $objResponse = new stdClass();
-
         try {
             $params = IMDT_Util_Url::getThisParams($this->filters);
-            $response = IMDT_Util_Rest::get('/api/' . $this->api . '.json', $params);
+            $response = IMDT_Util_Rest::get('/api/' . $this->api . '.json', $params, null, true);
+            Zend_Debug::dump($response, 'response');
+            die;
 
             $arrTable = array();
             foreach ($response['collection'] as $curr) {
@@ -241,12 +245,14 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
             $objResponse->aaData = $arrTable;
         } catch (IMDT_Controller_Exception_InvalidToken $e1) {
             $objResponse->success = '-1';
+            $objResponse->msg = $e1->getMessage();
             $objResponse->aaData = array();
         } catch (Exception $e) {
             $objResponse->success = '0';
             $objResponse->msg = $e->getMessage();
             $objResponse->aaData = array();
         }
+
         $this->_helper->json($objResponse);
     }
 
