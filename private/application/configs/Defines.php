@@ -110,16 +110,17 @@ final class BBBManager_Config_Defines {
         }
     }
 
-    public static function getAccessProfile($accessProfileId = null) {
+    public static function getAccessProfile($accessProfileId = -1) {
         $rAccessProfile = array(
             self::$SYSTEM_ADMINISTRATOR_PROFILE => IMDT_Util_Translate::_('System Administrator'),
             self::$SYSTEM_SUPPORT_PROFILE => IMDT_Util_Translate::_('Support System'),
             self::$SYSTEM_PRIVILEGED_USER_PROFILE => IMDT_Util_Translate::_('Privileged User System'),
             self::$SYSTEM_USER_PROFILE => IMDT_Util_Translate::_('System User'),
-            self::$NA_PROFILE => IMDT_Util_Translate::_('Inherited from Group')
+            self::$NA_PROFILE => IMDT_Util_Translate::_('Inherited from Group'),
+            null => IMDT_Util_Translate::_('No Access'),
         );
 
-        if ($accessProfileId == null) {
+        if ($accessProfileId == -1) {
             return $rAccessProfile;
         } else {
             return $rAccessProfile[$accessProfileId];

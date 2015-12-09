@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'No Access' => 'Sem Acesso',
     'dateFormat' => 'dd/mm/yyyy',
     'dateFormat-datepicker' => 'dd/MM/yyyy',
     'dateFormat-datetimepicker' => 'dd/MM/yyyy hh:mm',
