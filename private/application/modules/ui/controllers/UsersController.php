@@ -202,9 +202,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
         $objResponse = new stdClass();
         try {
             $params = IMDT_Util_Url::getThisParams($this->filters);
-            $response = IMDT_Util_Rest::get('/api/' . $this->api . '.json', $params, null, true);
-            Zend_Debug::dump($response, 'response');
-            die;
+            $response = IMDT_Util_Rest::get('/api/' . $this->api . '.json', $params, null);
 
             $arrTable = array();
             foreach ($response['collection'] as $curr) {
