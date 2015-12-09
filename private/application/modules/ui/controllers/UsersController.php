@@ -165,11 +165,13 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
         $this->view->id = $this->_getParam('id', null);
         $this->view->title = $this->_helper->translate('Edit');
 
-        if ($this->getParam('auth_mode', BBBManager_Config_Defines::$LOCAL_AUTH_MODE) == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
+        $response = IMDT_Util_Rest::get('/api/' . $this->api . '/' . $this->view->id . '.json');
+
+        if ($response['row']['auth_mode_id'] == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
             $this->_helper->viewRenderer('edit-ldap');
         }
 
-        if ($this->getParam('auth_mode', BBBManager_Config_Defines::$LOCAL_AUTH_MODE) == BBBManager_Config_Defines::$PERSONA_AUTH_MODE) {
+        if ($response['row']['auth_mode_id'] == BBBManager_Config_Defines::$PERSONA_AUTH_MODE) {
             $this->_helper->viewRenderer('edit-persona');
         }
     }
@@ -177,11 +179,13 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
     public function viewAction() {
         $this->view->id = $this->_getParam('id', null);
 
-        if ($this->getParam('auth_mode', BBBManager_Config_Defines::$LOCAL_AUTH_MODE) == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
+        $response = IMDT_Util_Rest::get('/api/' . $this->api . '/' . $this->view->id . '.json');
+
+        if ($response['row']['auth_mode_id'] == BBBManager_Config_Defines::$LDAP_AUTH_MODE) {
             $this->_helper->viewRenderer('view-ldap');
         }
 
-        if ($this->getParam('auth_mode', BBBManager_Config_Defines::$LOCAL_AUTH_MODE) == BBBManager_Config_Defines::$PERSONA_AUTH_MODE) {
+        if ($response['row']['auth_mode_id'] == BBBManager_Config_Defines::$PERSONA_AUTH_MODE) {
             $this->_helper->viewRenderer('view-persona');
         }
     }
@@ -282,6 +286,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
                 $arrForm['access_profile_id'] = $row['access_profile_id'];
                 $arrForm['auth_mode_id'] = $row['auth_mode_id'];
                 $arrForm['groups'] = $row['groups'];
+                $arrForm['ldapGroups'] = $row['ldapGroups'];
                 $arrForm['valid_from'] = IMDT_Util_Date::filterDateToCurrentLang($row['valid_from'], false);
                 $arrForm['valid_to'] = IMDT_Util_Date::filterDateToCurrentLang($row['valid_to'], false);
                 $arrForm['access_profile_name'] = BBBManager_Config_Defines::getAccessProfile($row['access_profile_id']);
@@ -295,13 +300,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
             }
 
 
-            $arrSelect2 = array('auth_mode' => array(), 'group' => array()/* ,'access_profile'=>array() */, 'ldapGroup' => array());
-
-            if (isset($arrForm['ldapGroups']) && (count($arrForm['ldapGroups']) > 0)) {
-                foreach ($arrForm['ldapGroups'] as $ldapGroup) {
-                    $arrSelect2['ldapGroup'][] = array('id' => $ldapGroup, 'text' => $ldapGroup);
-                }
-            }
+            $arrSelect2 = array('auth_mode' => array(), 'group' => array(), 'ldapGroup' => array());
 
             $arrSelect2['auth_mode'][] = array('id' => BBBManager_Config_Defines::$LOCAL_AUTH_MODE, 'text' => BBBManager_Config_Defines::getAuthMode(BBBManager_Config_Defines::$LOCAL_AUTH_MODE));
             $arrSelect2['auth_mode'][] = array('id' => BBBManager_Config_Defines::$LDAP_AUTH_MODE, 'text' => BBBManager_Config_Defines::getAuthMode(BBBManager_Config_Defines::$LDAP_AUTH_MODE));
@@ -331,13 +330,22 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
              */
 
 
-            $collectionGroups = IMDT_Util_Rest::get('/api/groups.json', array('auth_mode_id' => '1'));
+            $collectionGroups = IMDT_Util_Rest::get('/api/groups.json', array('auth_mode_id' => BBBManager_Config_Defines::$LOCAL_AUTH_MODE));
             foreach ($collectionGroups['collection'] as $obj) {
                 $nRow = array();
                 $nRow['id'] = $obj['group_id'];
                 $nRow['text'] = $obj['name'];
 
                 $arrSelect2['group'][] = $nRow;
+            }
+
+            $collectionGroups = IMDT_Util_Rest::get('/api/groups.json', array('auth_mode_id' => BBBManager_Config_Defines::$LDAP_AUTH_MODE));
+            foreach ($collectionGroups['collection'] as $obj) {
+                $nRow = array();
+                $nRow['id'] = $obj['group_id'];
+                $nRow['text'] = $obj['name'];
+
+                $arrSelect2['ldapGroup'][] = $nRow;
             }
 
             $objResponse->select2 = $arrSelect2;
