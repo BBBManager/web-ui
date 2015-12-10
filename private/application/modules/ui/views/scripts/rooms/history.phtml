@@ -2,13 +2,13 @@
 <h4><?= $this->translate('History'); ?></h4>
 <h5><?= $this->translate('Filters'); ?></h5>
 <form id="frmMainFilter" class="form-horizontal no-loading ajaxsubmit" action="<?= $this->url(array('action' => 'table-logs', 'meeting_room_id' => $this->id)); ?>" source="<?= $this->url(array('action' => 'logs-report-filter', 'id' => $this->id)); ?>">
-    <div class="control-group row-filter">
+    <div class="control-group row-filter" data-force-query>
         <input type="hidden" class="column" value="user" column-type="combo" />
 
         <div class="filter-values user">
-            <input type="hidden" class="condition" value="i" />
+            <input type="hidden" class="condition" value="in" />
 
-            <label class="control-label" for="log_filter_user"><?= $this->translate('column-meeting_room_log-user'); ?></label>    
+            <label class="control-label" for="log_filter_user"><?= $this->translate('column-meeting_room_log-user'); ?></label>
             <div class="controls">
                 <select id="log_filter_user" data-value="" style="width:220px;" multiple="multiple" source="user" class="select2 value span6"></select>
             </div>
@@ -40,7 +40,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><?= $this->translate('Advanced search'); ?></h3>
         </div>
-        <div class="modal-body"> 
+        <div class="modal-body">
 
             <?= $this->formFilters($this->logsFilters, array()); ?>
 

@@ -883,6 +883,7 @@ applyFilter = function(tableSelector, contextSelector) {
             _parent = $('div.span12');
         }
     }
+
     table = $(tableSelector);
     oTable = $(tableSelector).dataTable();
 
@@ -909,7 +910,9 @@ applyFilter = function(tableSelector, contextSelector) {
     });
     */
     
-    $(_parent).find('#frmAdvFilter div.row-filter').each(function() {
+    $(_parent).find('#frmAdvFilter div.row-filter, [data-force-query]').each(function() {
+        console.log($(this));
+
         var objColumn = new Object;
         var obj = $(this).find('input.column,select.column option:selected').get(0);
         if ($(obj).attr('show-subselect')) {
@@ -921,7 +924,7 @@ applyFilter = function(tableSelector, contextSelector) {
         objColumn.n = $(obj).val();
         objColumn.c = $(divValues).find('input.condition,select.condition').val();
         objColumn.v = $(divValues).find('input.value,select.value').val();
-        if (objColumn.v != null && typeof objColumn.v == 'object')
+        if (objColumn.v != null && (typeof objColumn.v == 'object' || typeof objColumn.v == 'array'))
             objColumn.v = objColumn.v.join();
 
         if (objColumn.c == 'b') {

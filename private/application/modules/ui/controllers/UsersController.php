@@ -217,7 +217,7 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
                 } else {
                     $row[] = '<input class="cboxSelectRow" type="checkbox" disabled="disabled" />';
                 }
-                
+
                 $row[] = $curr['name'];
                 $row[] = $curr['login'];
                 $row[] = $curr['auth_mode'];
