@@ -248,8 +248,10 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
     public function editAction() {
         $response = IMDT_Util_Rest::get('/api/my-rooms', array('meeting_room_id' => $this->_getParam('id', -1)));
+        $authData = Zend_Auth::getInstance()->getStorage()->read();
 
-        if (!isset($response['collection'][$this->_getParam('id', -1)])) {
+        if (!isset($response['collection'][$this->_getParam('id', -1)])
+            && $authData['user_access_profile'] != BBBManager_Config_Defines::$SYSTEM_ADMINISTRATOR_PROFILE) {
             throw new Exception($this->_helper->translate('Nenhuma sala encontrada para o id informado.'));
         }
 
@@ -346,6 +348,15 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
     public function viewAction() {
         $this->view->id = $this->_getParam('id', null);
+
+        $response = IMDT_Util_Rest::get('/api/my-rooms', array('meeting_room_id' => $this->_getParam('id', -1)));
+        $authData = Zend_Auth::getInstance()->getStorage()->read();
+
+        if (!isset($response['collection'][$this->_getParam('id', -1)])
+            && $authData['user_access_profile'] != BBBManager_Config_Defines::$SYSTEM_ADMINISTRATOR_PROFILE) {
+            throw new Exception($this->_helper->translate('Nenhuma sala encontrada para o id informado.'));
+        }
+
         $this->view->logsFilters = $this->logsFilters;
 
         $this->view->jQuery()->addOnload('CKEDITOR.replace("body");');
@@ -953,6 +964,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $params = array();
         $params['meeting_room_id'] = $this->_request->getParam('id', null);
         $params['export'] = 'pdf';
+        $params['pdf-title'] = $this->_helper->translate('Audience Report') . ' #'.$params['meeting_room_id'];
 
         $headers = array();
         $headers['columns-leach'] = 'auth_mode,user_id,login,name,online_time,ip_address,date_join,date_left';

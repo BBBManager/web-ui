@@ -97,11 +97,12 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
         $params['pdf-title'] = $this->_helper->translate('Users Management');
 
         $headers = array();
-        $headers['columns-leach'] = 'name,login,access_profile,actived';
+        $headers['columns-leach'] = 'name,login,auth_mode,access_profile,actived';
         //$headers['columns-desc'] = $this->_helper->translate('column-invite_template-id').','.$this->_helper->translate('column-invite_template-subject');
         $arrHeader = array();
         $arrHeader[] = $this->_helper->translate('column-user-name');
         $arrHeader[] = $this->_helper->translate('column-user-login');
+        $arrHeader[] = $this->_helper->translate('column-auth_mode-name');
         $arrHeader[] = $this->_helper->translate('column-access_profile-name');
         $arrHeader[] = $this->_helper->translate('column-user-actived');
         $headers['columns-desc'] = implode(',', $arrHeader);
@@ -216,8 +217,10 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
                 } else {
                     $row[] = '<input class="cboxSelectRow" type="checkbox" disabled="disabled" />';
                 }
+                
                 $row[] = $curr['name'];
                 $row[] = $curr['login'];
+                $row[] = $curr['auth_mode'];
                 $row[] = $curr['access_profile'];
                 $row[] = $curr['actived'];
                 $actions = '<td nowrap="nowrap">';

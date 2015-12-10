@@ -1,6 +1,9 @@
 <?php
 
 return array(
+    'Audience Report' => 'Relatório de Audiência',
+    'The invitation has been sent successfuly' => 'Os convites foram enviados',
+    'The invitation has been sent successfuly.' => 'Os convites foram enviados.',
     'No Access' => 'Sem Acesso',
     'dateFormat' => 'dd/mm/yyyy',
     'dateFormat-datepicker' => 'dd/MM/yyyy',
