@@ -61,7 +61,11 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
         //$this->view->mainFilters = array();
         //$this->view->mainFilters['main_date_start'] = array('name'=>'date_start', 'label'=>$this->_helper->translate('column-access_log-create_date'), 'type'=>'datetime', 'condition'=>'b');
-        $this->filters['main_date_start'] = array('main' => true, 'name' => 'date_start', 'label' => $this->_helper->translate('column-access_log-create_date'), 'type' => 'datetime', 'condition' => 'b');
+        $this->filters['main_date_start'] = array(
+            'main' => true, 'name' => 'date_start',
+            'label' => $this->_helper->translate('column-access_log-create_date'),
+            'type' => 'datetime',
+            'condition' => 'b');
 
         /*
           Permissões - Administradores
@@ -141,21 +145,17 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
                     $existsDateStart = true;
         }
         if ($existsDateStart == false) {
-            $q[] = array('n' => 'main_date_start', 'c' => 'b', 'v' => IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('-30 days'))), 'u' => IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+30 days'))));
+            $q[] = array('n' => 'main_date_start',
+                'type'=>'datetime',
+                'c' => 'b',
+                'v' => IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('-30 days'))),
+                'u' => IMDT_Util_Date::filterDatetimeToCurrentLang(date('Y-m-d H:i', strtotime('+30 days'))));
             $this->_request->setParam('q', $q);
         }
 
-
-
-        $params = $this->_request->getParam('q');
-
         $this->view->parameters = IMDT_Util_Url::getThisParams($this->filters);
-
         $this->view->parametersString = http_build_query($this->view->parameters);
-
         $this->view->filters = $this->filters;
-
-        //debug($this->view->parameters);
 
         $this->view->hasFilters = ((isset($this->view->parameters['q']) && (count($this->view->parameters['q']) > 0)) ? true : false);
     }
@@ -374,7 +374,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
             $categories = $response['collection'];
             $this->view->categories = $categories;
         } catch (Exception $ex) {
-            
+
         }
         $this->view->id = 'new';
         $this->view->title = $this->_helper->translate('New');
@@ -385,7 +385,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
         $objResponse = new stdClass();
 
         try {
-            $params = IMDT_Util_Url::getThisParams($this->filters);
+            $params = IMDT_Util_Url::getThisParams($this->filters);;
             $response = IMDT_Util_Rest::get('/api/rooms.json', $params);
 
             $arrTable = array();
@@ -1053,7 +1053,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
               $strOptions .= '<option value="'.$obj['user_id'].'">'.$obj['name'].'</option>';
               }
               $arrSelect['user'] = $strOptions;
-             * 
+             *
              */
 
             $objResponse->form = array();
@@ -1215,7 +1215,7 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
 
             $this->view->recordings = $response['collection'];
         } catch (Exception $ex) {
-            
+
         }
 
         $this->view->id = $meetingRoomId;

@@ -911,8 +911,6 @@ applyFilter = function(tableSelector, contextSelector) {
     */
     
     $(_parent).find('#frmAdvFilter div.row-filter, [data-force-query]').each(function() {
-        console.log($(this));
-
         var objColumn = new Object;
         var obj = $(this).find('input.column,select.column option:selected').get(0);
         if ($(obj).attr('show-subselect')) {
