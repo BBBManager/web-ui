@@ -438,7 +438,15 @@ class Ui_UsersController extends IMDT_Controller_Abstract {
             if ($this->_request->isPost()) {
                 $userId = $this->_request->getPost('user_id', null);
 
-                $resetPassResponse = IMDT_Util_Rest::get('/api/users-reset-password', array('user_id' => $userId));
+                $response = IMDT_Util_Rest::get('/api/' . $this->api . '/' . $userId . '.json');
+
+                $row = $response['row'];
+
+                if(!isset($row)) {
+                    throw new Exception("Invalid ID");
+                }
+
+                $resetPassResponse = IMDT_Util_Rest::get('/api/users-reset-password', array('email' => $row['email']));
 
                 $objResponse->success = '1';
                 $objResponse->msg = $resetPassResponse['msg'];
