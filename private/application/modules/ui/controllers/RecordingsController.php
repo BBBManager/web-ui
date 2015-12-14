@@ -37,7 +37,7 @@ class Ui_RecordingsController extends IMDT_Controller_Abstract {
             $recordingsCollection = $response['collection'];
 
             foreach ($recordingsCollection as $i => $recording) {
-                $recording['playback_url'] = preg_replace('/\/presentation/', '', $recording['playback_url']);
+                //$recording['playback_url'] = preg_replace('/\/presentation/', '', $recording['playback_url']);
 
                 if (isset($_SERVER['HTTPS']) && ( $_SERVER['HTTPS'] != '')) {
                     $recording['playback_url'] = preg_replace('/http\:\//', 'https:/', $recording['playback_url']);
