@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'Disconnect existing session' => 'Encerrar a sessão existente',
     'Log description removal' => 'Descrição de Logs - Exclusão',
     'Log description details' => 'Descrição de Logs - Detalhes',
     'Logs description list' => 'Descrição de Logs - Listagem',

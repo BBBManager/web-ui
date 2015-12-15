@@ -72,6 +72,31 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
             $this->addMessage(array('error' => $e->getMessage()));
         }
     }
+    
+    public function killmeAction() {
+        try {
+            $roomId = $this->_getParam('id', null);
+
+            $this->_helper->layout()->setLayout('public');
+            
+            if ($roomId == null) {
+                throw new Exception($this->_helper->translate('Invalid room id'));
+            }
+            
+            $response = IMDT_Util_Rest::delete('/api/my-rooms/' . $roomId);
+            
+            if(!isset($response['error'])) {
+                $this->_redirector->goToUrlAndExit('/my-rooms/go/id/'.$roomId);
+            } else {
+                $this->addMessage(array('error' => $response['error']));
+                $this->_redirector->goToUrlAndExit('/my-rooms/go/id/'.$roomId);
+            }
+        } catch (IMDT_Controller_Exception_InvalidToken $e1) {
+            $this->_redirector->goToUrlAndExit('/login/auth/logout');
+        } catch (Exception $e) {
+            $this->addMessage(array('error' => $e->getMessage()));
+        }
+    }
 
     public function goAction() {
         $this->_helper->layout()->setLayout('public');
@@ -95,8 +120,10 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                 return;
             }
 
+            $this->view->already_in_meeting = false;
             $this->view->validRoom = false;
             $this->view->roomName = $response['roomName'];
+            $this->view->killExistingSessionUrl = '/my-rooms/killme/id/'.$roomId;
 
             $joinUrl = '';
             $errorMessage = '';
@@ -109,6 +136,10 @@ class Ui_MyRoomsController extends IMDT_Controller_Abstract {
                 } else {
                     $this->view->acessable = true;
                     $errorMessage = $bbbApiResponse['error'];
+                    
+                    if($errorMessage === 'The user is already in meeting') {
+                        $this->view->already_in_meeting = true;
+                    }
                 }
             }
 

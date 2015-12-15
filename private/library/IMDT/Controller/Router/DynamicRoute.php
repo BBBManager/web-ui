@@ -33,7 +33,8 @@ class IMDT_Controller_Router_DynamicRoute extends Zend_Controller_Router_Route_A
                 'module' => 'ui',
                 'controller' => 'my-rooms',
                 'action' => 'go',
-                'id' => $roomData['meeting_room_id']
+                'id' => $roomData['meeting_room_id'],
+                'roomUrl' => $roomUrl
             );
         } catch (Exception $e) {
             return false;
