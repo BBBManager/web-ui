@@ -82,12 +82,21 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
             if(!in_array($this->getRequest()->getActionName(), $this->_aclSkipActions)
                 && !$this->_shouldSkipAcl) {
 
-                $type = $this->getRequest()->getActionName();
-                switch($type) {
+                $type = '';
+                switch($this->getRequest()->getActionName()) {
+                    case 'edit':
+                        $type = 'edit';
+                        break;
+                    case 'delete':
+                        $type = 'delete';
+                        break;
                     case 'new':
                         $type = 'insert';
-                    break;
-                    case 'index':
+                        break;
+                    case 'view':
+                        $type = 'view';
+                        break;
+                    default:
                         $type = 'list';
                     break;
                 }
