@@ -81,7 +81,18 @@ abstract class IMDT_Controller_Abstract extends Zend_Controller_Action {
         if(isset($this->api)) {
             if(!in_array($this->getRequest()->getActionName(), $this->_aclSkipActions)
                 && !$this->_shouldSkipAcl) {
-                if (!IMDT_Util_Acl::getInstance()->isAllowed($this->api, 'list')) {
+
+                $type = $this->getRequest()->getActionName();
+                switch($type) {
+                    case 'new':
+                        $type = 'insert';
+                    break;
+                    case 'index':
+                        $type = 'list';
+                    break;
+                }
+
+                if (!IMDT_Util_Acl::getInstance()->isAllowed($this->api, $type)) {
                     throw new IMDT_Controller_Exception_AccessDennied($this->_helper->translate('You don\'t have access to the requested resource'));
                 }
             }
