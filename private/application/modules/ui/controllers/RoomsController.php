@@ -349,14 +349,6 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
     public function viewAction() {
         $this->view->id = $this->_getParam('id', null);
 
-        $response = IMDT_Util_Rest::get('/api/my-rooms', array('meeting_room_id' => $this->_getParam('id', -1)));
-        $authData = Zend_Auth::getInstance()->getStorage()->read();
-
-        if (!isset($response['collection'][$this->_getParam('id', -1)])
-            && $authData['user_access_profile'] != BBBManager_Config_Defines::$SYSTEM_ADMINISTRATOR_PROFILE) {
-            throw new Exception($this->_helper->translate('Nenhuma sala encontrada para o id informado.'));
-        }
-
         $this->view->logsFilters = $this->logsFilters;
 
         $this->view->jQuery()->addOnload('CKEDITOR.replace("body");');
