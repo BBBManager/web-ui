@@ -412,9 +412,9 @@ class Ui_RoomsController extends IMDT_Controller_Abstract {
                     $actions .= '<a title="' . $this->_helper->translate('Delete') . '" data-toggle="tooltip" class="btn btn-mini btn-delete" disabled="disabled" data-original-title="Excluir"><i class="icon-trash"></i></a>';
                 }
 
-                if ($curr['status'] == BBBManager_Config_Defines::$ROOM_CLOSED) {
+                //if ($curr['status'] == BBBManager_Config_Defines::$ROOM_CLOSED) {
                     $actions .= '<a title="' . $this->_helper->translate('History') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/rooms/history/id/' . $curr[$this->pkey] . '" data-original-title="' . $this->_helper->translate('History') . '"><i class="icon-list-alt"></i></a>';
-                }
+                //}
 
                 if ($curr['recordings_count'] > 0) {
                     $actions .= '<a title="' . $this->_helper->translate('Manage Recording') . '" data-toggle="tooltip" class="btn btn-mini" href="/ui/rooms/manage-recording/id/' . $curr[$this->pkey] . '" data-original-title="' . $this->_helper->translate('Manage Recording') . '"><i class="icon-facetime-video"></i></a>';
