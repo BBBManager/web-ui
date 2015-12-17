@@ -1,7 +1,7 @@
 #/etc/bigbluebutton/nginx/bbbmanager-ui.nginx
 set $v 1;
 if ($scheme != 'https') {
-        set $v 1;
+        set $v "${v}1";
 }
 
 #Allow to access default.pdf without SSL
