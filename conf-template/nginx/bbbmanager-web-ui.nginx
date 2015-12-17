@@ -1,4 +1,18 @@
 #/etc/bigbluebutton/nginx/bbbmanager-ui.nginx
+set $v 1;
+if ($scheme != 'https') {
+        set $v 1;
+}
+
+#Allow to access default.pdf without SSL
+if ($request_uri !~ 'default.pdf' ) {
+        set $v "${v}1";
+}
+
+if ( $v = '111' ) {
+        return 301 https://$server_name$request_uri;
+}
+
 location / {
         proxy_pass http://127.0.0.1:81;
 
